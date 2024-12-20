@@ -1,0 +1,43 @@
+# Ignore CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+build/
+
+# Ignore Ninja build files (if using Ninja generator)
+build.ninja
+rules.ninja
+
+# Ignore compiled object files
+*.o
+*.obj
+*.lo
+*.la
+
+# Ignore static and shared libraries
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+
+# Ignore executables
+*.exe
+*.out
+*.app
+
+# Ignore logs and debugging files
+*.log
+*.debug
+
+# Ignore IDE specific files (optional)
+.idea/
+.vscode/
+
+# Ignore temporary or OS-specific files
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
