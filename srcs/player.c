@@ -1,5 +1,6 @@
 
 #include "../includes/cub.h"
+#include <X11/keysym.h>
 
 void	init_player(t_player *player)
 {
@@ -22,6 +23,8 @@ int	key_press(int keycode, t_player *player)
 		player->key_left = true;
 	if(keycode == D)
 		player->key_right = true;
+	if (keycode == XK_Escape)
+		exit(0); // Exit the program cleanly
 	return 0;
 }
 
@@ -53,4 +56,11 @@ void	move_player(t_player *player)
 		player->x -= speed;  // Move left by decreasing the x-coordinate
 	if (player->key_right)
 		player->x += speed;  // Move right by increasing the x-coordinate
+}
+
+int close_program(t_game *game)
+{
+	// Clean up resources here if needed (e.g., free memory, destroy images)
+	exit(0); // Exit the program
+	return 0;
 }

@@ -46,12 +46,15 @@ typedef	struct s_game
 	int		size_line;
 	int		endian;
 	t_player player;
+
+	char	**map;
 } t_game;
 
 void	init_player(t_player *player);
 int		key_press(int keycode, t_player *player);
 int		key_release(int keycode, t_player *player);
 void	move_player(t_player *player);
+int		close_program(t_game *game);
 
 # define WIDTH  1920
 # define HEIGHT 1080
@@ -60,6 +63,7 @@ void	move_player(t_player *player);
 # define A 97
 # define S 115
 # define D 100
+# define CLOSE_X_BUTTON 17
 # define KEYPRESS_EVENTS 2
 # define KEYRELEASE_EVENTS 3
 # define EVENT_MASK_KEYPRESS 1
