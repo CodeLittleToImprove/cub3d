@@ -28,11 +28,15 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
+	float	angle;
 
 	bool	key_up;
 	bool	key_down;
 	bool	key_left;
 	bool	key_right;
+
+	bool	left_rotate;
+	bool	right_rotate;
 } t_player;
 
 typedef	struct s_game
@@ -58,11 +62,15 @@ int		close_program(t_game *game);
 
 # define WIDTH  1920
 # define HEIGHT 1080
+# define BLOCKSIZE 64
 # define LIME 0x00FF00
+# define BLUE 0x0000FF
 # define W 119
 # define A 97
 # define S 115
 # define D 100
+# define LEFT 65361
+# define RIGHT 65363
 # define CLOSE_X_BUTTON 17
 # define KEYPRESS_EVENTS 2
 # define KEYRELEASE_EVENTS 3
