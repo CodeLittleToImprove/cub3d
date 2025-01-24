@@ -4,15 +4,18 @@
 
 void	init_player(t_player *player)
 {
+	// Set initial player position at the center of the screen
 	player->x = WIDTH / 2;
 	player->y = HEIGHT / 2;
+
+	// Set the initial facing direction (90 degrees or PI/2 radians)
 	player->angle = PI / 2;
 
+	// Initialize movement and rotation flags
 	player->key_up = false;
 	player->key_down = false;
 	player->key_left = false;
 	player->key_right = false;
-
 	player->left_rotate = false;
 	player->right_rotate = false;
 }
@@ -55,8 +58,8 @@ int	key_release(int keycode, t_player *player)
 
 void	move_player(t_player *player)
 {
-	int		speed = 5;
-	float	angle_speed = 0.1;
+	int		speed = 3;
+	float	angle_speed = 0.03;
 	float	cos_angle= cos(player->angle);
 	float	sin_angle= sin(player->angle);
 

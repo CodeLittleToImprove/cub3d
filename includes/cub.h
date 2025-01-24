@@ -60,11 +60,16 @@ int		key_release(int keycode, t_player *player);
 void	move_player(t_player *player);
 int		close_program(t_game *game);
 
-# define WIDTH  1920
-# define HEIGHT 1080
+// # define WIDTH  1600
+// # define HEIGHT 900
+# define WIDTH  1280
+# define HEIGHT 720
+// # define WIDTH  1920
+// # define HEIGHT 1080
 # define BLOCKSIZE 64
 # define LIME 0x00FF00
 # define BLUE 0x0000FF
+# define RED 0xFF0000
 # define W 119
 # define A 97
 # define S 115
@@ -77,6 +82,7 @@ int		close_program(t_game *game);
 # define EVENT_MASK_KEYPRESS 1
 # define EVENT_MASK_KEYRELEASE 2
 # define PI 3.14159265359
+# define DEBUG 0
 // # define KEY_ESCAPE 65307
 // # define KEY_UP 126
 // # define KEY_DOWN 125
