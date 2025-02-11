@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/19 14:16:52 by mamesser          #+#    #+#              #
-#    Updated: 2023/10/09 15:27:33 by mamesser         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = cub3D
 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
@@ -18,7 +6,6 @@ MLXFLAGS = -L/usr/X11/lib -lX11 -lXext -lm #-O3
 
 SRCS_DIR = ./srcs/
 
-#SRCS := $(addprefix $(SRCS_DIR), main.c)
 SRCS := $(wildcard $(SRCS_DIR)*.c)
 
 LIB_DIR = ./lib
@@ -29,11 +16,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLXLIB_DIR = $(LIB_DIR)/minilibx
 MLXLIB = $(MLXLIB_DIR)/libmlx.a
 
-#OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
 OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
 HEADERS = cub.h
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re all valgrind
 
 all: $(NAME)
 
@@ -64,3 +50,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+valgrind: $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)

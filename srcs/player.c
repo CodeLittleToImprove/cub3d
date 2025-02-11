@@ -109,6 +109,7 @@ void	move_player(t_player *player)
 int close_program(t_game *game)
 {
 	// Clean up resources here if needed (e.g., free memory, destroy images)
+	mlx_clear_window(game->mlx, game->win);
 	exit(0); // Exit the program
 	return 0;
 }
