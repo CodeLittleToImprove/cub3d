@@ -14,10 +14,12 @@
 
 typedef struct s_map
 {
-	int	row;
-	int	column;
-	int	s_count;
-	char	cardinal_direction;
-	int	cardinal_direction_count;
+	char	**matrix;
+	int		width;
+	int		height;
+	int		player_x;
+	int		player_y;
+	char	player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 } t_map;
+
 #endif //PARSER_H
