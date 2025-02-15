@@ -2,8 +2,9 @@
 
 bool is_valid_char(char c)
 {
-	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
 }
+
 size_t	count_width_and_free(char *file_name, size_t row)
 {
 	int		fd;
@@ -78,9 +79,11 @@ size_t	count_height_and_free(char *file_name)
 char	**create_grid(char *file_name)
 {
 	size_t	height;
+	char	**grid;
+
 	height = count_height_and_free(file_name);
-	printf("height : %d\n", height);
-	char	**grid = malloc((height + 1) * sizeof(char *));
+	printf("height : %ld\n", height);
+	grid = malloc((height + 1) * sizeof(char *));
 //	if (!grid)
 //	{
 //		perror("Memory allocation failed");
@@ -97,9 +100,9 @@ char	**create_grid(char *file_name)
 		if (!line)
 			break;
 		width = count_width_and_free(file_name, row);
-		printf("width : %d\n", width);
+		printf("width : %ld\n", width);
 		grid[row] = malloc((width + 1) * sizeof(char));
-//		ft_strlcpy(grid[row], line, strlen(line));
+		ft_strlcpy(grid[row], line, strlen(line));
 		free(line);
 		row++;
 	}
@@ -114,7 +117,8 @@ void	read_map_file(char *file_name, t_map *map)
 	char	*line;
 	char	*next_line;
 
-	map->matrix = create_grid(file_name);
+	map->grid = create_grid(file_name);
+	print_grid(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;

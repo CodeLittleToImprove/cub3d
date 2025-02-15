@@ -14,7 +14,7 @@
 
 typedef struct s_map
 {
-	char	**matrix;
+	char	**grid;
 	int		width;
 	int		height;
 	int		player_x;
@@ -22,4 +22,6 @@ typedef struct s_map
 	char	player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 } t_map;
 
+void	print_grid(char **grid);
+void	free_grid(char **grid);
 #endif //PARSER_H
