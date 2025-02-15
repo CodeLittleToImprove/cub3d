@@ -1,19 +1,34 @@
 #include "../includes/parser.h"
 
-size_t	count_width_and_free(char *file_name)
+bool is_valid_char(char c)
+{
+	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
+size_t	count_width_and_free(char *file_name, size_t row)
 {
 	int		fd;
-	char	*line;
+	size_t	current_line;
 	size_t	width;
+	char	c;
 
 	fd = open(file_name, O_RDONLY, 0);
-//	if (fd <= 0)
-//		ft_error_and_exit("file does not exist or no permission");
-	line = get_next_line(fd);
-//	if (line == NULL)
-//		handle_empty_or_null_line(line, fd);
-	width = ft_count_words(line, ' ');
-	free(line);
+	if (fd <= 0)
+		perror("file does not exist or no permission");
+	current_line = 0;
+	width = 0;
+
+	while (read(fd, &c, 1) == 1)
+	{
+	if (c == '\n')
+	{
+		if (current_line == row)
+			break;
+		current_line++;
+		continue; // Don't count newline characters
+	}
+	if (is_valid_char(c)  && current_line == row)
+		width++;
+	}
 	close(fd);
 	return (width);
 }
@@ -81,7 +96,7 @@ char	**create_grid(char *file_name)
 		line = get_next_line(fd);
 		if (!line)
 			break;
-		width = ft_count_words(line, ' ');
+		width = count_width_and_free(file_name, row);
 		printf("width : %d\n", width);
 		grid[row] = malloc((width + 1) * sizeof(char));
 //		ft_strlcpy(grid[row], line, strlen(line));
