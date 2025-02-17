@@ -5,7 +5,36 @@ bool is_valid_char(char c)
 	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
 }
 
-size_t	count_width_and_free(char *file_name, size_t row)
+bool	has_valid_characters_only(char *file_name)
+{
+	int		fd;
+	bool	file_is_valid;
+	char	c;
+
+	fd = open(file_name, O_RDONLY, 0);
+	file_is_valid = true;
+	if (fd <= 0)
+	{
+		perror("file does not exist or no permission");
+		return (false);
+	}
+	while (read(fd, &c, 1) == 1)
+	{
+		// Newline characters are allowed in the file
+		if (c == '\n')
+			continue;
+		if (!is_valid_char(c))
+		{
+			file_is_valid = false;
+			printf("Invalid character found: '%c'\n", c); // not in final parser
+			break;
+		}
+	}
+	close(fd);
+	return (file_is_valid);
+}
+
+size_t	count_width(char *file_name, size_t row)
 {
 	int		fd;
 	size_t	current_line;
@@ -27,7 +56,7 @@ size_t	count_width_and_free(char *file_name, size_t row)
 		current_line++;
 		continue; // Don't count newline characters
 	}
-	if (is_valid_char(c)  && current_line == row)
+	if (current_line == row)
 		width++;
 	}
 	close(fd);
@@ -57,25 +86,6 @@ size_t	count_height_and_free(char *file_name)
 	return (height);
 }
 
-//t_map	**allocate_matrix(char *file_name)
-//{
-//	t_map	**allocated_matrix;
-//	size_t	x;
-//	size_t	y;
-//
-//	x = count_width_and_free(file_name);
-//	y = count_height_and_free(file_name);
-//	allocated_matrix = (t_map **) ft_calloc(sizeof(t_map *), (y + 1));
-////	if (!allocated_matrix)
-////		ft_error_and_exit("Memory allocation failed");
-//	while (y > 0)
-//	{
-//		allocated_matrix[y - 1] = (t_map *) ft_calloc(sizeof(t_map), x);
-//		y--;
-//	}
-//	return (allocated_matrix);
-//}
-
 char	**create_grid(char *file_name)
 {
 	size_t	height;
@@ -98,11 +108,18 @@ char	**create_grid(char *file_name)
 	{
 		line = get_next_line(fd); // small problem with the last character did not get read properly when there is no \n at the end
 		if (!line)
-			break;
-		width = count_width_and_free(file_name, row);
+			break;s
+		width = count_width(file_name, row);
 		printf("width : %ld\n", width);
 		grid[row] = malloc((width + 1) * sizeof(char));
-		ft_strlcpy(grid[row], line, strlen(line));
+		// printf("strlen line before copying: %d\n", strlen (line));
+		// if (line[strlen(line) - 1] == '\n')
+		// {
+		// 	// printf("detected new line \n");
+		// 	line[strlen(line) - 1] = '\0';
+		// }
+		ft_strlcpy(grid[row], line, width + 1);
+		// printf("strlen line after copying: %d\n", strlen (grid[row]));
 		free(line);
 		row++;
 	}
@@ -117,9 +134,15 @@ void	read_map_file(char *file_name, t_map *map)
 	char	*line;
 	char	*next_line;
 
+	if (has_valid_characters_only(file_name) == false)
+	{
+		printf("file contains not valid characters \n");
+		exit (-1);
+	}
+
 	map->grid = create_grid(file_name);
 	// print_grid(map->grid);
-	print_grid_character(map->grid);
+	// print_grid_character(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;

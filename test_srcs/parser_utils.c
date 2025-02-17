@@ -1,8 +1,8 @@
 #include "../includes/parser.h"
 
-void print_grid(char **grid)
+void	print_grid(char **grid)
 {
-	size_t row;
+	size_t	row;
 
 	row = 0;
 	if (!grid)
@@ -17,10 +17,11 @@ void print_grid(char **grid)
 	}
 }
 
-void print_grid_character(char **grid)
+void	print_grid_character(char **grid)
 {
 	size_t	row;
 	size_t	index;
+
 	row = 0;
 	index = 0;
 
