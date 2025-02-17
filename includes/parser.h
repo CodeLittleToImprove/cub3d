@@ -24,4 +24,5 @@ typedef struct s_map
 
 void	print_grid(char **grid);
 void	free_grid(char **grid);
+void	print_grid_character(char **grid);
 #endif //PARSER_H

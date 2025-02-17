@@ -96,7 +96,7 @@ char	**create_grid(char *file_name)
 	fd = open(file_name, O_RDONLY, 0);
 	while (row < height)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(fd); // small problem with the last character did not get read properly when there is no \n at the end
 		if (!line)
 			break;
 		width = count_width_and_free(file_name, row);
@@ -118,7 +118,8 @@ void	read_map_file(char *file_name, t_map *map)
 	char	*next_line;
 
 	map->grid = create_grid(file_name);
-	print_grid(map->grid);
+	// print_grid(map->grid);
+	print_grid_character(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;
