@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME = libft.a
-
-CFLAGS = -Wall -Werror -Wextra
+#weird bug with clion when compile without fpic
+CFLAGS = -Wall -Werror -Wextra -fPIC
 
 SRCS = ft_memset.c			\
 		ft_bzero.c			\
