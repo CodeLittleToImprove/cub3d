@@ -20,13 +20,12 @@ bool	has_valid_characters_only(char *file_name)
 	}
 	while (read(fd, &c, 1) == 1)
 	{
-		// Newline characters are allowed in the file
 		if (c == '\n')
 			continue;
 		if (!is_valid_char(c))
 		{
 			file_is_valid = false;
-			printf("Invalid character found: '%c'\n", c); // not in final parser
+			printf("Invalid character found: '%c'\n", c); // remove in final parser
 			break;
 		}
 	}
@@ -90,6 +89,10 @@ char	**create_grid(char *file_name)
 {
 	size_t	height;
 	char	**grid;
+	int		fd;
+	char	*line;
+	size_t	width;
+	size_t	row;
 
 	height = count_height_and_free(file_name);
 	printf("height : %ld\n", height);
@@ -99,11 +102,8 @@ char	**create_grid(char *file_name)
 //		perror("Memory allocation failed");
 //		return (NULL);
 //	}
-	int		fd;
-	char	*line;
-	size_t	width;
-	size_t	row = 0;
 	fd = open(file_name, O_RDONLY, 0);
+	row = 0;
 	while (row < height)
 	{
 		line = get_next_line(fd); // small problem with the last character did not get read properly when there is no \n at the end
@@ -136,13 +136,13 @@ void	read_map_file(char *file_name, t_map *map)
 
 	if (has_valid_characters_only(file_name) == false)
 	{
-		printf("file contains not valid characters \n");
+		perror("file contains not valid characters \n");
 		exit (-1);
 	}
 
 	map->grid = create_grid(file_name);
 	// print_grid(map->grid);
-	print_grid_character(map->grid);
+	// print_grid_character(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;

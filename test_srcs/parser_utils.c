@@ -3,6 +3,7 @@
 void	print_grid(char **grid)
 {
 	size_t	row;
+	size_t	row_count;
 
 	row = 0;
 	if (!grid)
@@ -10,36 +11,48 @@ void	print_grid(char **grid)
 		printf("Grid is NULL\n");
 		return;
 	}
-	while (grid[row])
+
+	row_count = 0;
+	while (grid[row_count] != NULL)
+	{
+		row_count++;
+	}
+
+	while (row < row_count - 1)
 	{
 		printf("%s\n", grid[row]);
 		row++;
 	}
 }
 
-void	print_grid_character(char **grid)
+void print_grid_character(char **grid)
 {
-	size_t	row;
-	size_t	index;
-
-	row = 0;
-	index = 0;
+	size_t	row = 0;
+	size_t	index = 0;
+	size_t	row_count;
 
 	if (!grid)
 	{
 		printf("Grid is NULL\n");
 		return;
 	}
-	while (grid[row])
+
+	row_count = 0;
+	while (grid[row_count] != NULL)
+	{
+		row_count++;
+	}
+
+	while (row < row_count - 1)
 	{
 		printf("row:[%ld] ", row);
+		index = 0;
 		while (grid[row][index] != '\0')
 		{
 			printf("%c", grid[row][index]);
 			index++;
 		}
 		printf("\n");
-		index = 0;
 		row++;
 	}
 }
