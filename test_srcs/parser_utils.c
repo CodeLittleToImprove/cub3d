@@ -57,7 +57,7 @@ void print_grid_character(char **grid)
 	}
 }
 
-void free_grid(char **grid)
+void	free_grid(char **grid)
 {
 	size_t	row = 0;
 
@@ -71,3 +71,19 @@ void free_grid(char **grid)
 	}
 	free(grid);
 }
+
+bool	is_empty_line(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (!ft_isspace(line[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+

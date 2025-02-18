@@ -33,12 +33,37 @@ bool	has_valid_characters_only(char *file_name)
 	return (file_is_valid);
 }
 
+size_t	count_height_and_free(char *file_name)
+{
+	int			fd;
+	char		*line;
+	size_t		height;
+
+	fd = open(file_name, O_RDONLY, 0);
+	//	if (fd <= 0)
+	//		ft_error_and_exit("file does not exist or no permission");
+	line = get_next_line(fd);
+	height = 0;
+	if (line == NULL)
+		return (0);
+	while (line != NULL)
+	{
+		if (!is_empty_line(line))
+			height++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (height);
+}
+
 size_t	count_width(char *file_name, size_t row)
 {
 	int		fd;
 	size_t	current_line;
 	size_t	width;
 	char	c;
+	// bool	line_is_empty;
 
 	fd = open(file_name, O_RDONLY, 0);
 	if (fd <= 0)
@@ -60,29 +85,6 @@ size_t	count_width(char *file_name, size_t row)
 	}
 	close(fd);
 	return (width);
-}
-
-size_t	count_height_and_free(char *file_name)
-{
-	int			fd;
-	char		*line;
-	size_t		height;
-
-	fd = open(file_name, O_RDONLY, 0);
-//	if (fd <= 0)
-//		ft_error_and_exit("file does not exist or no permission");
-	line = get_next_line(fd);
-	height = 0;
-	if (line == NULL)
-		return (0);
-	while (line != NULL)
-	{
-		height++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (height);
 }
 
 char	**create_grid(char *file_name)
@@ -142,7 +144,7 @@ void	read_map_file(char *file_name, t_map *map)
 
 	map->grid = create_grid(file_name);
 	// print_grid(map->grid);
-	// print_grid_character(map->grid);
+	print_grid_character(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;

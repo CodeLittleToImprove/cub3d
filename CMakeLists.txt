@@ -53,7 +53,7 @@ target_link_libraries(mlx_test PRIVATE
         ${LIBFT_DIR}/libft.a
         -lX11 -lXext m
 )
-# Add the third executable: libft_only_test
+# Add the third executable: parser_only_test
 add_executable(parser_test
         test_srcs/parser_test.c
         test_srcs/parser_utils.c)

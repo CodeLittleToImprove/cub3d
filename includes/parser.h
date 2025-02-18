@@ -25,4 +25,5 @@ typedef struct s_map
 void	print_grid(char **grid);
 void	free_grid(char **grid);
 void	print_grid_character(char **grid);
+bool	is_empty_line(char *line);
 #endif //PARSER_H
