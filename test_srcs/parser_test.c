@@ -108,7 +108,7 @@ char	**create_grid(char *file_name)
 	{
 		line = get_next_line(fd); // small problem with the last character did not get read properly when there is no \n at the end
 		if (!line)
-			break;s
+			break;
 		width = count_width(file_name, row);
 		printf("width : %ld\n", width);
 		grid[row] = malloc((width + 1) * sizeof(char));
@@ -142,7 +142,7 @@ void	read_map_file(char *file_name, t_map *map)
 
 	map->grid = create_grid(file_name);
 	// print_grid(map->grid);
-	// print_grid_character(map->grid);
+	print_grid_character(map->grid);
 //	map->matrix = allocate_matrix(file_name);
 //	fd = open(file_name, O_RDONLY, 0);
 //	y = 0;
