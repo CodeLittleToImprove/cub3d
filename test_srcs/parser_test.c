@@ -168,7 +168,7 @@ char	**create_grid(char *file_name)
 		line = skip_empty_lines(fd, &empty_lines);
 		if (!line)
 			break;
-		printf("\ncurrent line: %s", line);
+		printf("\n row[%ld] current processed line: %s", row, line);
 		width = count_width(file_name, row + empty_lines);
 		printf("width : %ld\n", width);
 		grid[row] = trim_space_and_copy(line, width);
