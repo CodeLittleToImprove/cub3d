@@ -18,7 +18,7 @@ void	print_grid(char **grid)
 		row_count++;
 	}
 
-	while (row < row_count - 1)
+	while (row < row_count)
 	{
 		printf("%s\n", grid[row]);
 		row++;
@@ -42,8 +42,8 @@ void print_grid_character(char **grid)
 	{
 		row_count++;
 	}
-
-	while (row < row_count - 1)
+	printf("rowcount %ld\n", row_count);
+	while (row < row_count)
 	{
 		printf("row:[%ld] ", row);
 		index = 0;
@@ -86,4 +86,50 @@ bool	is_empty_line(char *line)
 	return (true);
 }
 
+size_t	count_leading_white_space(char *line)
+{
+	size_t	count;
 
+	count = 0;
+	while (ft_isspace(line[count]))
+	{
+		count++;
+	}
+	return (count);
+}
+
+char	*skip_empty_lines(int fd, size_t *empty_lines)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (line && is_empty_line(line))
+	{
+		(*empty_lines)++;
+		// printf("empty_lines: %ld\n", *empty_lines);
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (line); // Returns the first non-empty line or NULL if EOF
+}
+
+size_t	get_line_width(char *file_name, size_t row, size_t empty_lines)
+{
+	return count_width(file_name, row + empty_lines);
+}
+
+char	*trim_space_and_copy(char *line, size_t width)
+{
+	size_t	leading_spaces;
+	char	*trimmed_line;
+
+	leading_spaces = count_leading_white_space(line);
+	trimmed_line = malloc((width + 1) * sizeof(char));
+	if (!trimmed_line)
+	{
+		perror("Memory allocation failed");
+		return (NULL);
+	}
+	ft_strlcpy(trimmed_line, line + leading_spaces, width + 1);
+	return (trimmed_line);
+}

@@ -63,29 +63,84 @@ size_t	count_width(char *file_name, size_t row)
 	size_t	current_line;
 	size_t	width;
 	char	c;
-	// bool	line_is_empty;
+	bool	found_first_char;
 
 	fd = open(file_name, O_RDONLY, 0);
 	if (fd <= 0)
 		perror("file does not exist or no permission");
 	current_line = 0;
 	width = 0;
-
+	found_first_char = false;
 	while (read(fd, &c, 1) == 1)
 	{
-	if (c == '\n')
-	{
+		if (c == '\n')
+		{
+			if (current_line == row)
+				break;
+			current_line++;
+			continue; // Don't count newline characters
+		}
 		if (current_line == row)
-			break;
-		current_line++;
-		continue; // Don't count newline characters
-	}
-	if (current_line == row)
-		width++;
+		{
+			if(!found_first_char && ft_isspace(c))
+				continue;
+			found_first_char = true;
+			width++;
+		}
 	}
 	close(fd);
 	return (width);
 }
+
+// char	**create_grid(char *file_name)
+// {
+// 	size_t	height;
+// 	char	**grid;
+// 	int		fd;
+// 	char	*line;
+// 	size_t	width;
+// 	size_t	row;
+// 	size_t	empty_lines;
+// 	height = count_height_and_free(file_name);
+// 	printf("height : %ld\n", height);
+// 	grid = malloc((height + 1) * sizeof(char *));
+// //	if (!grid)
+// //	{
+// //		perror("Memory allocation failed");
+// //		return (NULL);
+// //	}
+// 	fd = open(file_name, O_RDONLY, 0);
+// 	row = 0;
+// 	empty_lines = 0;
+// 	while (row < height)
+// 	{
+// 		line = get_next_line(fd);
+// 		while (line && is_empty_line(line))
+// 		{
+// 			empty_lines++;
+// 			printf("empty_lines %ld\n", empty_lines);
+// 			free(line);
+// 			line = get_next_line(fd); // Read next line
+// 		}
+// 		printf("current line: %s\n", line);
+// 		width = count_width(file_name, row + empty_lines);
+// 		printf("width : %ld\n", width);
+// 		grid[row] = malloc((width + 1) * sizeof(char));
+// 		// printf("strlen line before copying: %d\n", strlen (line));
+// 		// if (line[strlen(line) - 1] == '\n')
+// 		// {
+// 		// 	// printf("detected new line \n");
+// 		// 	line[strlen(line) - 1] = '\0';
+// 		// }
+// 		size_t count_whitespace = count_leading_white_space(line);
+// 		ft_strlcpy(grid[row], line + count_whitespace, width + 1);
+// 		// printf("strlen line after copying: %d\n", strlen (grid[row]));
+// 		free(line);
+// 		row++;
+// 	}
+// 	close(fd);
+// 	return (grid);
+// }
 
 char	**create_grid(char *file_name)
 {
@@ -95,37 +150,33 @@ char	**create_grid(char *file_name)
 	char	*line;
 	size_t	width;
 	size_t	row;
+	size_t	empty_lines;
 
 	height = count_height_and_free(file_name);
 	printf("height : %ld\n", height);
 	grid = malloc((height + 1) * sizeof(char *));
-//	if (!grid)
-//	{
-//		perror("Memory allocation failed");
-//		return (NULL);
-//	}
+	if (!grid)
+	{
+		perror("Memory allocation failed");
+		return (NULL);
+	}
 	fd = open(file_name, O_RDONLY, 0);
 	row = 0;
+	empty_lines = 0;
 	while (row < height)
 	{
-		line = get_next_line(fd); // small problem with the last character did not get read properly when there is no \n at the end
+		line = skip_empty_lines(fd, &empty_lines);
 		if (!line)
 			break;
-		width = count_width(file_name, row);
+		printf("\ncurrent line: %s", line);
+		width = count_width(file_name, row + empty_lines);
 		printf("width : %ld\n", width);
-		grid[row] = malloc((width + 1) * sizeof(char));
-		// printf("strlen line before copying: %d\n", strlen (line));
-		// if (line[strlen(line) - 1] == '\n')
-		// {
-		// 	// printf("detected new line \n");
-		// 	line[strlen(line) - 1] = '\0';
-		// }
-		ft_strlcpy(grid[row], line, width + 1);
-		// printf("strlen line after copying: %d\n", strlen (grid[row]));
+		grid[row] = trim_space_and_copy(line, width);
 		free(line);
 		row++;
 	}
 	close(fd);
+	grid[row] = NULL;
 	return (grid);
 }
 

@@ -82,7 +82,7 @@ int		close_program(t_game *game);
 # define EVENT_MASK_KEYPRESS 1
 # define EVENT_MASK_KEYRELEASE 2
 # define PI 3.14159265359
-# define DEBUG 0
+# define DEBUG 1
 // # define KEY_ESCAPE 65307
 // # define KEY_UP 126
 // # define KEY_DOWN 125
