@@ -113,11 +113,6 @@ char	*skip_empty_lines(int fd, size_t *empty_lines)
 	return (line); // Returns the first non-empty line or NULL if EOF
 }
 
-size_t	get_line_width(char *file_name, size_t row, size_t empty_lines)
-{
-	return count_width(file_name, row + empty_lines);
-}
-
 char	*trim_space_and_copy(char *line, size_t width)
 {
 	size_t	leading_spaces;

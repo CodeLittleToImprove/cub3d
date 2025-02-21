@@ -14,12 +14,12 @@
 
 typedef struct s_map
 {
-	char	**grid;
-	int		width;
-	int		height;
-	int		player_x;
-	int		player_y;
-	char	player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
+	char		**grid;
+	size_t		max_width;
+	size_t		max_height;
+	int			player_x;
+	int			player_y;
+	char		player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 } t_map;
 
 //parser_utils.c
@@ -32,5 +32,5 @@ char	*skip_empty_lines(int fd, size_t *empty_lines);
 char	*trim_space_and_copy(char *line, size_t width);
 
 //parser_test.c
-size_t	count_width(char *file_name, size_t row);
+size_t	count_width(char *file_name, size_t row, t_map *map);
 #endif //PARSER_H
