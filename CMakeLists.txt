@@ -56,7 +56,9 @@ target_link_libraries(mlx_test PRIVATE
 # Add the third executable: parser_only_test
 add_executable(parser_test
         test_srcs/parser_test.c
-        test_srcs/parser_utils.c)
+        test_srcs/parser_utils.c
+        test_srcs/parser_map_validation.c
+        test_srcs/parser_map_utils.c)
 
 # Ensure libft_only_test depends only on libft
 add_dependencies(parser_test build_libft)

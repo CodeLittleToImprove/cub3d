@@ -144,7 +144,15 @@ void	read_map_file(char *file_name, t_map *map)
 	map->grid = create_grid(file_name, map);
 //	printf("map maxwidth %d\n", map->max_width);
 //	printf("map maxheight %d\n", map->max_height);
+//	printf("map width :%d for height[%d]\n", strlen(map->grid[1]), 1);
 	print_grid(map->grid);
+	if(is_map_valid(map) == true)
+	{
+		printf("Map is valid\n");
+	}
+//	flood_fill(map,3,4); //todo detect player position from grid
+//	printf("after flood fill\n");
+//	print_grid(map->grid);
 //	print_grid_character(map->grid);
 }
 
