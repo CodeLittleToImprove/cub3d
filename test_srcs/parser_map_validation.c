@@ -16,7 +16,7 @@ void	flood_fill(t_map *map, size_t y, size_t x)
 	if (y < 0 || y >= map->max_height)
 		return ;
 
-	if (x < 0 || x >= (size_t)ft_strlen(map->grid[y]))
+	if (x < 0 || x >= ft_strlen(map->grid[y]))
 		return ;
 	if (map->grid[y][x] == '1' || map->grid[y][x] == 'V')
 		return ;

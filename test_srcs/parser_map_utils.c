@@ -26,27 +26,40 @@ bool	valid_map_borders(t_map *map)
 	while (x < ft_strlen(map->grid[0]))
 	{
 		if (map->grid[0][x++] != '1')
+		{
+			printf("Top border not valid \n");
 			return (false);
+		}
 	}
 	// Check bottom row (map->grid[max_height - 1])
+	x = 0;
 	while (x < ft_strlen(map->grid[max_height]))
 	{
 		if (map->grid[max_height][x++] != '1')
+		{
+			printf("Bottom border not valid \n");
 			return (false);
+		}
 	}
 	// Check leftmost column for each row
 	y = 0;
 	while (y <= max_height)
 	{
 		if (map->grid[y++][0] != '1')
+		{
+			printf("Left border not valid \n");
 			return (false);
+		}
 	}
 	y = 0;
 	// Check rightmost column for each row
 	while (y <= max_height)
 	{
 		if (map->grid[y++][map->max_width - 1] != '1')
-			return false;
+		{
+			printf("Right border not valid \n");
+			return (false);
+		}
 	}
 	return (true);
 }
