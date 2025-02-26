@@ -11,19 +11,38 @@ bool	is_map_valid(t_map *map)
 	return (false);
 }
 
-void	flood_fill(t_map *map, size_t y, size_t x)
+bool	flood_fill(t_map *map, size_t y, size_t x)
 {
-	if (y < 0 || y >= map->max_height)
-		return ;
-
-	if (x < 0 || x >= ft_strlen(map->grid[y]))
-		return ;
+	if (y >= map->max_height)
+		return (true);
+	if (x >= ft_strlen(map->grid[y]))
+		return (true);
 	if (map->grid[y][x] == '1' || map->grid[y][x] == 'V')
-		return ;
+		return (false);
 	map->grid[y][x] = 'V';
 
-	flood_fill(map, y + 1, x); //Down
-	flood_fill(map, y - 1, x); //Up
-	flood_fill(map, y, x + 1); //Right
-	flood_fill(map, y, x - 1); //Left
+	if (flood_fill(map, y + 1, x)) // Down
+	{
+		printf("flood_filled down failed \n");
+		return true;
+	}
+	if (flood_fill(map, y - 1, x)) // Up
+	{
+		printf("flood_filled up failed \n");
+		return true;
+	}
+	if (flood_fill(map, y, x + 1)) // Right
+	{
+		printf("failed pos[%ld][%ld]", y, x + 1);
+		printf("flood_filled right failed \n");
+		return true;
+	}
+	if (flood_fill(map, y, x - 1))
+	{
+		printf("flood_filled left failed \n");
+		return true; // Left
+	}
+
+
+	return (false);
 }

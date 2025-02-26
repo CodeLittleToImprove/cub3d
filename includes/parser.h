@@ -17,8 +17,8 @@ typedef struct s_map
 	char		**grid;
 	size_t		max_width;
 	size_t		max_height;
-	int			player_x;
-	int			player_y;
+	size_t		player_x;
+	size_t		player_y;
 	char		player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 } t_map;
 
@@ -36,8 +36,9 @@ size_t	count_width(char *file_name, size_t row, t_map *map);
 
 //parser_map_validation.c
 bool	is_map_valid(t_map *map);
-void	flood_fill(t_map *map, size_t y, size_t x);
+bool	flood_fill(t_map *map, size_t y, size_t x);
 
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);
+void	detect_player_pos(t_map *map);
 #endif //PARSER_H

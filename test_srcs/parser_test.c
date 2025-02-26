@@ -135,7 +135,7 @@ void	set_default_values_map(t_map *map)
 void	read_map_file(char *file_name, t_map *map)
 {
 
-	if (has_valid_characters_only(file_name) == false)
+	if (has_valid_characters_only(file_name) == false) // add check for only a single player pos
 	{
 		perror("file contains not valid characters \n");
 		exit (-1);
@@ -145,14 +145,19 @@ void	read_map_file(char *file_name, t_map *map)
 //	printf("map maxwidth %d\n", map->max_width);
 //	printf("map maxheight %d\n", map->max_height);
 //	printf("map width :%d for height[%d]\n", strlen(map->grid[1]), 1);
+	detect_player_pos(map);
+	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
 	print_grid(map->grid);
-	if(is_map_valid(map) == true)
+	// if(is_map_valid(map) == true)
+	// {
+	// 	printf("Map is valid\n");
+	// }
+	if (flood_fill(map, map->player_y, map->player_x) == true)
 	{
-		printf("Map is valid\n");
+		printf("Map invalid \n");
 	}
-//	flood_fill(map,3,4); //todo detect player position from grid
-//	printf("after flood fill\n");
-//	print_grid(map->grid);
+	printf("\nafter flood fill\n");
+	print_grid(map->grid);
 //	print_grid_character(map->grid);
 }
 

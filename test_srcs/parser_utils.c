@@ -128,3 +128,32 @@ char	*trim_space_and_copy(char *line, size_t width)
 	ft_strlcpy(trimmed_line, line + leading_spaces, width + 1);
 	return (trimmed_line);
 }
+
+void	detect_player_pos(t_map *map)
+{
+	size_t	column;
+	size_t	max_height;
+	size_t row;
+
+	column = 0;
+	max_height = map->max_height;
+	while (column < max_height)
+	{
+		row = 0;
+		while (map->grid[column][row]!= '\0')
+		{
+			if (map->grid[column][row] == 'N' ||
+			map->grid[column][row] == 'S' ||
+			map->grid[column][row] == 'E' ||
+			map->grid[column][row] == 'W')
+			{
+				map->player_x = row;
+				map->player_y = column;
+				// printf("Player pos detected at x=%ld, y=%ld\n", map->player_x, map->player_y);
+				return ;
+			}
+			row++;
+		}
+		column++;
+	}
+}
