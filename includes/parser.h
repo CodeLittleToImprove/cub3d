@@ -36,7 +36,7 @@ size_t	count_width(char *file_name, size_t row, t_map *map);
 
 //parser_map_validation.c
 bool	is_map_valid(t_map *map);
-bool	flood_fill(t_map *map, size_t y, size_t x);
+bool	reached_boundary(t_map *map, size_t y, size_t x);
 
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);

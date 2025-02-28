@@ -147,14 +147,15 @@ void	read_map_file(char *file_name, t_map *map)
 //	printf("map width :%d for height[%d]\n", strlen(map->grid[1]), 1);
 	detect_player_pos(map);
 	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
+	printf(" player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
 	print_grid(map->grid);
 	// if(is_map_valid(map) == true)
 	// {
 	// 	printf("Map is valid\n");
 	// }
-	if (flood_fill(map, map->player_y, map->player_x) == true)
+	if (reached_boundary(map, map->player_y, map->player_x) == true)
 	{
-		printf("Map invalid \n");
+		printf("Map is open therefore invalid \n");
 	}
 	printf("\nafter flood fill\n");
 	print_grid(map->grid);

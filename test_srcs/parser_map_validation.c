@@ -11,38 +11,41 @@ bool	is_map_valid(t_map *map)
 	return (false);
 }
 
-bool	flood_fill(t_map *map, size_t y, size_t x)
+bool	reached_boundary(t_map *map, size_t y, size_t x)
 {
 	if (y >= map->max_height)
 		return (true);
 	if (x >= ft_strlen(map->grid[y]))
 		return (true);
 	if (map->grid[y][x] == '1' || map->grid[y][x] == 'V')
+	{
+		if (map->grid[y][x] == '1' )
+			printf("Encountered a wall at (y = %ld, x = %ld)\n", y, x);
+		if (map->grid[y][x] == 'V' )
+			printf("Already visited (y = %ld, x = %ld)\n", y, x);
 		return (false);
+	}
 	map->grid[y][x] = 'V';
 
-	if (flood_fill(map, y + 1, x)) // Down
+	if (reached_boundary(map, y + 1, x)) // Down
 	{
-		printf("flood_filled down failed \n");
+		printf("flood_filled moved down \n");
 		return true;
 	}
-	if (flood_fill(map, y - 1, x)) // Up
+	if (reached_boundary(map, y - 1, x)) // Up
 	{
-		printf("flood_filled up failed \n");
+		printf("flood_filled moved up \n");
 		return true;
 	}
-	if (flood_fill(map, y, x + 1)) // Right
+	if (reached_boundary(map, y, x + 1)) // Right
 	{
-		printf("failed pos[%ld][%ld]", y, x + 1);
-		printf("flood_filled right failed \n");
+		printf("flood_filled moved right \n");
 		return true;
 	}
-	if (flood_fill(map, y, x - 1))
+	if (reached_boundary(map, y, x - 1))
 	{
-		printf("flood_filled left failed \n");
+		printf("flood_filled moved left \n");
 		return true; // Left
 	}
-
-
 	return (false);
 }
