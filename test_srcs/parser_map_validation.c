@@ -1,15 +1,15 @@
 #include "../includes/parser.h"
 
-bool	is_map_valid(t_map *map)
-{
-	if (valid_map_borders(map) == true)
-	{
-		printf("border are valid \n");
-		return (true);
-	}
-
-	return (false);
-}
+//bool	is_map_valid(t_map *map)
+//{
+//	if (valid_map_borders(map) == true)
+//	{
+//		printf("border are valid \n");
+//		return (true);
+//	}
+//
+//	return (false);
+//}
 
 bool	reached_boundary(t_map *map, size_t y, size_t x)
 {
@@ -30,22 +30,52 @@ bool	reached_boundary(t_map *map, size_t y, size_t x)
 	if (reached_boundary(map, y + 1, x)) // Down
 	{
 		printf("flood_filled moved down \n");
-		return true;
+		return (true);
 	}
 	if (reached_boundary(map, y - 1, x)) // Up
 	{
 		printf("flood_filled moved up \n");
-		return true;
+		return (true);
 	}
 	if (reached_boundary(map, y, x + 1)) // Right
 	{
 		printf("flood_filled moved right \n");
-		return true;
+		return (true);
 	}
 	if (reached_boundary(map, y, x - 1))
 	{
 		printf("flood_filled moved left \n");
-		return true; // Left
+		return (true);
 	}
 	return (false);
+}
+
+bool is_valid_char(char c)
+{
+	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
+}
+
+bool	has_valid_characters_only(char *file_name)
+{
+	int		fd;
+	bool	file_is_valid;
+	char	c;
+
+	fd = open(file_name, O_RDONLY, 0);
+	file_is_valid = true;
+	if (fd <= 0)
+		return(perror("file does not exist or no permission"),false);
+	while (read(fd, &c, 1) == 1)
+	{
+		if (c == '\n')
+			continue;
+		if (!is_valid_char(c))
+		{
+			file_is_valid = false;
+			printf("Invalid character found: '%c'\n", c); // remove in final parser
+			break;
+		}
+	}
+	close(fd);
+	return (file_is_valid);
 }

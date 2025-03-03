@@ -35,9 +35,9 @@ char	*trim_space_and_copy(char *line, size_t width);
 size_t	count_width(char *file_name, size_t row, t_map *map);
 
 //parser_map_validation.c
-bool	is_map_valid(t_map *map);
+//bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
-
+bool	has_valid_characters_only(char *file_name);
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);
 void	detect_player_pos(t_map *map);

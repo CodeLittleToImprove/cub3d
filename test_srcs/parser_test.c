@@ -1,35 +1,5 @@
 #include "../includes/parser.h"
 
-bool is_valid_char(char c)
-{
-	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
-}
-
-bool	has_valid_characters_only(char *file_name)
-{
-	int		fd;
-	bool	file_is_valid;
-	char	c;
-
-	fd = open(file_name, O_RDONLY, 0);
-	file_is_valid = true;
-	if (fd <= 0)
-		return(perror("file does not exist or no permission"),false);
-	while (read(fd, &c, 1) == 1)
-	{
-		if (c == '\n')
-			continue;
-		if (!is_valid_char(c))
-		{
-			file_is_valid = false;
-			printf("Invalid character found: '%c'\n", c); // remove in final parser
-			break;
-		}
-	}
-	close(fd);
-	return (file_is_valid);
-}
-
 size_t	count_height_and_free(char *file_name)
 {
 	int			fd;
@@ -45,8 +15,13 @@ size_t	count_height_and_free(char *file_name)
 		return (0);
 	while (line != NULL)
 	{
-		if (!is_empty_line(line))
-			height++;
+		if (is_empty_line(line))
+		{
+			free(line);
+			close(fd);
+			return (0);
+		}
+		height++;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -96,6 +71,8 @@ char	**create_grid(char *file_name, t_map *map)
 	size_t	empty_lines;
 
 	map->max_height = count_height_and_free(file_name);
+	if(map->max_height == 0)
+		return (NULL);
 	printf("height : %ld\n\n", map->max_height);
 	grid = malloc((map->max_height + 1) * sizeof(char *));
 	if (!grid)
@@ -142,12 +119,17 @@ void	read_map_file(char *file_name, t_map *map)
 	}
 	set_default_values_map(map);
 	map->grid = create_grid(file_name, map);
+	if(map->grid == NULL)
+	{
+		printf("Map is invalid after counting height \n");
+		exit (-1);
+	}
 //	printf("map maxwidth %d\n", map->max_width);
 //	printf("map maxheight %d\n", map->max_height);
 //	printf("map width :%d for height[%d]\n", strlen(map->grid[1]), 1);
 	detect_player_pos(map);
 	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
-	printf(" player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
+	printf("player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
 	print_grid(map->grid);
 	// if(is_map_valid(map) == true)
 	// {
