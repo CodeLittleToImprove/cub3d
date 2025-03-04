@@ -11,19 +11,35 @@
 //	return (false);
 //}
 
-bool is_map_line(const char *line)
+bool is_valid_map_line(const char *line)
 {
 	size_t	i;
 
 	i = 0;
-
 	while (line[i] == ' ')
 		i++;
-
-	if (line[i] == '\0' || line[i] == '\n')  // Ignore empty lines
+	if (line[i] == '\0' || line[i] == '\n')
 		return (false);
+	while (line[i] != '\0' && line[i] != '\n')
+	{
+		if (line[i] != '1' && line[i] != '0' && line[i] != ' ')
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
-	while (line[i] != '\0' && line[i] != '\n') {
+bool is_valid_start_or_end_line(const char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (line[i] == ' ')
+		i++;
+	if (line[i] == '\0' || line[i] == '\n')
+		return (false);
+	while (line[i] != '\0' && line[i] != '\n')
+	{
 		if (line[i] != '1' && line[i] != ' ')
 			return (false);
 		i++;
@@ -33,11 +49,13 @@ bool is_map_line(const char *line)
 
 void	validate_last_line(const char *last_map_line)
 {
-	if (!is_map_line(last_map_line))
+	int	fd;
+
+	if (!is_valid_map_line(last_map_line))
 	{
 		write(STDERR_FILENO, "Error: Last map line is not enclosed by walls!\n", 47);
 		// "Delete" the file by truncating it
-		int fd = open("temp_map.cub", O_WRONLY | O_TRUNC);
+		fd = open("temp_map.cub", O_WRONLY | O_TRUNC);
 		if (fd >= 0)
 			close(fd);
 		exit(EXIT_FAILURE);

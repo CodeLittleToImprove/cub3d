@@ -41,8 +41,9 @@ size_t	count_width(char *file_name, size_t row, t_map *map);
 //bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	has_valid_characters_only(char *file_name);
-bool	is_map_line(const char *line);
-void	validate_last_line(const char *last_map_line);
+bool	is_valid_map_line(const char *line);
+bool	is_valid_start_or_end_line(const char *line);
+// void	validate_last_line(const char *last_map_line);
 
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);
@@ -53,6 +54,6 @@ int	open_input_file(const char *filename);
 int	open_output_file(const char *outputfilename);
 
 //buffer_utils.
-void	allocate_buffers(char **buffer, char **line, char **last_map_line);
-void	free_buffers(char *buffer, char *line, char *last_map_line);
+// void	allocate_buffers(char **buffer, char **line, char **last_map_line);
+// void	free_buffers(char *buffer, char *line, char *last_map_line);
 #endif //PARSER_H

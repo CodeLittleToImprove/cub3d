@@ -144,64 +144,79 @@ void	read_map_file(char *file_name, t_map *map)
 //	print_grid_character(map->grid);
 }
 
-void	process_map(int fd_in, int fd_out)
+int	process_map(int fd_in, int fd_out)
 {
-	char	*buffer;
 	char	*line;
 	char	*last_map_line;
-	ssize_t	bytes_read;
-	size_t	line_index = 0;
-	int	map_started = 0;
-	allocate_buffers(&buffer, &line, &last_map_line);
+	bool	map_found;
+	bool	map_ended;
+	bool	valid_start;
+	bool	valid_end;
 
-	while ((bytes_read = read(fd_in, buffer, BUFFER_SIZE)) > 0)
+	line = get_next_line(fd_in);
+	if (line == NULL)
+		exit(-1);
+	map_found = false;
+	valid_start = false;
+	valid_end = false;
+	while (line != NULL)
 	{
-		for (ssize_t i = 0; i < bytes_read; i++)
+		if (!map_found && is_valid_map_line(line) == true)
 		{
-			if (buffer[i] == '\n' || line_index >= MAX_LINE - 1)
+			printf("DEBUG: This is the first line after map detect : %s\n ", line);
+			map_found = true;
+			if (is_valid_start_or_end_line(line) == true)
+				valid_start = true;
+		}
+		if (map_found && valid_start == true)
+		{
+			if (is_empty_line(line) == true)
 			{
-				line[line_index] = '\0';  // Null-terminate the line
-
-				if (!map_started && is_map_line(line))
-				{
-					map_started = 1;  // Start copying when we detect a map
-				}
-
-				if (map_started)
-				{
-					write(fd_out, line, line_index);
-					write(fd_out, "\n", 1);  // Preserve line breaks
-					strcpy(last_map_line, line);  // Save the last line for validation
-				}
-
-				line_index = 0;  // Reset for the next line
-			} else
+				printf("Detected empty line after map start \n");
+				free(line);
+				return (-1);
+			}
+			write(fd_out, line, ft_strlen(line));
+			if (line[ft_strlen(line) - 1] != '\n')
 			{
-				line[line_index++] = buffer[i];
+				last_map_line = malloc(sizeof(char *) * ft_strlen(line));
+				ft_strlcpy(last_map_line, line, ft_strlen(line));
+				if (is_valid_start_or_end_line(last_map_line) == true)
+				{
+					valid_end = true;
+					printf("DEBUG: This should be the last line : %s\n ", last_map_line);
+				}
 			}
 		}
+		free(line);
+		line = get_next_line(fd_in);
 	}
-	validate_last_line(last_map_line);
-	free_buffers(buffer, line, last_map_line);
+	if (map_found && valid_start && valid_end)
+	{
+		printf("map contains properly start and ending\n");
+		return (0);
+	}
+	return (-1);
 }
 
 void	extract_map(const char *filename)
 {
 	int		fd_in;
 	int		fd_out;
-//	char	*buffer;
-//	char	*line;
-//	ssize_t	bytes_read;
-
 
 	fd_in = open_input_file(filename);
 	fd_out = open_output_file("temp_map.cub");
 
-	process_map(fd_in, fd_out);
+	if (process_map(fd_in, fd_out) == -1)
+		{
+			printf("debug: map invalid before copying");
+		//delete temp map cub
+			exit (-1);
+		}
 	close(fd_in);
 	close(fd_out);
-
 }
+
 int	main(int argc, char *argv[])
 {
 	t_map	map;
@@ -209,5 +224,6 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (-1);
 	extract_map(argv[1]);
-	read_map_file(argv[1], &map);
+	// read_map_file(argv[1], &map); // reads the original file
+	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 }
