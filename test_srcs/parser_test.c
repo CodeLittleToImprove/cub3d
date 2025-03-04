@@ -148,50 +148,37 @@ int	process_map(int fd_in, int fd_out)
 {
 	char	*line;
 	char	*last_map_line;
-	bool	map_found;
-	bool	map_ended;
-	bool	valid_start;
-	bool	valid_end;
+	bool	has_map_started;
+	bool	is_valid_start;
+	bool	is_valid_end;
 
 	line = get_next_line(fd_in);
 	if (line == NULL)
 		exit(-1);
-	map_found = false;
-	valid_start = false;
-	valid_end = false;
+	has_map_started = false;
+	is_valid_start = false;
+	is_valid_end = false;
 	while (line != NULL)
 	{
-		if (!map_found && is_valid_map_line(line) == true)
+		if (!detect_map_start(line, &has_map_started, &is_valid_start))
 		{
-			printf("DEBUG: This is the first line after map detect : %s\n ", line);
-			map_found = true;
-			if (is_valid_start_or_end_line(line) == true)
-				valid_start = true;
+			free(line);
+			return -1;
 		}
-		if (map_found && valid_start == true)
+		if (has_map_started && is_valid_start)
 		{
-			if (is_empty_line(line) == true)
+			if (!write_and_track_last_line(fd_out, line, &last_map_line))
 			{
-				printf("Detected empty line after map start \n");
 				free(line);
-				return (-1);
-			}
-			write(fd_out, line, ft_strlen(line));
-			if (line[ft_strlen(line) - 1] != '\n')
-			{
-				last_map_line = malloc(sizeof(char *) * ft_strlen(line));
-				ft_strlcpy(last_map_line, line, ft_strlen(line));
-				if (is_valid_start_or_end_line(last_map_line) == true)
-				{
-					valid_end = true;
-					printf("DEBUG: This should be the last line : %s\n ", last_map_line);
-				}
+				return -1;
 			}
 		}
 		free(line);
 		line = get_next_line(fd_in);
 	}
-	if (map_found && valid_start && valid_end)
+	if (last_map_line && is_valid_start_or_end_line(last_map_line))
+		is_valid_end = true;
+	if (has_map_started && is_valid_start && is_valid_end)
 	{
 		printf("map contains properly start and ending\n");
 		return (0);

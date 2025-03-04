@@ -38,12 +38,13 @@ char	*trim_space_and_copy(char *line, size_t width);
 size_t	count_width(char *file_name, size_t row, t_map *map);
 
 //parser_map_validation.c
+bool	detect_map_start(const char *line, bool *has_map_started, bool *is_valid_start);
 //bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	has_valid_characters_only(char *file_name);
 bool	is_valid_map_line(const char *line);
 bool	is_valid_start_or_end_line(const char *line);
-// void	validate_last_line(const char *last_map_line);
+bool	write_and_track_last_line(int fd_out, const char *line, char **last_map_line);
 
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);
