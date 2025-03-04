@@ -58,6 +58,8 @@ add_executable(parser_test
         test_srcs/parser_test.c
         test_srcs/parser_utils.c
         test_srcs/parser_map_validation.c
+        test_srcs/buffer_utils.c
+        test_srcs/fd_utils.c
         test_srcs/parser_map_utils.c)
 
 # Ensure libft_only_test depends only on libft

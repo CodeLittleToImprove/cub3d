@@ -12,6 +12,9 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
+#define BUFFER_SIZE 1024
+#define MAX_LINE 256
+
 typedef struct s_map
 {
 	char		**grid;
@@ -38,7 +41,18 @@ size_t	count_width(char *file_name, size_t row, t_map *map);
 //bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	has_valid_characters_only(char *file_name);
+bool	is_map_line(const char *line);
+void	validate_last_line(const char *last_map_line);
+
 //parser_map_utils.c
 bool	valid_map_borders(t_map *map);
 void	detect_player_pos(t_map *map);
+
+//fd_utils.c
+int	open_input_file(const char *filename);
+int	open_output_file(const char *outputfilename);
+
+//buffer_utils.
+void	allocate_buffers(char **buffer, char **line, char **last_map_line);
+void	free_buffers(char *buffer, char *line, char *last_map_line);
 #endif //PARSER_H

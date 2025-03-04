@@ -144,11 +144,70 @@ void	read_map_file(char *file_name, t_map *map)
 //	print_grid_character(map->grid);
 }
 
+void	process_map(int fd_in, int fd_out)
+{
+	char	*buffer;
+	char	*line;
+	char	*last_map_line;
+	ssize_t	bytes_read;
+	size_t	line_index = 0;
+	int	map_started = 0;
+	allocate_buffers(&buffer, &line, &last_map_line);
+
+	while ((bytes_read = read(fd_in, buffer, BUFFER_SIZE)) > 0)
+	{
+		for (ssize_t i = 0; i < bytes_read; i++)
+		{
+			if (buffer[i] == '\n' || line_index >= MAX_LINE - 1)
+			{
+				line[line_index] = '\0';  // Null-terminate the line
+
+				if (!map_started && is_map_line(line))
+				{
+					map_started = 1;  // Start copying when we detect a map
+				}
+
+				if (map_started)
+				{
+					write(fd_out, line, line_index);
+					write(fd_out, "\n", 1);  // Preserve line breaks
+					strcpy(last_map_line, line);  // Save the last line for validation
+				}
+
+				line_index = 0;  // Reset for the next line
+			} else
+			{
+				line[line_index++] = buffer[i];
+			}
+		}
+	}
+	validate_last_line(last_map_line);
+	free_buffers(buffer, line, last_map_line);
+}
+
+void	extract_map(const char *filename)
+{
+	int		fd_in;
+	int		fd_out;
+//	char	*buffer;
+//	char	*line;
+//	ssize_t	bytes_read;
+
+
+	fd_in = open_input_file(filename);
+	fd_out = open_output_file("temp_map.cub");
+
+	process_map(fd_in, fd_out);
+	close(fd_in);
+	close(fd_out);
+
+}
 int	main(int argc, char *argv[])
 {
 	t_map	map;
 
 	if (argc != 2)
 		return (-1);
+	extract_map(argv[1]);
 	read_map_file(argv[1], &map);
 }
