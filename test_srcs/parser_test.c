@@ -131,10 +131,6 @@ void	read_map_file(char *file_name, t_map *map)
 	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
 	printf("player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
 	print_grid(map->grid);
-	// if(is_map_valid(map) == true)
-	// {
-	// 	printf("Map is valid\n");
-	// }
 	if (reached_boundary(map, map->player_y, map->player_x) == true)
 	{
 		printf("Map is open therefore invalid \n");
@@ -163,14 +159,14 @@ int	process_map(int fd_in, int fd_out)
 		if (!detect_map_start(line, &has_map_started, &is_valid_start))
 		{
 			free(line);
-			return -1;
+			return (-1);
 		}
 		if (has_map_started && is_valid_start)
 		{
 			if (!write_and_track_last_line(fd_out, line, &last_map_line))
 			{
 				free(line);
-				return -1;
+				return (-1);
 			}
 		}
 		free(line);
