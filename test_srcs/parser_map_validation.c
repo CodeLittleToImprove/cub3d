@@ -1,16 +1,5 @@
 #include "../includes/parser.h"
 
-//bool	is_map_valid(t_map *map)
-//{
-//	if (valid_map_borders(map) == true)
-//	{
-//		printf("border are valid \n");
-//		return (true);
-//	}
-//
-//	return (false);
-//}
-
 bool is_valid_map_line(const char *line)
 {
 	size_t	i;

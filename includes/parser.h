@@ -12,9 +12,6 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-#define BUFFER_SIZE 1024
-#define MAX_LINE 256
-
 typedef struct s_map
 {
 	char		**grid;
