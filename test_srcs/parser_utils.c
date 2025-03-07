@@ -149,7 +149,9 @@ void	detect_player_pos(t_map *map)
 			{
 				map->player_x = row;
 				map->player_y = column;
+				map->player_dir = map->grid[column][row];
 				// printf("Player pos detected at x=%ld, y=%ld\n", map->player_x, map->player_y);
+				 printf("Player dir %c\n", map->player_dir);
 				return ;
 			}
 			row++;

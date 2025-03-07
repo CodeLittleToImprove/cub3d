@@ -22,6 +22,14 @@ typedef struct s_map
 	char		player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 } t_map;
 
+typedef struct s_colors
+{
+	int		rgb_floor[3];
+	int		rgb_ceiling[3];
+	bool	has_floor;
+	bool	has_ceiling;
+} t_colors;
+
 //parser_utils.c
 void	print_grid(char **grid);
 void	free_grid(char **grid);
