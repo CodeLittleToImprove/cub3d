@@ -90,7 +90,7 @@ bool	reached_boundary(t_map *map, size_t y, size_t x)
 	return (false);
 }
 
-bool is_valid_char(char c)
+bool	is_valid_char(char c)
 {
 	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
 }
@@ -100,9 +100,11 @@ bool	has_valid_characters_only(char *file_name)
 	int		fd;
 	bool	file_is_valid;
 	char	c;
+	size_t	player_count;
 
 	fd = open(file_name, O_RDONLY, 0);
 	file_is_valid = true;
+	player_count = 0;
 	if (fd <= 0)
 		return(perror("file does not exist or no permission"),false);
 	while (read(fd, &c, 1) == 1)
@@ -115,7 +117,20 @@ bool	has_valid_characters_only(char *file_name)
 			printf("Invalid character found: '%c'\n", c); // remove in final parser
 			break;
 		}
+		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+			player_count++;
+		if (player_count > 1)
+		{
+			file_is_valid = false;
+			printf("Error: Multiple player start positions found.\n");
+			break;
+		}
 	}
+	if (player_count == 0)
+		{
+			file_is_valid = false;
+			printf("Error: No player start position found.\n");
+		}
 	close(fd);
 	return (file_is_valid);
 }

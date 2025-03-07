@@ -112,9 +112,9 @@ void	set_default_values_map(t_map *map)
 void	read_map_file(char *file_name, t_map *map)
 {
 
-	if (has_valid_characters_only(file_name) == false) // add check for only a single player pos
+	if (has_valid_characters_only(file_name) == false)
 	{
-		perror("file contains not valid characters \n");
+		printf("terminate program because of invalid characters \n");
 		exit (-1);
 	}
 	set_default_values_map(map);
