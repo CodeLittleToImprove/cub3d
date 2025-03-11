@@ -7,16 +7,24 @@ bool	is_valid_rgb(char *str)
 
 	num = 0;
 	i = 0;
-	while (str[i])
+	i = skip_leading_chars(str, i, " ");
+	printf("str:%s\n", str);
+	while (str[i] && ft_isdigit(str[i]))
 	{
-		if (!ft_isdigit(str[i]))
-			return (false);
 		num = num * 10 + (str[i] - '0');
-		i++;
 		if (num > 255)
+		{
+			printf("num %d is too large\n", num);
 			return (false);
+		}
+		i++;
 	}
-	return (i > 0);
+	// printf("pre skip in valid rgb i:%d\n", i);
+	i = skip_leading_chars(str, i, " ");
+	// printf("in valid rgb i:%d\n", i);
+	if (str[i] == '\0' || str[i] == '\n')
+		return (true);
+	return (false);
 }
 
 char	*ft_strtok_r(char *str, char *delim, char **saveptr)
@@ -40,4 +48,11 @@ char	*ft_strtok_r(char *str, char *delim, char **saveptr)
 		(*saveptr)++;
 	}
 	return (token_start);
+}
+
+size_t	skip_leading_chars(char *str, size_t i, char *skip_chars)
+{
+	while (str[i] && ft_strchr(skip_chars, str[i]))
+		i++;
+	return (i);
 }

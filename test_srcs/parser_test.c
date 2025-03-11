@@ -221,20 +221,39 @@ void	set_default_values_color(t_colors *colors)
 bool	parse_color(char *line, t_colors *colors)
 {
 	size_t	i;
-	size_t	start_color_pos;
+	size_t	j;
+	size_t	k;
 	char	*token;
+	char	*save_ptr;
+	bool	found_digit;
 
 	i = 0;
-	while (line[i] == ' ')
-		i++;
-	if (line[i] == 'F')
-		start_color_pos = i++;
-	printf("start_color_pos: %ld\n", start_color_pos);
-	while (line[i] == ' ')
-		i++;
-	// start working from here to split input to token
+	j = 0;
+	found_digit = false;
+	i = skip_leading_chars(line, i, " F");
+	printf("parse color line %s\n", line);
+	// printf("first character of line %c\n", line[i]);
+	// printf("start_color_pos: %ld\n", start_color_pos);
+	printf("i : %ld\n", i);
+	token = ft_strtok_r(&line[i],",", &save_ptr);
+	printf("first token:%s\n", token);
+	while(token && j < 3)
+	{
+		// k = 0;
+		//
+		if (!is_valid_rgb(token))
+			return printf("Error: Invalid RGB value: %s\n", token), false;
+		// empty token should be invalid
+		int temp = atoi(token); // only for debugging
+		printf("temp : %ld\n", temp);
+		colors->rgb_floor[j] = temp;
+		token = ft_strtok_r(NULL,",", &save_ptr);
+		printf("token:%s\n", token);
+		j++;
+	}
+	if (token != NULL)
+		return (printf("Error: Too many values\n"), false);
 	return true;
-//	token =
 }
 
 bool	detect_color(const char *filename, t_colors *colors)
