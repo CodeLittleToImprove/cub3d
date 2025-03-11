@@ -32,14 +32,14 @@ void	*ft_calloc_complete(size_t count, size_t size)
 	return (ptr);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != '\0' && (unsigned char)c != *s)
-		s++;
-	if ((unsigned char)c == *s)
-		return ((char *)s);
-	return (0);
-}
+//char	*ft_strchr(const char *s, int c)
+//{
+//	while (*s != '\0' && (unsigned char)c != *s)
+//		s++;
+//	if ((unsigned char)c == *s)
+//		return ((char *)s);
+//	return (0);
+//}
 
 char	*initialize_line_read_if_null(char *line_read)
 {

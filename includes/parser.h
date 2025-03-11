@@ -42,8 +42,12 @@ char	*trim_space_and_copy(char *line, size_t width);
 //parser_test.c
 size_t	count_width(char *file_name, size_t row, t_map *map);
 
+//parser_color.c
+bool	is_valid_rgb(char *str);
+char	*ft_strtok_r(char *str, char *delim, char **saveptr);
+
 //parser_map_validation.c
-bool	detect_map_start(const char *line, bool *has_map_started, bool *is_valid_start);
+bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start);
 //bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	has_valid_characters_only(char *file_name);

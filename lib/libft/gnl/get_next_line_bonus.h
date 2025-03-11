@@ -17,6 +17,7 @@
 #  define BUFFER_SIZE 10
 # endif
 
+# include "../libft.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>

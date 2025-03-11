@@ -193,20 +193,89 @@ void	extract_map(const char *filename)
 	if (process_map(fd_in, fd_out) == -1)
 		{
 			printf("debug: map invalid before copying");
-		//delete temp map cub
+		//delete temp map cub later
 			exit (-1);
 		}
 	close(fd_in);
 	close(fd_out);
 }
 
+void	set_default_values_color(t_colors *colors)
+{
+	colors = malloc(sizeof(t_colors));
+	if (!colors)
+	{
+		perror("Memory allocation failed");
+		return ;
+	}
+	colors->rgb_floor[0] = 0;
+	colors->rgb_floor[1] = 0;
+	colors->rgb_floor[2] = 0;
+	colors->rgb_ceiling[0] = 0;
+	colors->rgb_ceiling[1] = 0;
+	colors->rgb_ceiling[2] = 0;
+	colors->has_floor = false;
+	colors->has_ceiling = false;
+}
+
+bool	parse_color(char *line, t_colors *colors)
+{
+	size_t	i;
+	size_t	start_color_pos;
+	char	*token;
+
+	i = 0;
+	while (line[i] == ' ')
+		i++;
+	if (line[i] == 'F')
+		start_color_pos = i++;
+	printf("start_color_pos: %ld\n", start_color_pos);
+	while (line[i] == ' ')
+		i++;
+	// start working from here to split input to token
+	return true;
+//	token =
+}
+
+bool	detect_color(const char *filename, t_colors *colors)
+{
+	int		fd;
+	char	*line;
+
+	fd = open_input_file(filename);
+	line = get_next_line(fd);
+	printf("line %s\n", line);
+	set_default_values_color(colors);
+	while (line!= NULL)
+	{
+		if(ft_strchr(line, 'F') || ft_strchr(line, 'C'))
+		{
+			printf("detected potencial color in file\n");
+			parse_color(line, colors);
+			return (true);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (false);
+}
+
 int	main(int argc, char *argv[])
 {
-	t_map	map;
+	t_map		map;
+	t_colors	colors;
 
 	if (argc != 2)
 		return (-1);
-	extract_map(argv[1]);
+
+	if(detect_color(argv[1], &colors))
+	{
+		printf("color successful extracted\n");
+	}
+	else
+		printf("no color in file deteced \n");
+//	extract_map(argv[1]); // should maybe be a bool
 	// read_map_file(argv[1], &map); // reads the original file
-	read_map_file("temp_map.cub", &map); // reads the temp file for testing
+//	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 }

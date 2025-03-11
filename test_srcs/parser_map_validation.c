@@ -135,7 +135,7 @@ bool	has_valid_characters_only(char *file_name)
 	return (file_is_valid);
 }
 
-bool	detect_map_start(const char *line, bool *has_map_started, bool *is_valid_start)
+bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 {
 	if (!*has_map_started && is_valid_map_line(line))
 	{
