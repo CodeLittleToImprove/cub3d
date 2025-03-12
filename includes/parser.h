@@ -46,6 +46,8 @@ size_t	count_width(char *file_name, size_t row, t_map *map);
 bool	is_valid_rgb(char *str);
 char	*ft_strtok_r(char *str, char *delim, char **saveptr);
 size_t	skip_leading_chars(char *str, size_t i, char *skip_chars);
+bool	parse_color(char *line, t_colors *colors, char type);
+bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_flag);
 
 //parser_map_validation.c
 bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start);

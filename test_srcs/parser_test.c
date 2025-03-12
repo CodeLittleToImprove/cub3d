@@ -218,62 +218,28 @@ void	set_default_values_color(t_colors *colors)
 	colors->has_ceiling = false;
 }
 
-bool	parse_color(char *line, t_colors *colors)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	char	*token;
-	char	*save_ptr;
-	bool	found_digit;
-
-	i = 0;
-	j = 0;
-	found_digit = false;
-	i = skip_leading_chars(line, i, " F");
-	printf("parse color line %s\n", line);
-	// printf("first character of line %c\n", line[i]);
-	// printf("start_color_pos: %ld\n", start_color_pos);
-	printf("i : %ld\n", i);
-	token = ft_strtok_r(&line[i],",", &save_ptr);
-	printf("first token:%s\n", token);
-	while(token && j < 3)
-	{
-		// k = 0;
-		//
-		if (!is_valid_rgb(token))
-			return printf("Error: Invalid RGB value: %s\n", token), false;
-		// empty token should be invalid
-		int temp = atoi(token); // only for debugging
-		printf("temp : %ld\n", temp);
-		colors->rgb_floor[j] = temp;
-		token = ft_strtok_r(NULL,",", &save_ptr);
-		printf("token:%s\n", token);
-		j++;
-	}
-	if (token != NULL)
-		return (printf("Error: Too many values\n"), false);
-	return true;
-}
-
 bool	detect_color(const char *filename, t_colors *colors)
 {
 	int		fd;
 	char	*line;
+	bool	found_floor;
+	bool	found_ceiling;
 
 	fd = open_input_file(filename);
+	if (fd < 0)
+		return (false);
 	line = get_next_line(fd);
-	printf("line %s\n", line);
+	printf("line in detect color %s\n", line);
 	set_default_values_color(colors);
+	found_floor = false;
+	found_ceiling = false;
 	while (line!= NULL)
 	{
-		if(ft_strchr(line, 'F') || ft_strchr(line, 'C'))
-		{
-			printf("detected potencial color in file\n");
-			parse_color(line, colors);
-			return (true);
-		}
+		check_and_parse_color(line, colors, 'F', &found_floor);
+		check_and_parse_color(line, colors, 'C', &found_ceiling);
 		free(line);
+		if (found_floor && found_ceiling)
+			return (true);
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -290,7 +256,7 @@ int	main(int argc, char *argv[])
 
 	if(detect_color(argv[1], &colors))
 	{
-		printf("color successful extracted\n");
+		printf("colors successful extracted\n");
 	}
 	else
 		printf("no color in file deteced \n");
