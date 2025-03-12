@@ -26,6 +26,7 @@ typedef struct s_colors
 {
 	int		rgb_floor[3];
 	int		rgb_ceiling[3];
+	size_t	color_start_line;
 	bool	has_floor;
 	bool	has_ceiling;
 } t_colors;
@@ -66,7 +67,8 @@ void	detect_player_pos(t_map *map);
 int	open_input_file(const char *filename);
 int	open_output_file(const char *outputfilename);
 
-//buffer_utils.
-// void	allocate_buffers(char **buffer, char **line, char **last_map_line);
-// void	free_buffers(char *buffer, char *line, char *last_map_line);
+//print_utils.c
+void	print_colors(const t_colors *colors);
+void	print_grid(char **grid);
+void	print_grid_character(char **grid);
 #endif //PARSER_H

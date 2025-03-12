@@ -202,20 +202,15 @@ void	extract_map(const char *filename)
 
 void	set_default_values_color(t_colors *colors)
 {
-	colors = malloc(sizeof(t_colors));
-	if (!colors)
-	{
-		perror("Memory allocation failed");
-		return ;
-	}
 	colors->rgb_floor[0] = 0;
 	colors->rgb_floor[1] = 0;
 	colors->rgb_floor[2] = 0;
 	colors->rgb_ceiling[0] = 0;
 	colors->rgb_ceiling[1] = 0;
 	colors->rgb_ceiling[2] = 0;
-	colors->has_floor = false;
-	colors->has_ceiling = false;
+	colors->has_floor = false; // probably not needed
+	colors->has_ceiling = false; // probably not needed
+	colors->color_start_line = 0;
 }
 
 bool	detect_color(const char *filename, t_colors *colors)
@@ -224,23 +219,35 @@ bool	detect_color(const char *filename, t_colors *colors)
 	char	*line;
 	bool	found_floor;
 	bool	found_ceiling;
+	bool	first_color_found;
+	size_t	line_number;
 
 	fd = open_input_file(filename);
 	if (fd < 0)
 		return (false);
 	line = get_next_line(fd);
-	printf("line in detect color %s\n", line);
+	// printf("line in detect color:%s\n", line);
 	set_default_values_color(colors);
 	found_floor = false;
 	found_ceiling = false;
+	first_color_found = false;
+	line_number = 0;
 	while (line!= NULL)
 	{
-		check_and_parse_color(line, colors, 'F', &found_floor);
-		check_and_parse_color(line, colors, 'C', &found_ceiling);
+		if (check_and_parse_color(line, colors, 'F', &found_floor) ||
+				check_and_parse_color(line, colors, 'C', &found_ceiling))
+		{
+			if (!first_color_found)
+			{
+				colors->color_start_line = line_number;
+				first_color_found = true;
+			}
+		}
 		free(line);
 		if (found_floor && found_ceiling)
 			return (true);
 		line = get_next_line(fd);
+		line_number++;
 	}
 	close(fd);
 	return (false);
@@ -256,10 +263,11 @@ int	main(int argc, char *argv[])
 
 	if(detect_color(argv[1], &colors))
 	{
-		printf("colors successful extracted\n");
+		printf("colors extraction success\n");
+		print_colors(&colors);
 	}
 	else
-		printf("no color in file deteced \n");
+		printf("colors extraction fail \n"); // stop program
 //	extract_map(argv[1]); // should maybe be a bool
 	// read_map_file(argv[1], &map); // reads the original file
 //	read_map_file("temp_map.cub", &map); // reads the temp file for testing

@@ -3,12 +3,12 @@
 bool	is_valid_rgb(char *str)
 {
 	int	num;
-	int	i;
+	size_t	i;
 
 	num = 0;
 	i = 0;
 	i = skip_leading_chars(str, i, " ");
-	printf("str:%s\n", str);
+	// printf("str:%s\n", str);
 	while (str[i] && ft_isdigit(str[i]))
 	{
 		num = num * 10 + (str[i] - '0');
@@ -76,24 +76,23 @@ bool	parse_color(char *line, t_colors *colors, char type)
 
 	i = 0;
 	j = 0;
-	i = skip_leading_chars(line, i, " F");
+	i = skip_leading_chars(line, i, &type);
 	color_array = get_color_array(colors, type);
-	printf("parse color line %s\n", line);
+	// printf("parse color line %s\n", line);
 	// printf("first character of line %c\n", line[i]);
 	// printf("start_color_pos: %ld\n", start_color_pos);
-	printf("i : %ld\n", i);
+	// printf("i : %ld\n", i);
 	token = ft_strtok_r(&line[i],",", &save_ptr);
-	printf("first token:%s\n", token);
+	// printf("first token:%s\n", token);
 	while(token && j < 3)
 	{
 		if (!is_valid_rgb(token))
 			return (printf("Error: Invalid RGB value: %s\n", token), false);
-		// empty token should be invalid, annoying to handle because the if after the while
 		int temp = ft_atoi(token); // only for debugging
-		printf("temp : %ld\n", temp);
+		// printf("temp : %ld\n", temp);
 		color_array[j] = temp;
 		token = ft_strtok_r(NULL,",", &save_ptr);
-		printf("token:%s\n", token);
+		// printf("token:%s\n", token);
 		j++;
 	}
 	if (j != 3|| token != NULL)
@@ -110,7 +109,7 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 		else if (type == 'C')
 			printf("Detected potential ceiling color in file\n");
 
-		if (parse_color(line, colors, type)) // Pass 'F' or 'C' to parse_color
+		if (parse_color(line, colors, type))
 		{
 			if (type == 'F')
 				printf("Floor color successfully extracted\n");
