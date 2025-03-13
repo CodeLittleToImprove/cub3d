@@ -15,11 +15,12 @@
 typedef struct s_map
 {
 	char		**grid;
+	char		player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
 	size_t		max_width;
 	size_t		max_height;
 	size_t		player_x;
 	size_t		player_y;
-	char		player_dir;	// Player’s starting direction ('N', 'S', 'E', 'W')
+	size_t		map_end_line;
 } t_map;
 
 typedef struct s_colors
@@ -27,8 +28,8 @@ typedef struct s_colors
 	int		rgb_floor[3];
 	int		rgb_ceiling[3];
 	size_t	color_start_line;
-	bool	has_floor;
-	bool	has_ceiling;
+	bool	has_floor; // not properly used right now
+	bool	has_ceiling; // not properly used right now
 } t_colors;
 
 //parser_utils.c

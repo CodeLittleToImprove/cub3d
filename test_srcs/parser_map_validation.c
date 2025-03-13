@@ -144,7 +144,7 @@ bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 		*is_valid_start = is_valid_start_or_end_line(line);
 	}
 
-	// Detect an empty line after the map starts (invalid case)
+	// Detect an empty line after the map starts
 	if (*has_map_started && is_empty_line(line))
 	{
 		printf("Detected empty line after map start.\n");

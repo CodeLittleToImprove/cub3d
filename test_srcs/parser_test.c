@@ -107,6 +107,7 @@ void	set_default_values_map(t_map *map)
 	map->player_x = -1;
 	map->player_y = -1;
 	map->player_dir = '\0';
+	map->map_end_line = 0;
 }
 
 void	read_map_file(char *file_name, t_map *map)
@@ -117,7 +118,7 @@ void	read_map_file(char *file_name, t_map *map)
 		printf("terminate program because of invalid characters \n");
 		exit (-1);
 	}
-	set_default_values_map(map);
+//	set_default_values_map(map);
 	map->grid = create_grid(file_name, map);
 	if(map->grid == NULL)
 	{
@@ -140,7 +141,7 @@ void	read_map_file(char *file_name, t_map *map)
 //	print_grid_character(map->grid);
 }
 
-int	process_map(int fd_in, int fd_out)
+int	process_map(int fd_in, int fd_out, t_map *map)
 {
 	char	*line;
 	char	*last_map_line;
@@ -154,35 +155,37 @@ int	process_map(int fd_in, int fd_out)
 	has_map_started = false;
 	is_valid_start = false;
 	is_valid_end = false;
+	set_default_values_map(map);
+	printf("before increase map end line %ld\n", map->map_end_line);
 	while (line != NULL)
 	{
 		if (!detect_map_start(line, &has_map_started, &is_valid_start))
 		{
-			free(line);
-			return (-1);
+			return(free(line), -1);
 		}
 		if (has_map_started && is_valid_start)
 		{
 			if (!write_and_track_last_line(fd_out, line, &last_map_line))
 			{
-				free(line);
-				return (-1);
+				return(free(line), -1);
 			}
 		}
 		free(line);
 		line = get_next_line(fd_in);
+		map->map_end_line++;
 	}
 	if (last_map_line && is_valid_start_or_end_line(last_map_line))
 		is_valid_end = true;
 	if (has_map_started && is_valid_start && is_valid_end)
 	{
+		printf("after increase map end line %ld\n", map->map_end_line); // it's + 1 after the last line
 		printf("map contains properly start and ending\n");
 		return (0);
 	}
 	return (-1);
 }
 
-void	extract_map(const char *filename)
+bool	extract_map(const char *filename, t_map *map)
 {
 	int		fd_in;
 	int		fd_out;
@@ -190,14 +193,15 @@ void	extract_map(const char *filename)
 	fd_in = open_input_file(filename);
 	fd_out = open_output_file("temp_map.cub");
 
-	if (process_map(fd_in, fd_out) == -1)
+	if (process_map(fd_in, fd_out, map) == -1)
 		{
 			printf("debug: map invalid before copying");
 		//delete temp map cub later
-			exit (-1);
+			return (false);
 		}
 	close(fd_in);
 	close(fd_out);
+	return (true);
 }
 
 void	set_default_values_color(t_colors *colors)
@@ -261,14 +265,22 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (-1);
 
-	if(detect_color(argv[1], &colors))
+//	if(detect_color(argv[1], &colors))
+//	{
+//		printf("colors extraction success\n");
+//		print_colors(&colors);
+//	}
+//	else
+//		printf("colors extraction fail \n"); // stop program
+	if (extract_map(argv[1], &map))
 	{
-		printf("colors extraction success\n");
-		print_colors(&colors);
+		printf("map extraction success\n");
 	}
 	else
-		printf("colors extraction fail \n"); // stop program
-//	extract_map(argv[1]); // should maybe be a bool
-	// read_map_file(argv[1], &map); // reads the original file
+	{
+		printf("map extraction fail \n");
+	}
+	printf("map->end_line %ld\n", map.map_end_line);
+//	read_map_file(argv[1], &map); // reads the original file
 //	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 }
