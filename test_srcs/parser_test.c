@@ -257,10 +257,99 @@ bool	detect_color(const char *filename, t_colors *colors)
 	return (false);
 }
 
+bool	is_valid_texture_path(char *path)
+{
+	int	fd;
+	
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Error opening texture file");
+		return false;
+	}
+	close(fd);
+	return (true);
+}
+
+bool	assign_texture_path(char *line, t_textures *textures, char *key, char **texture_path, bool *valid_texture)
+{
+	if (ft_strncmp(line, key, ft_strlen(key)) == 0)
+	{
+		if (*valid_texture)
+		{
+			printf("Error: Duplicate texture assignment for %s\n", key);
+			return (false);
+		}
+		*texture_path = ft_strdup(line + ft_strlen(key) + 1);
+		printf("texture_path %s\n", *texture_path);
+		if (*texture_path == NULL || **texture_path == '\0')
+		{
+			printf("Error: Invalid path for texture %s\n", key);
+			return (false);
+		}
+		if (!is_valid_texture_path(*texture_path))  // Check the file validity
+		{
+			free(*texture_path);  // Free memory if the path is invalid
+			*texture_path = NULL;
+			return (false);
+		}
+		*valid_texture = true;
+		return (true);
+	}
+	return (false);
+}
+
+void	set_default_values_textures(t_textures *textures)
+{
+	textures->no_texture = NULL;
+	textures->so_texture = NULL;
+	textures->we_texture = NULL;
+	textures->ea_texture = NULL;
+	textures->no_set = false;
+	textures->so_set = false;
+	textures->we_set = false;
+	textures->ea_set = false;
+	textures->last_texture_line = 0;
+}
+
+bool	detect_textures(char *filename, t_textures *textures)
+{
+	int		fd;
+	char	*line;
+	size_t	line_number;
+
+	fd = open_input_file(filename);
+	set_default_values_textures(textures);
+	line = get_next_line(fd);
+	line_number = 0;
+
+	while (line != NULL)
+	{
+		if (assign_texture_path(line, textures, "NO", &textures->no_texture, &textures->no_set) ||
+			assign_texture_path(line, textures, "SO", &textures->so_texture, &textures->so_set) ||
+			assign_texture_path(line, textures, "WE", &textures->we_texture, &textures->we_set) ||
+			assign_texture_path(line, textures, "EA", &textures->ea_texture, &textures->ea_set))
+		{
+			printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
+		}
+		free(line);
+		if (textures->no_set && textures->so_set && textures->we_set && textures->ea_set)
+		{
+			textures->last_texture_line = line_number;
+			break;
+		}
+		line = get_next_line(fd);
+		line_number++;
+	}
+	close(fd);
+	return (textures->no_set && textures->so_set && textures->we_set && textures->ea_set);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_map		map;
 	t_colors	colors;
+	t_textures	textures;
 
 	if (argc != 2)
 		return (-1);
@@ -272,15 +361,28 @@ int	main(int argc, char *argv[])
 //	}
 //	else
 //		printf("colors extraction fail \n"); // stop program
-	if (extract_map(argv[1], &map))
+//	if (extract_map(argv[1], &map))
+//	{
+//		printf("map extraction success\n");
+//	}
+//	else
+//	{
+//		printf("map extraction fail \n");
+//	}
+//	printf("map->end_line %ld\n", map.map_end_line);
+	if (detect_textures(argv[1], &textures))
 	{
-		printf("map extraction success\n");
+		printf("Textures extracted successfully:\n");
+		printf("NO: %s\n", textures.no_texture);
+		printf("SO: %s\n", textures.so_texture);
+		printf("WE: %s\n", textures.we_texture);
+		printf("EA: %s\n", textures.ea_texture);
+		printf("Last texture line: %ld\n", textures.last_texture_line);
 	}
 	else
 	{
-		printf("map extraction fail \n");
+		printf("Failed to extract all textures.\n");
 	}
-	printf("map->end_line %ld\n", map.map_end_line);
 //	read_map_file(argv[1], &map); // reads the original file
 //	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 }

@@ -32,6 +32,19 @@ typedef struct s_colors
 	bool	has_ceiling; // not properly used right now
 } t_colors;
 
+typedef struct s_textures
+{
+	char	*no_texture;
+	char	*so_texture;
+	char	*we_texture;
+	char	*ea_texture;
+	bool	no_set;
+	bool	so_set;
+	bool	we_set;
+	bool	ea_set;
+	size_t	last_texture_line;
+} t_textures;
+
 //parser_utils.c
 void	print_grid(char **grid);
 void	free_grid(char **grid);
