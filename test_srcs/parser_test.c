@@ -260,43 +260,68 @@ bool	detect_color(const char *filename, t_colors *colors)
 bool	is_valid_texture_path(char *path)
 {
 	int	fd;
-	
+
+//	printf("path in is valid texture path:%s\n", path);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening texture file");
-		return false;
+		return (false);
 	}
 	close(fd);
 	return (true);
 }
 
-bool	assign_texture_path(char *line, t_textures *textures, char *key, char **texture_path, bool *valid_texture)
+char	*extract_texture_path(char *line, char *key)
 {
-	if (ft_strncmp(line, key, ft_strlen(key)) == 0)
+	char	*raw_path;
+	char	*trimmed_path;
+
+	while (*line == ' ' || *line == '\t')
+		line++;
+	if (ft_strncmp(line, key, ft_strlen(key)) != 0)
+		return (NULL);
+	line += ft_strlen(key);
+	while (*line == ' ' || *line == '\t')
+		line++;
+	raw_path = ft_strdup(line);
+	if (!raw_path)
 	{
-		if (*valid_texture)
-		{
-			printf("Error: Duplicate texture assignment for %s\n", key);
-			return (false);
-		}
-		*texture_path = ft_strdup(line + ft_strlen(key) + 1);
-		printf("texture_path %s\n", *texture_path);
-		if (*texture_path == NULL || **texture_path == '\0')
-		{
-			printf("Error: Invalid path for texture %s\n", key);
-			return (false);
-		}
-		if (!is_valid_texture_path(*texture_path))  // Check the file validity
-		{
-			free(*texture_path);  // Free memory if the path is invalid
-			*texture_path = NULL;
-			return (false);
-		}
-		*valid_texture = true;
-		return (true);
+		printf("Error: Memory allocation failed\n");
+		return (NULL);
 	}
-	return (false);
+	printf("raw_path %s\n", raw_path);
+	trimmed_path = ft_strtrim(raw_path, " \n");  // Trim spaces & newline
+	printf("trimmed_path %s\n", trimmed_path);
+	free(raw_path);
+	return (trimmed_path);
+}
+
+bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid_texture)
+{
+	if (*valid_texture)
+	{
+		printf("Error: Duplicate texture assignment for %s\n", key);
+		return (false);
+	}
+	*texture_path = extract_texture_path(line, key);
+	printf("texture_path %s\n", *texture_path);
+	if (!*texture_path || **texture_path == '\0')
+	{
+		printf("Error: Invalid path for texture %s\n", key);
+		free(*texture_path);
+		*texture_path = NULL;
+		return (false);
+	}
+	if (!is_valid_texture_path(*texture_path))
+	{
+		free(*texture_path);
+		*texture_path = NULL;
+		return (false);
+	}
+	*valid_texture = true;
+	printf("Successfully assigned texture: %s -> %s\n", key, *texture_path);
+	return (true);
 }
 
 void	set_default_values_textures(t_textures *textures)
@@ -325,10 +350,10 @@ bool	detect_textures(char *filename, t_textures *textures)
 
 	while (line != NULL)
 	{
-		if (assign_texture_path(line, textures, "NO", &textures->no_texture, &textures->no_set) ||
-			assign_texture_path(line, textures, "SO", &textures->so_texture, &textures->so_set) ||
-			assign_texture_path(line, textures, "WE", &textures->we_texture, &textures->we_set) ||
-			assign_texture_path(line, textures, "EA", &textures->ea_texture, &textures->ea_set))
+		if (assign_texture_path(line, "NO", &textures->no_texture, &textures->no_set) ||
+			assign_texture_path(line, "SO", &textures->so_texture, &textures->so_set) ||
+			assign_texture_path(line, "WE", &textures->we_texture, &textures->we_set) ||
+			assign_texture_path(line, "EA", &textures->ea_texture, &textures->ea_set))
 		{
 			printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
 		}

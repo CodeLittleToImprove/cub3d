@@ -1,7 +1,7 @@
-SO so_tex.xpm
-WE we_tex.xpm
-NO no_tex.xpm
-EA ea_tex.xpm
+SO example_textures/so_tex.xpm
+WE example_textures/we_tex.xpm
+NO example_textures/no_tex.xpm
+EA example_textures/ea_tex.xpm
 
 F 220, 10, 0
 C 225,30,0
