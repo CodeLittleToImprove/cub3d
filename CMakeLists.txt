@@ -34,7 +34,8 @@ add_executable(cub3d_own_tests
         srcs/main.c
         srcs/raycasting.c
         srcs/render.c
-        srcs/utils.c)
+        srcs/utils.c
+        includes/cub3d.h)
 
 # Ensure the executable depends on both libft and MiniLibX
 add_dependencies(cub3d_own_tests build_libft build_minilibx)

@@ -257,6 +257,16 @@ bool	detect_color(const char *filename, t_colors *colors)
 	return (false);
 }
 
+bool	is_invalid_texture_line(char *line)
+{
+	if (is_empty_line(line))
+		return (false);
+	if (!(ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 ||
+		ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0))
+		return (true);
+	return (false);
+}
+
 bool	is_valid_texture_path(char *path)
 {
 	int	fd;
@@ -331,6 +341,18 @@ bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid
 	return (true);
 }
 
+bool	process_texture_line(char *line, size_t line_number, t_textures *textures)
+{
+	if (assign_texture_path(line, "NO", &textures->no_texture, &textures->no_set) ||
+		assign_texture_path(line, "SO", &textures->so_texture, &textures->so_set) ||
+		assign_texture_path(line, "WE", &textures->we_texture, &textures->we_set) ||
+		assign_texture_path(line, "EA", &textures->ea_texture, &textures->ea_set))
+	{
+		printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
+		return (true);
+	}
+	return (false);
+}
 
 void	set_default_values_textures(t_textures *textures)
 {
@@ -350,20 +372,23 @@ bool	detect_textures(char *filename, t_textures *textures)
 	int		fd;
 	char	*line;
 	size_t	line_number;
-
 	fd = open_input_file(filename);
 	set_default_values_textures(textures);
 	line = get_next_line(fd);
 	line_number = 0;
 	while (line != NULL)
 	{
-		if (assign_texture_path(line, "NO", &textures->no_texture, &textures->no_set) ||
-			assign_texture_path(line, "SO", &textures->so_texture, &textures->so_set) ||
-			assign_texture_path(line, "WE", &textures->we_texture, &textures->we_set) ||
-			assign_texture_path(line, "EA", &textures->ea_texture, &textures->ea_set))
+		if (is_invalid_texture_line(line) &&
+			(textures->no_set || textures->so_set || textures->we_set || textures->ea_set))
 		{
-			printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
+			printf("Error: Found non-texture line within texture definitions at line %ld: %s\n", line_number, line);
+			free(line);
+			close(fd);
+			return (false);
 		}
+		process_texture_line(line, line_number, textures);
+		printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
+		textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);
 		if (textures->no_set && textures->so_set && textures->we_set && textures->ea_set)
 		{
@@ -374,6 +399,8 @@ bool	detect_textures(char *filename, t_textures *textures)
 		line_number++;
 	}
 	close(fd);
+	printf("FINAL DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
+	   textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 	return (textures->no_set && textures->so_set && textures->we_set && textures->ea_set);
 }
 
