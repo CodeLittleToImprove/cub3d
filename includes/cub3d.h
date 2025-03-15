@@ -29,8 +29,9 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
-# include "../mlx_linux/mlx.h"
-# include "../libft/libft.h"
+# include "../lib/minilibx/mlx.h"
+# include "../lib/libft/libft.h"
+# include "../lib/libft/gnl/get_next_line_bonus.h"
 
 typedef enum e_dir
 {
