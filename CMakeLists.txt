@@ -28,8 +28,13 @@ add_custom_command(
 add_custom_target(build_minilibx ALL DEPENDS ${MLX_DIR}/libmlx_Linux.a)
 
 # Add the main executable
-add_executable(cub3d_own_tests unused/main.c
-        unused/player.c)
+add_executable(cub3d_own_tests
+        srcs/init.c
+        srcs/key_inputs.c
+        srcs/main.c
+        srcs/raycasting.c
+        srcs/render.c
+        srcs/utils.c)
 
 # Ensure the executable depends on both libft and MiniLibX
 add_dependencies(cub3d_own_tests build_libft build_minilibx)
