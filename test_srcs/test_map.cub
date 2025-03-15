@@ -4,6 +4,7 @@ NO example_textures/no_tex.xpm
 EA example_textures/ea_tex.xpm
 
 F    255, 10, 0
+EA example_textures/ea_tex.xpm
 C 225,30,0
 
 111111

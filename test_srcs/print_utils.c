@@ -75,3 +75,12 @@ void	print_grid_character(char **grid)
 		row++;
 	}
 }
+
+void	print_textures(t_textures *textures)
+{
+		printf("NO: %s\n", textures->no_texture);
+		printf("SO: %s\n", textures->so_texture);
+		printf("WE: %s\n", textures->we_texture);
+		printf("EA: %s\n", textures->ea_texture);
+		printf("Last texture line: %ld\n", textures->last_texture_line);
+}

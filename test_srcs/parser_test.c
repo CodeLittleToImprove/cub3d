@@ -131,6 +131,18 @@ void	read_map_file(char *file_name, t_map *map)
 //	print_grid_character(map->grid);
 }
 
+bool	is_invalid_color_line(char *line)
+{
+	if (is_empty_line(line))
+		return (false);
+
+	// Allow only valid color keys (F or C)
+	if (!(ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0))
+		return (true);
+
+	return (false);
+}
+
 void	set_default_values_color(t_colors *colors)
 {
 	colors->rgb_floor[0] = 0;
@@ -165,6 +177,13 @@ bool	detect_color(const char *filename, t_colors *colors)
 	line_number = 0;
 	while (line!= NULL)
 	{
+		if (first_color_found && is_invalid_color_line(line))
+		{
+			printf("Error: Found non-color line within color definitions at line %ld: %s\n", line_number, line);
+			free(line);
+			close(fd);
+			return (false);
+		}
 		if (check_and_parse_color(line, colors, 'F', &found_floor) ||
 				check_and_parse_color(line, colors, 'C', &found_ceiling))
 		{
@@ -193,30 +212,26 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (-1);
 
-	// if(detect_color(argv[1], &colors))
-	// {
-	// 	printf("colors extraction success\n");
-	// 	print_colors(&colors);
-	// }
-	// else
-	// 	printf("colors extraction fail \n"); // stop program
-	 if (extract_map(argv[1], &map))
-	 {
-	 	printf("map extraction success\n");
-	 }
-	else
+	if(detect_color(argv[1], &colors))
 	{
-		printf("map extraction fail \n");
+		printf("colors extraction success\n");
+		print_colors(&colors);
 	}
+	else
+		printf("colors extraction fail \n"); // stop program
+	//  if (extract_map(argv[1], &map))
+	//  {
+	//  	printf("map extraction success\n");
+	//  }
+	// else
+	// {
+	// 	printf("map extraction fail \n");
+	// }
 //	printf("map->end_line %ld\n", map.map_end_line);
 	// if (detect_textures(argv[1], &textures))
 	// {
 	// 	printf("Textures extracted successfully:\n");
-	// 	printf("NO: %s\n", textures.no_texture);
-	// 	printf("SO: %s\n", textures.so_texture);
-	// 	printf("WE: %s\n", textures.we_texture);
-	// 	printf("EA: %s\n", textures.ea_texture);
-	// 	printf("Last texture line: %ld\n", textures.last_texture_line);
+	// 	print_textures(&textures);
 	// }
 	// else
 	// {

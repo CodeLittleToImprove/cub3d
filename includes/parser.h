@@ -87,6 +87,7 @@ int	open_output_file(const char *outputfilename);
 void	print_colors(const t_colors *colors);
 void	print_grid(char **grid);
 void	print_grid_character(char **grid);
+void	print_textures(t_textures *textures);
 
 //parser_textures.c
 bool	detect_textures(char *filename, t_textures *textures);

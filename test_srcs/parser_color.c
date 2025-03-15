@@ -78,6 +78,8 @@ bool	parse_color(char *line, t_colors *colors, char type)
 	j = 0;
 	i = skip_leading_chars(line, i, &type);
 	color_array = get_color_array(colors, type);
+	if (color_array == NULL)
+		return (false);
 	// printf("parse color line %s\n", line);
 	// printf("first character of line %c\n", line[i]);
 	// printf("start_color_pos: %ld\n", start_color_pos);
@@ -115,7 +117,6 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 				printf("Floor color successfully extracted\n");
 			else if (type == 'C')
 				printf("Ceiling color successfully extracted\n");
-
 			*found_flag = true;
 			return (true);
 		}
