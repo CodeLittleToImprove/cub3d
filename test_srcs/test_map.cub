@@ -3,7 +3,7 @@ WE example_textures/we_tex.xpm
 NO example_textures/no_tex.xpm
 EA example_textures/ea_tex.xpm
 
-F 220, 10, 0
+F    255, 10, 0
 C 225,30,0
 
 111111
