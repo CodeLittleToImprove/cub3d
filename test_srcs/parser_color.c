@@ -117,8 +117,8 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 				printf("Ceiling color successfully extracted\n");
 
 			*found_flag = true;
-			return true;
+			return (true);
 		}
 	}
-	return false;
+	return (false);
 }

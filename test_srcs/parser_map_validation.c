@@ -18,24 +18,6 @@ bool is_valid_map_line(const char *line)
 	return (true);
 }
 
-bool is_valid_start_or_end_line(const char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i] == ' ')
-		i++;
-	if (line[i] == '\0' || line[i] == '\n')
-		return (false);
-	while (line[i] != '\0' && line[i] != '\n')
-	{
-		if (line[i] != '1' && line[i] != ' ')
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
 void	validate_last_line(const char *last_map_line)
 {
 	int	fd;
@@ -133,25 +115,6 @@ bool	has_valid_characters_only(char *file_name)
 		}
 	close(fd);
 	return (file_is_valid);
-}
-
-bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
-{
-	if (!*has_map_started && is_valid_map_line(line))
-	{
-		printf("DEBUG: First map line detected: %s\n", line);
-		*has_map_started = true;
-		*is_valid_start = is_valid_start_or_end_line(line);
-	}
-
-	// Detect an empty line after the map starts
-	if (*has_map_started && is_empty_line(line))
-	{
-		printf("Detected empty line after map start.\n");
-		return (false);
-	}
-
-	return (true);
 }
 
 bool	write_and_track_last_line(int fd_out, const char *line, char **last_map_line)

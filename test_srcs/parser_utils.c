@@ -76,7 +76,7 @@ void	detect_player_pos(t_map *map)
 {
 	size_t	column;
 	size_t	max_height;
-	size_t row;
+	size_t	row;
 
 	column = 0;
 	max_height = map->max_height;

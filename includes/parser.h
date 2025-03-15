@@ -64,9 +64,11 @@ size_t	skip_leading_chars(char *str, size_t i, char *skip_chars);
 bool	parse_color(char *line, t_colors *colors, char type);
 bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_flag);
 
+//parser_map_extract.c
+bool	extract_map(const char *filename, t_map *map);
+
 //parser_map_validation.c
 bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start);
-//bool	is_map_valid(t_map *map);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	has_valid_characters_only(char *file_name);
 bool	is_valid_map_line(const char *line);
@@ -85,4 +87,13 @@ int	open_output_file(const char *outputfilename);
 void	print_colors(const t_colors *colors);
 void	print_grid(char **grid);
 void	print_grid_character(char **grid);
+
+//parser_textures.c
+bool	detect_textures(char *filename, t_textures *textures);
+
+//parser_textures_utils.c
+void	set_default_values_textures(t_textures *textures);
+char	*extract_texture_path(char *line, char *key);
+bool	is_valid_texture_path(char *path);
+bool	is_invalid_texture_line(char *line);
 #endif //PARSER_H
