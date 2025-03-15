@@ -290,9 +290,9 @@ char	*extract_texture_path(char *line, char *key)
 		printf("Error: Memory allocation failed\n");
 		return (NULL);
 	}
-	printf("raw_path %s\n", raw_path);
-	trimmed_path = ft_strtrim(raw_path, " \n");  // Trim spaces & newline
-	printf("trimmed_path %s\n", trimmed_path);
+	// printf("raw_path %s\n", raw_path);
+	trimmed_path = ft_strtrim(raw_path, " \n");
+	// printf("trimmed_path %s\n", trimmed_path);
 	free(raw_path);
 	return (trimmed_path);
 }
@@ -301,28 +301,36 @@ bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid
 {
 	if (*valid_texture)
 	{
-		printf("Error: Duplicate texture assignment for %s\n", key);
+		// printf("Error: Duplicate texture assignment for %s\n", key);
 		return (false);
 	}
 	*texture_path = extract_texture_path(line, key);
-	printf("texture_path %s\n", *texture_path);
-	if (!*texture_path || **texture_path == '\0')
+	if (!*texture_path)
 	{
-		printf("Error: Invalid path for texture %s\n", key);
+		// printf("Error: Failed to extract texture path for %s\n", key);
+		return (false);
+	}
+	// printf("Extracted texture path for %s: %s\n", key, *texture_path);
+	if (**texture_path == '\0')
+	{
+		printf("Error: Extracted texture path for %s is empty.\n", key);
 		free(*texture_path);
 		*texture_path = NULL;
 		return (false);
 	}
 	if (!is_valid_texture_path(*texture_path))
 	{
+		printf("Error: Texture file for %s is invalid or does not exist: %s\n", key, *texture_path);
 		free(*texture_path);
 		*texture_path = NULL;
 		return (false);
 	}
+
 	*valid_texture = true;
-	printf("Successfully assigned texture: %s -> %s\n", key, *texture_path);
+	// printf("Successfully assigned texture: %s -> %s\n", key, *texture_path);
 	return (true);
 }
+
 
 void	set_default_values_textures(t_textures *textures)
 {
@@ -347,7 +355,6 @@ bool	detect_textures(char *filename, t_textures *textures)
 	set_default_values_textures(textures);
 	line = get_next_line(fd);
 	line_number = 0;
-
 	while (line != NULL)
 	{
 		if (assign_texture_path(line, "NO", &textures->no_texture, &textures->no_set) ||
