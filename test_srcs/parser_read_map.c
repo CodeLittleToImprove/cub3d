@@ -73,7 +73,7 @@ char	**create_grid(char *file_name, t_map *map)
 	map->max_height = count_height_and_free(file_name);
 	if(map->max_height == 0)
 		return (NULL);
-	printf("height : %ld\n\n", map->max_height);
+	// printf("height : %ld\n\n", map->max_height);
 	grid = malloc((map->max_height + 1) * sizeof(char *));
 	if (!grid)
 	{
@@ -88,9 +88,9 @@ char	**create_grid(char *file_name, t_map *map)
 		line = skip_empty_lines(fd, &empty_lines);
 		if (!line)
 			break;
-		printf("row[%ld] current processed line: %s\n", row, line);
+		// printf("row[%ld] current processed line: %s\n", row, line);
 		width = count_width(file_name, row + empty_lines, map);
-		printf("width : %ld\n\n", width);
+		// printf("width : %ld\n\n", width);
 		grid[row] = trim_space_and_copy(line, width);
 		free(line);
 		row++;
@@ -120,13 +120,13 @@ void	read_map_file(char *file_name, t_map *map)
 //	printf("map width :%d for height[%d]\n", strlen(map->grid[1]), 1);
 	detect_player_pos(map);
 	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
-	printf("player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
-	print_grid(map->grid);
+	// printf("player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
+	// print_grid(map->grid);
 	if (reached_boundary(map, map->player_y, map->player_x) == true)
 	{
 		printf("Map is open therefore invalid \n");
 	}
-	printf("\nafter flood fill\n");
-	print_grid(map->grid);
+	// printf("\nafter flood fill\n");
+	// print_grid(map->grid);
 //	print_grid_character(map->grid);
 }

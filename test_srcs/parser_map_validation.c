@@ -41,10 +41,10 @@ bool	reached_boundary(t_map *map, size_t y, size_t x)
 		return (true);
 	if (map->grid[y][x] == '1' || map->grid[y][x] == 'V')
 	{
-		if (map->grid[y][x] == '1' )
-			printf("Encountered a wall at (y = %ld, x = %ld)\n", y, x);
-		if (map->grid[y][x] == 'V' )
-			printf("Already visited (y = %ld, x = %ld)\n", y, x);
+		// if (map->grid[y][x] == '1' )
+		// 	printf("Encountered a wall at (y = %ld, x = %ld)\n", y, x);
+		// if (map->grid[y][x] == 'V' )
+		// 	printf("Already visited (y = %ld, x = %ld)\n", y, x);
 		return (false);
 	}
 	map->grid[y][x] = 'V';
@@ -93,7 +93,7 @@ void	detect_player_pos(t_map *map)
 				map->player_y = column;
 				map->player_dir = map->grid[column][row];
 				// printf("Player pos detected at x=%ld, y=%ld\n", map->player_x, map->player_y);
-				printf("Player dir %c\n", map->player_dir);
+				// printf("Player dir %c\n", map->player_dir);
 				return ;
 			}
 			row++;

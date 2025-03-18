@@ -4,7 +4,7 @@ bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 {
 	if (!*has_map_started && is_valid_map_line(line))
 	{
-		printf("DEBUG: First map line detected: %s\n", line);
+		// printf("DEBUG: First map line detected: %s\n", line);
 		*has_map_started = true;
 		*is_valid_start = is_valid_start_or_end_line(line);
 	}
@@ -33,7 +33,7 @@ int	process_map(int fd_in, int fd_out, t_map *map)
 	is_valid_start = false;
 	is_valid_end = false;
 	set_default_values_map(map);
-	printf("before increase map end line %ld\n", map->map_end_line);
+	// printf("before increase map end line %ld\n", map->map_end_line);
 	while (line != NULL)
 	{
 		if (!detect_map_start(line, &has_map_started, &is_valid_start))
@@ -55,8 +55,8 @@ int	process_map(int fd_in, int fd_out, t_map *map)
 		is_valid_end = true;
 	if (has_map_started && is_valid_start && is_valid_end)
 	{
-		printf("after increase map end line %ld\n", map->map_end_line); // it's + 1 after the last line
-		printf("map contains properly start and ending\n");
+		// printf("after increase map end line %ld\n", map->map_end_line); // it's + 1 after the last line
+		// printf("map contains properly start and ending\n");
 		return (0);
 	}
 	return (-1);

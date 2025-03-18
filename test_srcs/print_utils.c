@@ -5,7 +5,7 @@ void	print_colors(const t_colors *colors)
 	printf("Floor RGB: [%d, %d, %d]\n",
 		colors->rgb_floor[0], colors->rgb_floor[1], colors->rgb_floor[2]);
 
-	if (colors->has_floor)
+	if (colors->has_floor) // not set
 		printf("Has Floor: true\n");
 	else
 		printf("Has Floor: false\n");
@@ -13,7 +13,7 @@ void	print_colors(const t_colors *colors)
 	printf("Ceiling RGB: [%d, %d, %d]\n",
 		colors->rgb_ceiling[0], colors->rgb_ceiling[1], colors->rgb_ceiling[2]);
 
-	if (colors->has_ceiling)
+	if (colors->has_ceiling) // not set
 		printf("Has Ceiling: true\n");
 	else
 		printf("Has Ceiling: false\n");

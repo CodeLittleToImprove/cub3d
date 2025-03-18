@@ -41,7 +41,7 @@ bool	process_texture_line(char *line, size_t line_number, t_textures *textures)
 		assign_texture_path(line, "WE", &textures->we_texture, &textures->we_set) ||
 		assign_texture_path(line, "EA", &textures->ea_texture, &textures->ea_set))
 	{
-		printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
+		// printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
 		return (true);
 	}
 	return (false);
@@ -67,8 +67,8 @@ bool	detect_textures(char *filename, t_textures *textures)
 			return (false);
 		}
 		process_texture_line(line, line_number, textures);
-		printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
-		textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
+		// printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
+		// textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);
 		if (textures->no_set && textures->so_set && textures->we_set && textures->ea_set)
 		{
@@ -79,7 +79,7 @@ bool	detect_textures(char *filename, t_textures *textures)
 		line_number++;
 	}
 	close(fd);
-	printf("FINAL DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
-		textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
+	// printf("FINAL DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
+	// 	textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 	return (textures->no_set && textures->so_set && textures->we_set && textures->ea_set);
 }

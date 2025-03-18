@@ -49,17 +49,17 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 {
 	if (!(*found_flag) && ft_strchr(line, type))
 	{
-		if (type == 'F')
-			printf("Detected potential floor color in file\n");
-		else if (type == 'C')
-			printf("Detected potential ceiling color in file\n");
+		// if (type == 'F')
+		// 	printf("Detected potential floor color in file\n");
+		// else if (type == 'C')
+		// 	printf("Detected potential ceiling color in file\n");
 
 		if (parse_color(line, colors, type))
 		{
-			if (type == 'F')
-				printf("Floor color successfully extracted\n");
-			else if (type == 'C')
-				printf("Ceiling color successfully extracted\n");
+			// if (type == 'F')
+			// 	printf("Floor color successfully extracted\n");
+			// else if (type == 'C')
+			// 	printf("Ceiling color successfully extracted\n");
 			*found_flag = true;
 			return (true);
 		}
@@ -95,7 +95,7 @@ bool	detect_color(const char *filename, t_colors *colors)
 			close(fd);
 			return (false);
 		}
-		if (check_and_parse_color(line, colors, 'F', &found_floor) ||
+		if (check_and_parse_color(line, colors, 'F', &found_floor) || // rewrite this to use struct bool?
 				check_and_parse_color(line, colors, 'C', &found_ceiling))
 		{
 			if (!first_color_found)
