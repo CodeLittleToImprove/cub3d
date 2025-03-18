@@ -1,6 +1,6 @@
 #include "../includes/parser.h"
 
-bool is_valid_map_line(const char *line)
+bool	is_valid_map_line(const char *line)
 {
 	size_t	i;
 
@@ -48,7 +48,6 @@ bool	reached_boundary(t_map *map, size_t y, size_t x)
 		return (false);
 	}
 	map->grid[y][x] = 'V';
-
 	if (reached_boundary(map, y + 1, x)) // Down
 	{
 		printf("flood_filled moved down \n");
@@ -72,63 +71,33 @@ bool	reached_boundary(t_map *map, size_t y, size_t x)
 	return (false);
 }
 
-bool	is_valid_char(char c)
+void	detect_player_pos(t_map *map)
 {
-	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
-}
+	size_t	column;
+	size_t	max_height;
+	size_t	row;
 
-bool	has_valid_characters_only(char *file_name)
-{
-	int		fd;
-	bool	file_is_valid;
-	char	c;
-	size_t	player_count;
-
-	fd = open(file_name, O_RDONLY, 0);
-	file_is_valid = true;
-	player_count = 0;
-	if (fd <= 0)
-		return(perror("file does not exist or no permission"),false);
-	while (read(fd, &c, 1) == 1)
+	column = 0;
+	max_height = map->max_height;
+	while (column < max_height)
 	{
-		if (c == '\n')
-			continue;
-		if (!is_valid_char(c))
+		row = 0;
+		while (map->grid[column][row]!= '\0')
 		{
-			file_is_valid = false;
-			printf("Invalid character found: '%c'\n", c); // remove in final parser
-			break;
+			if (map->grid[column][row] == 'N' ||
+			map->grid[column][row] == 'S' ||
+			map->grid[column][row] == 'E' ||
+			map->grid[column][row] == 'W')
+			{
+				map->player_x = row;
+				map->player_y = column;
+				map->player_dir = map->grid[column][row];
+				// printf("Player pos detected at x=%ld, y=%ld\n", map->player_x, map->player_y);
+				printf("Player dir %c\n", map->player_dir);
+				return ;
+			}
+			row++;
 		}
-		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-			player_count++;
-		if (player_count > 1)
-		{
-			file_is_valid = false;
-			printf("Error: Multiple player start positions found.\n");
-			break;
-		}
+		column++;
 	}
-	if (player_count == 0)
-		{
-			file_is_valid = false;
-			printf("Error: No player start position found.\n");
-		}
-	close(fd);
-	return (file_is_valid);
-}
-
-bool	write_and_track_last_line(int fd_out, const char *line, char **last_map_line)
-{
-	write(fd_out, line, ft_strlen(line));
-
-	// If the line doesn't end with a newline, it's the last map line
-	if (line[ft_strlen(line) - 1] != '\n')
-	{
-		*last_map_line = malloc(ft_strlen(line) + 1);
-		if (!*last_map_line)
-			return (false);
-		ft_strlcpy(*last_map_line, line, ft_strlen(line) + 1);
-		printf("DEBUG: This should be the last line: %s\n", *last_map_line);
-	}
-	return (true);
 }

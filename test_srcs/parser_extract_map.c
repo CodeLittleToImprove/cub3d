@@ -1,13 +1,21 @@
 #include "../includes/parser.h"
 
-void	set_default_values_map(t_map *map)
+bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 {
-	map->max_height = 0;
-	map->max_width = 0;
-	map->player_x = -1;
-	map->player_y = -1;
-	map->player_dir = '\0';
-	map->map_end_line = 0;
+	if (!*has_map_started && is_valid_map_line(line))
+	{
+		printf("DEBUG: First map line detected: %s\n", line);
+		*has_map_started = true;
+		*is_valid_start = is_valid_start_or_end_line(line);
+	}
+
+	// Detect an empty line after the map starts
+	if (*has_map_started && is_empty_line(line))
+	{
+		printf("Detected empty line after map start.\n");
+		return (false);
+	}
+	return (true);
 }
 
 int	process_map(int fd_in, int fd_out, t_map *map)
@@ -69,41 +77,5 @@ bool	extract_map(const char *filename, t_map *map)
 	}
 	close(fd_in);
 	close(fd_out);
-	return (true);
-}
-
-bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
-{
-	if (!*has_map_started && is_valid_map_line(line))
-	{
-		printf("DEBUG: First map line detected: %s\n", line);
-		*has_map_started = true;
-		*is_valid_start = is_valid_start_or_end_line(line);
-	}
-
-	// Detect an empty line after the map starts
-	if (*has_map_started && is_empty_line(line))
-	{
-		printf("Detected empty line after map start.\n");
-		return (false);
-	}
-	return (true);
-}
-
-bool	is_valid_start_or_end_line(const char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i] == ' ')
-		i++;
-	if (line[i] == '\0' || line[i] == '\n')
-		return (false);
-	while (line[i] != '\0' && line[i] != '\n')
-	{
-		if (line[i] != '1' && line[i] != ' ')
-			return (false);
-		i++;
-	}
 	return (true);
 }

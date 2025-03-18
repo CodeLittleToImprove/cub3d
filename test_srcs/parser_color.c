@@ -1,62 +1,5 @@
 #include "../includes/parser.h"
 
-bool	is_valid_rgb(char *str)
-{
-	int	num;
-	size_t	i;
-
-	num = 0;
-	i = 0;
-	i = skip_leading_chars(str, i, " ");
-	// printf("str:%s\n", str);
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		num = num * 10 + (str[i] - '0');
-		if (num > 255)
-		{
-			printf("num %d is too large\n", num);
-			return (false);
-		}
-		i++;
-	}
-	// printf("pre skip in valid rgb i:%d\n", i);
-	i = skip_leading_chars(str, i, " ");
-	// printf("in valid rgb i:%d\n", i);
-	if (str[i] == '\0' || str[i] == '\n')
-		return (true);
-	return (false);
-}
-
-char	*ft_strtok_r(char *str, char *delim, char **saveptr)
-{
-	char	*token_start;
-
-	if (str)
-		*saveptr = str;
-	if (!*saveptr)
-		return (NULL);
-	while (**saveptr && strchr(delim, **saveptr))
-		(*saveptr)++;
-	if (!**saveptr)
-		return (NULL);
-	token_start = *saveptr;
-	while (**saveptr && !strchr(delim, **saveptr))
-		(*saveptr)++;
-	if (**saveptr)
-	{
-		**saveptr = '\0';
-		(*saveptr)++;
-	}
-	return (token_start);
-}
-
-size_t	skip_leading_chars(char *str, size_t i, char *skip_chars)
-{
-	while (str[i] && ft_strchr(skip_chars, str[i]))
-		i++;
-	return (i);
-}
-
 static int	*get_color_array(t_colors *colors, char type)
 {
 	if (type == 'F')
@@ -121,5 +64,52 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 			return (true);
 		}
 	}
+	return (false);
+}
+
+bool	detect_color(const char *filename, t_colors *colors)
+{
+	int		fd;
+	char	*line;
+	bool	found_floor;
+	bool	found_ceiling;
+	bool	first_color_found;
+	size_t	line_number;
+
+	fd = open_input_file(filename);
+	if (fd < 0)
+		return (false);
+	line = get_next_line(fd);
+	// printf("line in detect color:%s\n", line);
+	set_default_values_color(colors);
+	found_floor = false;
+	found_ceiling = false;
+	first_color_found = false;
+	line_number = 0;
+	while (line!= NULL)
+	{
+		if (first_color_found && is_invalid_color_line(line))
+		{
+			printf("Error: Found non-color line within color definitions at line %ld: %s\n", line_number, line);
+			free(line);
+			close(fd);
+			return (false);
+		}
+		if (check_and_parse_color(line, colors, 'F', &found_floor) ||
+				check_and_parse_color(line, colors, 'C', &found_ceiling))
+		{
+			if (!first_color_found)
+			{
+				colors->color_start_line = line_number;
+				first_color_found = true;
+			}
+		}
+		free(line);
+		if (found_floor && found_ceiling)
+			return (true);
+		line = get_next_line(fd);
+		line_number++;
+	}
+	close(fd);
 	return (false);
 }
