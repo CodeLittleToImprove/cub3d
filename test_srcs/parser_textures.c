@@ -61,7 +61,7 @@ bool	detect_textures(char *filename, t_textures *textures)
 		if (is_invalid_texture_line(line) &&
 			(textures->no_set || textures->so_set || textures->we_set || textures->ea_set))
 		{
-			printf("Error: Found non-texture line within texture definitions at line %ld: %s\n", line_number, line);
+			printf("Error: Found non-texture line within texture definitions at line %ld: %s\n", line_number, line); //buggy when something is writtten in between of color
 			free(line);
 			close(fd);
 			return (false);

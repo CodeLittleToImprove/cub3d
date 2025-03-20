@@ -71,9 +71,7 @@ bool	is_invalid_color_line(char *line)
 {
 	if (is_empty_line(line))
 		return (false);
-
 	if (!(ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0))
 		return (true);
-
 	return (false);
 }

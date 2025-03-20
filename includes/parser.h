@@ -93,6 +93,7 @@ void	read_map_file(char *file_name, t_map *map);
 //fd_utils.c
 int		open_input_file(const char *filename);
 int		open_output_file(const char *outputfilename);
+bool	handle_invalid_color_line(char *line, size_t line_number, int fd, bool first_color_found);
 
 //print_utils.c
 void	print_colors(const t_colors *colors);

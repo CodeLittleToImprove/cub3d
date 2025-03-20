@@ -67,45 +67,36 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 	return (false);
 }
 
+static void	mark_first_color_line(t_colors *colors, bool *first_color_found, size_t line_number)
+{
+	if (!(*first_color_found))
+	{
+		colors->color_start_line = line_number;
+		*first_color_found = true;
+	}
+}
+
 bool	detect_color(const char *filename, t_colors *colors)
 {
 	int		fd;
 	char	*line;
-	bool	found_floor;
-	bool	found_ceiling;
 	bool	first_color_found;
 	size_t	line_number;
 
 	fd = open_input_file(filename);
-	if (fd < 0)
-		return (false);
 	line = get_next_line(fd);
-	// printf("line in detect color:%s\n", line);
 	set_default_values_color(colors);
-	found_floor = false;
-	found_ceiling = false;
 	first_color_found = false;
 	line_number = 0;
 	while (line!= NULL)
 	{
-		if (first_color_found && is_invalid_color_line(line))
-		{
-			printf("Error: Found non-color line within color definitions at line %ld: %s\n", line_number, line);
-			free(line);
-			close(fd);
+		if (!handle_invalid_color_line(line, line_number, fd, first_color_found))
 			return (false);
-		}
-		if (check_and_parse_color(line, colors, 'F', &found_floor) || // rewrite this to use struct bool?
-				check_and_parse_color(line, colors, 'C', &found_ceiling))
-		{
-			if (!first_color_found)
-			{
-				colors->color_start_line = line_number;
-				first_color_found = true;
-			}
-		}
+		if (check_and_parse_color(line, colors, 'F', &colors->has_floor) ||
+				check_and_parse_color(line, colors, 'C', &colors->has_ceiling))
+			mark_first_color_line(colors, &first_color_found, line_number);
 		free(line);
-		if (found_floor && found_ceiling)
+		if (colors->has_floor && colors->has_ceiling)
 			return (true);
 		line = get_next_line(fd);
 		line_number++;
