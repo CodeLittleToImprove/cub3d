@@ -2,16 +2,19 @@
 
 bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 {
+	// printf("DEBUG: detect map start line for debug: %s\n", line);
 	if (!*has_map_started && is_valid_map_line(line))
 	{
-		// printf("DEBUG: First map line detected: %s\n", line);
+		printf("DEBUG: First map line detected: %s\n", line);
 		*has_map_started = true;
 		*is_valid_start = is_valid_start_or_end_line(line);
+		// printf("DEBUG: is valid start: %d\n", *is_valid_start);
 	}
 
 	// Detect an empty line after the map starts
 	if (*has_map_started && is_empty_line(line))
 	{
+		printf("Map starts with empty line debug printf %s\n", line);
 		printf("Detected empty line after map start.\n");
 		return (false);
 	}
@@ -36,6 +39,7 @@ int	process_map(int fd_in, int fd_out, t_map *map)
 	// printf("before increase map end line %ld\n", map->map_end_line);
 	while (line != NULL)
 	{
+		printf("get next line in process map %s\n", line);
 		if (!detect_map_start(line, &has_map_started, &is_valid_start))
 		{
 			return(free(line), -1);
