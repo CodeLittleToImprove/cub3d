@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/13 18:16:48 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:44:12 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define WIDTH TILE * TILES_X * 2
 # define HEIGHT TILE * TILES_Y
 # define SPEED 4
-# define CAM_SPEED 0.03
+# define CAM_SPEED 0.05
 # define DEGREE 0.0174533
 # define PI 3.14159265359
 # define FOV 60
@@ -29,6 +29,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
+# include <sys/time.h>
 # include "../lib/minilibx/mlx.h"
 # include "../lib/libft/libft.h"
 # include "../lib/libft/gnl/get_next_line_bonus.h"
@@ -81,6 +82,7 @@ typedef	struct s_data
 	double		dirY;
 	double		camX;
 	double		camY;
+	int			**textures;
 	t_image	*image;
 }	t_data;
 
@@ -94,5 +96,6 @@ void	render_line(t_data *data, int x0, int y0, int x1, int y1, int color);
 int		render(t_data *data);
 double	get_angle(double angle);
 void	px_put(t_image *img, int x, int y, int color);
+void	init_textures(t_data *data);
 
 #endif

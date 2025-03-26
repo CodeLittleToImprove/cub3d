@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/15 14:03:30 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/03/15 18:40:47 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ double	get_dist(t_data *data, int end, double *x, double *y)
 	return (1000000);
 }
 
-void	set_horizontal(t_data *data, double tan)
+int	set_horizontal(t_data *data, double tan)
 {
 	if (data->rayA > PI)
 	{
@@ -60,6 +60,7 @@ void	set_horizontal(t_data *data, double tan)
 			* tan + (int)data->playerX;
 		data->offsetY = -TILE;
 		data->offsetX = TILE * tan;
+		return (1);
 	}
 	if (data->rayA < PI)
 	{
@@ -69,9 +70,10 @@ void	set_horizontal(t_data *data, double tan)
 		data->offsetY = TILE;
 		data->offsetX = -TILE * tan;
 	}
+	return (0);
 }
 
-void	set_vertical(t_data *data, double tan)
+int	set_vertical(t_data *data, double tan)
 {
 	if (data->rayA > (PI / 2) && data->rayA < ((3 * PI) / 2))
 	{
@@ -80,6 +82,7 @@ void	set_vertical(t_data *data, double tan)
 			* tan + (int)data->playerY;
 		data->offsetX = -TILE;
 		data->offsetY = TILE * tan;
+		return (1);
 	}
 	if (data->rayA < (PI / 2) || data->rayA > ((3 * PI) / 2))
 	{
@@ -89,20 +92,50 @@ void	set_vertical(t_data *data, double tan)
 		data->offsetX = TILE;
 		data->offsetY = -TILE * tan;
 	}
+	return (0);
 }
 
-int	draw_3d(t_data *data, int x, double dis, int color)
+int	draw_3d(t_data *data, int x, double dis)
 {
+	double	tex_x;
+	double	tex_y;
+	double	tex_y_step;
 	double	wall_height;
 	double	offset;
+	int		y;
+	int		i;
 
+	if (data->rayA > (PI / 4) && data->rayA < ((3 * PI) / 4))
+		i = 1;
+	else if (data->rayA > ((3 * PI) / 4) && data->rayA < ((5 * PI) / 4))
+		i = 3;
+	else if (data->rayA > ((5 * PI) / 4) && data->rayA < ((7 * PI) / 4))
+		i = 2;
+	else
+		i = 0;
 	wall_height = (TILE * HEIGHT) / dis;
 	offset = (HEIGHT / 2) - (wall_height / 2);
-	render_line(data, x + (WIDTH / 2), offset, x + (WIDTH / 2), wall_height + offset, color);
+	tex_y_step = TILE / wall_height;
+	y = 0;
+	tex_y = 0;
+	tex_x = (int)(data->rayX) % TILE;
+	while (y < wall_height)
+	{
+		px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[i][(int)tex_y * TILE + (int)tex_x]);
+		y++;
+		tex_y += tex_y_step;
+	}
 	x++;
 	while (x % ((WIDTH / 2) / FOV) != 0)
 	{
-		render_line(data, x + (WIDTH / 2), offset, x + (WIDTH / 2), wall_height + offset, color);
+		y = 0;
+		tex_y = 0;
+		while (y < wall_height)
+		{
+			px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[i][(int)tex_y * TILE + (int)tex_x]);
+			y++;
+			tex_y += tex_y_step;
+		}
 		x++;
 	}
 	return (x);
@@ -146,7 +179,7 @@ void	draw_rays(t_data *data)
 		}
 		render_line(data, (int)data->playerX, (int)data->playerY,
 			(int)data->rayX, (int)data->rayY, color);
-		x = draw_3d(data, x, dis, color);
+		x = draw_3d(data, x, dis);
 		data->rayA = get_angle(data->rayA + DEGREE);
 		i++;
 	}

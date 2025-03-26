@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/05 19:49:47 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:44:26 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,5 @@ void	data_init(t_data *data, t_image *img)
 	data->camX = 0;
 	data->camY = 0.66;
 	data->image = img;
+	init_textures(data);
 }
