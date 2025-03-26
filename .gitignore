@@ -42,3 +42,4 @@ rules.ninja
 *.swp
 .DS_Store
 Thumbs.db
+cub3D

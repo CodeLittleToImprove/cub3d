@@ -29,13 +29,26 @@ add_custom_target(build_minilibx ALL DEPENDS ${MLX_DIR}/libmlx_Linux.a)
 
 # Add the main executable
 add_executable(cub3d_own_tests
+        srcs/main.c
         srcs/execution/init.c
         srcs/execution/key_inputs.c
-#        srcs/execution/main.c
         srcs/execution/raycasting.c
         srcs/execution/render.c
+        srcs/execution/textures.c
         srcs/execution/utils.c
-        includes/cub3d.h)
+        srcs/parser/fd_utils.c
+        srcs/parser/parser_utils.c
+        srcs/parser/parser_color.c
+        srcs/parser/parser_color_utils.c
+        srcs/parser/parser_extract_map.c
+        srcs/parser/parser_extract_map_utils.c
+        srcs/parser/parser_free_utils.c
+        srcs/parser/parser_map_validation.c
+        srcs/parser/parser_read_map.c
+        srcs/parser/parser_textures.c
+        srcs/parser/parser_textures_utils.c
+        srcs/parser/print_utils.c
+)
 
 # Ensure the executable depends on both libft and MiniLibX
 add_dependencies(cub3d_own_tests build_libft build_minilibx)
@@ -61,19 +74,19 @@ target_link_libraries(mlx_test PRIVATE
 )
 # Add the third executable: parser_only_test
 add_executable(parser_test
-        srcs/main.c
-        srcs/parser/parser_utils.c
-        srcs/parser/parser_map_validation.c
         srcs/parser/fd_utils.c
-        srcs/parser/parser_extract_map.c
+        srcs/parser/parser_utils.c
         srcs/parser/parser_color.c
-        srcs/parser/print_utils.c
+        srcs/parser/parser_color_utils.c
+        srcs/parser/parser_extract_map.c
+        srcs/parser/parser_extract_map_utils.c
+        srcs/parser/parser_free_utils.c
+        srcs/parser/parser_map_validation.c
+        srcs/parser/parser_read_map.c
+        srcs/parser/parser_test.c
         srcs/parser/parser_textures.c
         srcs/parser/parser_textures_utils.c
-        srcs/parser/parser_extract_map_utils.c
-        srcs/parser/parser_color_utils.c
-        srcs/parser/parser_free_utils.c
-        srcs/parser/parser_read_map.c)
+        srcs/parser/print_utils.c)
 
 # Ensure libft_only_test depends only on libft
 add_dependencies(parser_test build_libft)

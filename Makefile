@@ -6,7 +6,10 @@ MLXFLAGS = -L/usr/X11/lib -lX11 -lXext -lm #-O3
 
 SRCS_DIR = ./srcs/
 
-SRCS := $(wildcard $(SRCS_DIR)/**/*.c) $(wildcard $(SRCS_DIR)/*.c)
+# should be used in the final version
+#SRCS := $(wildcard $(SRCS_DIR)/**/*.c) $(wildcard $(SRCS_DIR)/*.c)
+
+SRCS := $(shell find $(SRCS_DIR) -type f -name "*.c" ! -name "parser_test.c")
 
 LIB_DIR = ./lib
 
@@ -17,6 +20,7 @@ MLXLIB_DIR = $(LIB_DIR)/minilibx
 MLXLIB = $(MLXLIB_DIR)/libmlx.a
 
 OBJS := $(patsubst %.c, %.o, $(SRCS))
+
 HEADERS = cub.h
 
 .PHONY: clean fclean re all valgrind
