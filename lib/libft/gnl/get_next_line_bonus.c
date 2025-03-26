@@ -15,28 +15,32 @@
 char	*remove_old_string_from_rest_buffer(char *rest_buf)
 {
 	char	*cleaned_restbuf;
-	size_t	char_index;
 	size_t	newline_pos;
-	size_t	past_new_line;
-	size_t	cleaned_buf_len;
+	size_t	i;
+	size_t	remaining_len;
 
-	char_index = 0;
 	newline_pos = find_newline_pos(rest_buf);
+	if (rest_buf[newline_pos] == '\n')
+		newline_pos++;
 	if (rest_buf[newline_pos] == '\0')
 	{
 		free(rest_buf);
 		return (NULL);
 	}
-	past_new_line = 1;
-	cleaned_buf_len = (ft_strlen(rest_buf)) - newline_pos;
-	cleaned_restbuf = ft_calloc_complete(cleaned_buf_len + 1, sizeof(char));
-	while (rest_buf[newline_pos + past_new_line])
+	remaining_len = ft_strlen(rest_buf) - newline_pos;
+	cleaned_restbuf = ft_calloc_complete(remaining_len + 1, sizeof(char));
+	if (!cleaned_restbuf)
 	{
-		cleaned_restbuf[char_index] = rest_buf[newline_pos + past_new_line];
-		char_index++;
-		past_new_line++;
+		free(rest_buf);
+		return (NULL);
 	}
-	cleaned_restbuf[char_index] = '\0';
+	i = 0;
+	while (rest_buf[newline_pos + i])
+	{
+		cleaned_restbuf[i] = rest_buf[newline_pos + i];
+		i++;
+	}
+	cleaned_restbuf[i] = '\0';
 	free(rest_buf);
 	return (cleaned_restbuf);
 }
@@ -44,27 +48,26 @@ char	*remove_old_string_from_rest_buffer(char *rest_buf)
 char	*extract_line_up_to_new_line(char *rest_buf)
 {
 	char		*line;
-	size_t		char_index;
-	size_t		offset;
+	size_t		newline_pos;
+	size_t		i;
+	size_t		line_len;
 
-	char_index = 0;
-	offset = 1;
 	if (rest_buf[0] == '\0')
 		return (NULL);
-	char_index = find_newline_pos(rest_buf);
-	if (rest_buf[char_index] == '\n')
-		offset = 2;
-	else
-		offset = 1;
-	line = ft_calloc_complete(char_index + offset, sizeof(char));
-	char_index = 0;
-	while (rest_buf[char_index] != '\n' && rest_buf[char_index])
+	newline_pos = find_newline_pos(rest_buf);
+	line_len = newline_pos;
+	if (rest_buf[newline_pos] == '\n')
+		line_len++;
+	line = ft_calloc_complete(line_len + 1, sizeof(char));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (i < line_len)
 	{
-		line[char_index] = rest_buf[char_index];
-		char_index++;
+		line[i] = rest_buf[i];
+		i++;
 	}
-	if (rest_buf[char_index] == '\n')
-		line[char_index++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 
@@ -95,11 +98,12 @@ char	*read_file(int fd, char *line_read)
 {
 	char		*read_buffer;
 	ssize_t		bytes_read;
+	char		*temp;
 
 	line_read = initialize_line_read_if_null(line_read);
 	if (!line_read)
 		return (NULL);
-	read_buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
+	read_buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!read_buffer)
 		return (NULL);
 	bytes_read = 1;
@@ -112,13 +116,20 @@ char	*read_file(int fd, char *line_read)
 			return (NULL);
 		}
 		read_buffer[bytes_read] = '\0';
-		line_read = ft_strjoin_and_free(line_read, read_buffer);
-		if (ft_strchr(read_buffer, '\n'))
+		temp = ft_strjoin_and_free(line_read, read_buffer);
+		if (!temp)
+		{
+			free(read_buffer);
+			return (NULL);
+		}
+		line_read = temp;
+		if (ft_strchr(line_read, '\n'))
 			break ;
 	}
 	free(read_buffer);
 	return (line_read);
 }
+
 // line_read holds the read content of a file by line line
 // line_read holds the read content until eof or the first \n
 // is encountered but it can also include a string containing \n 
@@ -131,12 +142,12 @@ char	*get_next_line(int fd)
 	static char	*rest_buf[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		if (rest_buf[fd])
+		if (fd >= 0 && fd < 1024 && rest_buf[fd])
 		{
 			free(rest_buf[fd]);
-			rest_buf[fd] = 0;
+			rest_buf[fd] = NULL;
 		}
 		return (NULL);
 	}
@@ -144,6 +155,12 @@ char	*get_next_line(int fd)
 	if (!rest_buf[fd])
 		return (NULL);
 	line = extract_line_up_to_new_line(rest_buf[fd]);
+	if (!line)
+	{
+		free(rest_buf[fd]);
+		rest_buf[fd] = NULL;
+		return (NULL);
+	}
 	rest_buf[fd] = remove_old_string_from_rest_buffer(rest_buf[fd]);
 	return (line);
 }

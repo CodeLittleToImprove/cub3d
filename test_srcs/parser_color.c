@@ -1,62 +1,5 @@
 #include "../includes/parser.h"
 
-bool	is_valid_rgb(char *str)
-{
-	int	num;
-	size_t	i;
-
-	num = 0;
-	i = 0;
-	i = skip_leading_chars(str, i, " ");
-	// printf("str:%s\n", str);
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		num = num * 10 + (str[i] - '0');
-		if (num > 255)
-		{
-			printf("num %d is too large\n", num);
-			return (false);
-		}
-		i++;
-	}
-	// printf("pre skip in valid rgb i:%d\n", i);
-	i = skip_leading_chars(str, i, " ");
-	// printf("in valid rgb i:%d\n", i);
-	if (str[i] == '\0' || str[i] == '\n')
-		return (true);
-	return (false);
-}
-
-char	*ft_strtok_r(char *str, char *delim, char **saveptr)
-{
-	char	*token_start;
-
-	if (str)
-		*saveptr = str;
-	if (!*saveptr)
-		return (NULL);
-	while (**saveptr && strchr(delim, **saveptr))
-		(*saveptr)++;
-	if (!**saveptr)
-		return (NULL);
-	token_start = *saveptr;
-	while (**saveptr && !strchr(delim, **saveptr))
-		(*saveptr)++;
-	if (**saveptr)
-	{
-		**saveptr = '\0';
-		(*saveptr)++;
-	}
-	return (token_start);
-}
-
-size_t	skip_leading_chars(char *str, size_t i, char *skip_chars)
-{
-	while (str[i] && ft_strchr(skip_chars, str[i]))
-		i++;
-	return (i);
-}
-
 static int	*get_color_array(t_colors *colors, char type)
 {
 	if (type == 'F')
@@ -78,6 +21,8 @@ bool	parse_color(char *line, t_colors *colors, char type)
 	j = 0;
 	i = skip_leading_chars(line, i, &type);
 	color_array = get_color_array(colors, type);
+	if (color_array == NULL)
+		return (false);
 	// printf("parse color line %s\n", line);
 	// printf("first character of line %c\n", line[i]);
 	// printf("start_color_pos: %ld\n", start_color_pos);
@@ -104,21 +49,58 @@ bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_
 {
 	if (!(*found_flag) && ft_strchr(line, type))
 	{
-		if (type == 'F')
-			printf("Detected potential floor color in file\n");
-		else if (type == 'C')
-			printf("Detected potential ceiling color in file\n");
+		// if (type == 'F')
+		// 	printf("Detected potential floor color in file\n");
+		// else if (type == 'C')
+		// 	printf("Detected potential ceiling color in file\n");
 
 		if (parse_color(line, colors, type))
 		{
-			if (type == 'F')
-				printf("Floor color successfully extracted\n");
-			else if (type == 'C')
-				printf("Ceiling color successfully extracted\n");
-
+			// if (type == 'F')
+			// 	printf("Floor color successfully extracted\n");
+			// else if (type == 'C')
+			// 	printf("Ceiling color successfully extracted\n");
 			*found_flag = true;
-			return true;
+			return (true);
 		}
 	}
-	return false;
+	return (false);
+}
+
+static void	mark_first_color_line(t_colors *colors, bool *first_color_found, size_t line_number)
+{
+	if (!(*first_color_found))
+	{
+		colors->color_start_line = line_number;
+		*first_color_found = true;
+	}
+}
+
+bool	detect_color(const char *filename, t_colors *colors)
+{
+	int		fd;
+	char	*line;
+	bool	first_color_found;
+	size_t	line_number;
+
+	fd = open_input_file(filename);
+	line = get_next_line(fd);
+	set_default_values_color(colors);
+	first_color_found = false;
+	line_number = 0;
+	while (line!= NULL)
+	{
+		if (!handle_invalid_color_line(line, line_number, fd, first_color_found))
+			return (false);
+		if (check_and_parse_color(line, colors, 'F', &colors->has_floor) ||
+				check_and_parse_color(line, colors, 'C', &colors->has_ceiling))
+			mark_first_color_line(colors, &first_color_found, line_number);
+		free(line);
+		if (colors->has_floor && colors->has_ceiling)
+			return (true);
+		line = get_next_line(fd);
+		line_number++;
+	}
+	close(fd);
+	return (false);
 }

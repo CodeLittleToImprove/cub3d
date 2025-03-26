@@ -1,10 +1,12 @@
+F    255, 10, 0
+
+C 225,30,0
+
 SO example_textures/so_tex.xpm
 WE example_textures/we_tex.xpm
 NO example_textures/no_tex.xpm
 EA example_textures/ea_tex.xpm
 
-F    255, 10, 0
-C 225,30,0
 
 111111
 1    1
