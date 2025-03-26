@@ -61,7 +61,7 @@ target_link_libraries(mlx_test PRIVATE
 )
 # Add the third executable: parser_only_test
 add_executable(parser_test
-        srcs/parser/main.c
+        srcs/main.c
         srcs/parser/parser_utils.c
         srcs/parser/parser_map_validation.c
         srcs/parser/fd_utils.c

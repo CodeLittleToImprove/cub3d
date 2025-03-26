@@ -1,5 +1,5 @@
-#include "../../includes/parser.h"
-#include "../../includes/cub3d.h"
+#include "../includes/parser.h"
+#include "../includes/cub3d.h"
 
 int	close_mlx(t_data *data)
 {
