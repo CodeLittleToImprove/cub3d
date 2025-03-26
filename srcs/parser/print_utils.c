@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 void	print_colors(const t_colors *colors)
 {

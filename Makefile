@@ -1,12 +1,12 @@
 NAME = cub3D
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+#CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 MLXFLAGS = -L/usr/X11/lib -lX11 -lXext -lm #-O3
 
 SRCS_DIR = ./srcs/
 
-SRCS := $(wildcard $(SRCS_DIR)*.c)
+SRCS := $(wildcard $(SRCS_DIR)/**/*.c) $(wildcard $(SRCS_DIR)/*.c)
 
 LIB_DIR = ./lib
 
@@ -16,7 +16,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLXLIB_DIR = $(LIB_DIR)/minilibx
 MLXLIB = $(MLXLIB_DIR)/libmlx.a
 
-OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
+OBJS := $(patsubst %.c, %.o, $(SRCS))
 HEADERS = cub.h
 
 .PHONY: clean fclean re all valgrind

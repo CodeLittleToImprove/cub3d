@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 static int	*get_color_array(t_colors *colors, char type)
 {

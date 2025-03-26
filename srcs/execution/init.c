@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	map_init(t_data *data)
 {
@@ -45,15 +45,20 @@ void	map_init(t_data *data)
 	}
 }
 
-void	data_init(t_data *data, t_image *img)
+void	data_init(t_data *data, t_map *map, t_image *img)
 {
-	map_init(data);
+	// map_init(data);
+	data->map = map->grid;
 	data->key_W = 0;
 	data->key_A = 0;
 	data->key_S = 0;
 	data->key_D = 0;
 	data->key_left = 0;
 	data->key_right = 0;
+	data->playerX = (double)map->player_x * TILE;
+	data->playerY = (double)map->player_y * TILE;
+	printf("player x pos = %ff\n", data->playerX);
+	printf("player y pos = %ff\n", data->playerY);
 	data->playerA = 1;
 	data->playerDX = 0;
 	data->playerDY = 0;

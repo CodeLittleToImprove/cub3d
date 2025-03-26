@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 double	calc_dist(t_data *data, double x0, double y0, double x1, double y1)
 {

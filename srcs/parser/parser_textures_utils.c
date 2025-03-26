@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 bool	is_invalid_texture_line(char *line)
 {

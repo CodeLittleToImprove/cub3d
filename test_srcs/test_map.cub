@@ -2,10 +2,10 @@ F    255, 10, 0
 
 C 225,30,0
 
-SO example_textures/so_tex.xpm
-WE example_textures/we_tex.xpm
-NO example_textures/no_tex.xpm
-EA example_textures/ea_tex.xpm
+SO textures/wall_SO.xpm
+WE textures/wall_WE.xpm
+NO textures/wall_NO.xpm
+EA textures/wall_EA.xpm
 
 
 111111
@@ -13,5 +13,5 @@ EA example_textures/ea_tex.xpm
 1    1
 100101
 101011
-1100N11
+1100N1
 111111

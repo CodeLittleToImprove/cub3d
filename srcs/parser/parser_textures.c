@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid_texture)
 {

@@ -14,8 +14,8 @@
 # define CUB3D_H
 
 # define TILE 64
-# define TILES_X 15
-# define TILES_Y 15
+# define TILES_X 6
+# define TILES_Y 7
 # define WIDTH TILE * TILES_X * 2
 # define HEIGHT TILE * TILES_Y
 # define SPEED 4
@@ -33,6 +33,7 @@
 # include "../lib/minilibx/mlx.h"
 # include "../lib/libft/libft.h"
 # include "../lib/libft/gnl/get_next_line_bonus.h"
+# include  "parser.h"
 
 typedef enum e_dir
 {
@@ -55,7 +56,7 @@ typedef	struct s_data
 {
 	void		*mlx;
 	void		*win;
-	char		map[TILES_X][TILES_Y];
+	char		**map;
 	double		playerX;
 	double		playerY;
 	double		playerA;
@@ -86,7 +87,7 @@ typedef	struct s_data
 	t_image	*image;
 }	t_data;
 
-void	data_init(t_data *data, t_image *img);
+void	data_init(t_data *data, t_map *map, t_image *img);
 int		close_mlx(t_data *data);
 int		key_press(int keycode, t_data *data);
 int		key_release(int keycode, t_data *data);

@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 size_t	count_width(char *file_name, size_t row, t_map *map)
 {

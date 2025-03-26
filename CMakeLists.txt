@@ -29,12 +29,12 @@ add_custom_target(build_minilibx ALL DEPENDS ${MLX_DIR}/libmlx_Linux.a)
 
 # Add the main executable
 add_executable(cub3d_own_tests
-        srcs/init.c
-        srcs/key_inputs.c
-        srcs/main.c
-        srcs/raycasting.c
-        srcs/render.c
-        srcs/utils.c
+        srcs/execution/init.c
+        srcs/execution/key_inputs.c
+#        srcs/execution/main.c
+        srcs/execution/raycasting.c
+        srcs/execution/render.c
+        srcs/execution/utils.c
         includes/cub3d.h)
 
 # Ensure the executable depends on both libft and MiniLibX
@@ -61,19 +61,19 @@ target_link_libraries(mlx_test PRIVATE
 )
 # Add the third executable: parser_only_test
 add_executable(parser_test
-        test_srcs/parser_test.c
-        test_srcs/parser_utils.c
-        test_srcs/parser_map_validation.c
-        test_srcs/fd_utils.c
-        test_srcs/parser_extract_map.c
-        test_srcs/parser_color.c
-        test_srcs/print_utils.c
-        test_srcs/parser_textures.c
-        test_srcs/parser_textures_utils.c
-        test_srcs/parser_extract_map_utils.c
-        test_srcs/parser_color_utils.c
-        test_srcs/parser_free_utils.c
-        test_srcs/parser_read_map.c)
+        srcs/parser/main.c
+        srcs/parser/parser_utils.c
+        srcs/parser/parser_map_validation.c
+        srcs/parser/fd_utils.c
+        srcs/parser/parser_extract_map.c
+        srcs/parser/parser_color.c
+        srcs/parser/print_utils.c
+        srcs/parser/parser_textures.c
+        srcs/parser/parser_textures_utils.c
+        srcs/parser/parser_extract_map_utils.c
+        srcs/parser/parser_color_utils.c
+        srcs/parser/parser_free_utils.c
+        srcs/parser/parser_read_map.c)
 
 # Ensure libft_only_test depends only on libft
 add_dependencies(parser_test build_libft)
