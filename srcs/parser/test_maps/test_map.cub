@@ -1,0 +1,16 @@
+F    255, 10, 0
+
+C 225,30,0
+
+SO example_textures/wall_SO.xpm
+WE example_textures/wall_WE.xpm
+NO example_textures/wall_NO.xpm
+EA example_textures/wall_EA.xpm
+
+111111
+1    1
+1    1
+100101
+101011
+1100N1
+111111

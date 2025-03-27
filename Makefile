@@ -57,3 +57,6 @@ re: fclean all
 
 valgrind: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+#testcmd
+#./cub3D maps/test_map.cub
