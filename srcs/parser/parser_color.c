@@ -97,7 +97,7 @@ bool	detect_color(const char *filename, t_colors *colors)
 			mark_first_color_line(colors, &first_color_found, line_number);
 		free(line);
 		if (colors->has_floor && colors->has_ceiling)
-			return (true);
+			return (close(fd), true);
 		line = get_next_line(fd);
 		line_number++;
 	}

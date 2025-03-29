@@ -23,6 +23,14 @@ typedef struct s_map
 	size_t		map_end_line;
 } t_map;
 
+typedef struct s_map_state
+{
+	bool	has_map_started;
+	bool	is_valid_start;
+	bool	is_valid_end;
+	char	*last_map_line;
+} t_map_state;
+
 typedef struct s_colors
 {
 	int		rgb_floor[3];
@@ -82,7 +90,7 @@ char	*skip_empty_lines(int fd, size_t *empty_lines);
 char	*trim_space_and_copy(char *line, size_t width);
 
 //parser_map_validation.c
-bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start);
+bool	detect_map_start(char *line, t_map_state *state);
 bool	reached_boundary(t_map *map, size_t y, size_t x);
 bool	is_valid_map_line(const char *line);
 void	detect_player_pos(t_map *map);

@@ -1,18 +1,17 @@
 #include "../../includes/parser.h"
 
-bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
+bool	detect_map_start(char *line, t_map_state *state)
 {
 	// printf("DEBUG: detect map start line for debug: %s\n", line);
-	if (!*has_map_started && is_valid_map_line(line))
+	if (!state->has_map_started && is_valid_map_line(line))
 	{
 		printf("DEBUG: First map line detected: %s\n", line);
-		*has_map_started = true;
-		*is_valid_start = is_valid_start_or_end_line(line);
-		// printf("DEBUG: is valid start: %d\n", *is_valid_start);
+		state->has_map_started = true;
+		state->is_valid_start = is_valid_start_or_end_line(line);
+		// printf("DEBUG: is valid start: %d\n", state->is_valid_start);
 	}
-
 	// Detect an empty line after the map starts
-	if (*has_map_started && is_empty_line(line))
+	if (state->has_map_started && is_empty_line(line))
 	{
 		printf("Map starts with empty line debug printf %s\n", line);
 		printf("Detected empty line after map start.\n");
@@ -21,48 +20,49 @@ bool	detect_map_start(char *line, bool *has_map_started, bool *is_valid_start)
 	return (true);
 }
 
+bool	process_line(char *line, t_map_state *state, int fd_out)
+{
+	if (!detect_map_start(line, state))
+		return (false);
+	if (state->has_map_started && state->is_valid_start)
+	{
+		if (!write_and_track_last_line(fd_out, line, &state->last_map_line))
+			return (false);
+	}
+	return (true);
+}
+
+static void	init_map_variables(t_map_state *state, t_map *map)
+{
+	state->last_map_line = NULL;
+	state->has_map_started = false;
+	state->is_valid_start = false;
+	state->is_valid_end = false;
+	set_default_values_map(map);
+}
+
 int	process_map(int fd_in, int fd_out, t_map *map)
 {
-	char	*line;
-	char	*last_map_line;
-	bool	has_map_started;
-	bool	is_valid_start;
-	bool	is_valid_end;
+	char		*line;
+	t_map_state	state;
 
 	line = get_next_line(fd_in);
 	if (line == NULL)
 		exit(-1);
-	has_map_started = false;
-	is_valid_start = false;
-	is_valid_end = false;
-	set_default_values_map(map);
-	// printf("before increase map end line %ld\n", map->map_end_line);
+	init_map_variables(&state, map);
 	while (line != NULL)
 	{
-		printf("get next line in process map %s\n", line);
-		if (!detect_map_start(line, &has_map_started, &is_valid_start))
-		{
-			return(free(line), -1);
-		}
-		if (has_map_started && is_valid_start)
-		{
-			if (!write_and_track_last_line(fd_out, line, &last_map_line))
-			{
-				return(free(line), -1);
-			}
-		}
+		if (!process_line(line, &state, fd_out))
+			return (free(line), -1);
 		free(line);
 		line = get_next_line(fd_in);
 		map->map_end_line++;
 	}
-	if (last_map_line && is_valid_start_or_end_line(last_map_line))
-		is_valid_end = true;
-	if (has_map_started && is_valid_start && is_valid_end)
-	{
-		// printf("after increase map end line %ld\n", map->map_end_line); // it's + 1 after the last line
-		// printf("map contains properly start and ending\n");
+	if (state.last_map_line && is_valid_start_or_end_line(state.last_map_line))
+		state.is_valid_end = true;
+	free(state.last_map_line);
+	if (state.has_map_started && state.is_valid_start && state.is_valid_end)
 		return (0);
-	}
 	return (-1);
 }
 
