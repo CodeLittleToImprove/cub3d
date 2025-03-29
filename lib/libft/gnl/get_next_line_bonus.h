@@ -28,9 +28,10 @@
 char	*get_next_line(int fd);
 
 void	*ft_calloc_complete(size_t count, size_t size);
-char	*ft_strchr(const char *s, int c);
+//char	*ft_strchr(const char *s, int c);
 char	*initialize_line_read_if_null(char *line_read);
-size_t	ft_strlen(const char *s);
+//size_t	ft_strlen(const char *s);
+void	*free_and_return_null(void *ptr);
 size_t	find_newline_pos(const char *str);
-
+char	*ft_strjoin_and_free(char *previous_read, char *current_read);
 #endif

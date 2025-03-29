@@ -23,17 +23,11 @@ char	*remove_old_string_from_rest_buffer(char *rest_buf)
 	if (rest_buf[newline_pos] == '\n')
 		newline_pos++;
 	if (rest_buf[newline_pos] == '\0')
-	{
-		free(rest_buf);
-		return (NULL);
-	}
+		return (free_and_return_null(rest_buf));
 	remaining_len = ft_strlen(rest_buf) - newline_pos;
 	cleaned_restbuf = ft_calloc_complete(remaining_len + 1, sizeof(char));
 	if (!cleaned_restbuf)
-	{
-		free(rest_buf);
-		return (NULL);
-	}
+		return (free_and_return_null(rest_buf));
 	i = 0;
 	while (rest_buf[newline_pos + i])
 	{
@@ -71,41 +65,11 @@ char	*extract_line_up_to_new_line(char *rest_buf)
 	return (line);
 }
 
-char	*ft_strjoin_and_free(char *previous_read, char *current_read)
+char	*read_and_join(int fd, char *line_read, char *read_buffer)
 {
-	char	*complete_line;
-	int		total_length;
-	int		char_index;
-	int		char_index2;
+	ssize_t	bytes_read;
+	char	*temp;
 
-	total_length = ft_strlen(previous_read) + ft_strlen(current_read);
-	complete_line = malloc((total_length + 1) * sizeof(char));
-	if (complete_line == NULL)
-		return (NULL);
-	char_index = 0;
-	char_index2 = 0;
-	while (previous_read[char_index] != '\0')
-		complete_line[char_index2++] = previous_read[char_index++];
-	char_index = 0;
-	while (current_read[char_index] != '\0')
-		complete_line[char_index2++] = current_read[char_index++];
-	complete_line[char_index2] = '\0';
-	free(previous_read);
-	return (complete_line);
-}
-
-char	*read_file(int fd, char *line_read)
-{
-	char		*read_buffer;
-	ssize_t		bytes_read;
-	char		*temp;
-
-	line_read = initialize_line_read_if_null(line_read);
-	if (!line_read)
-		return (NULL);
-	read_buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!read_buffer)
-		return (NULL);
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
@@ -126,6 +90,20 @@ char	*read_file(int fd, char *line_read)
 		if (ft_strchr(line_read, '\n'))
 			break ;
 	}
+	return (line_read);
+}
+
+char	*init_read_buffer(int fd, char *line_read)
+{
+	char	*read_buffer;
+
+	line_read = initialize_line_read_if_null(line_read);
+	if (!line_read)
+		return (NULL);
+	read_buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!read_buffer)
+		return (NULL);
+	line_read = read_and_join(fd, line_read, read_buffer);
 	free(read_buffer);
 	return (line_read);
 }
@@ -151,7 +129,7 @@ char	*get_next_line(int fd)
 		}
 		return (NULL);
 	}
-	rest_buf[fd] = read_file(fd, rest_buf[fd]);
+	rest_buf[fd] = init_read_buffer(fd, rest_buf[fd]);
 	if (!rest_buf[fd])
 		return (NULL);
 	line = extract_line_up_to_new_line(rest_buf[fd]);

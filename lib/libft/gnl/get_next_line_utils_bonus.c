@@ -76,3 +76,32 @@ size_t	find_newline_pos(const char *str)
 		char_index++;
 	return (char_index);
 }
+
+void	*free_and_return_null(void *ptr)
+{
+	free(ptr);
+	return (NULL);
+}
+
+char	*ft_strjoin_and_free(char *previous_read, char *current_read)
+{
+	char	*complete_line;
+	int		total_length;
+	int		char_index;
+	int		char_index2;
+
+	total_length = ft_strlen(previous_read) + ft_strlen(current_read);
+	complete_line = malloc((total_length + 1) * sizeof(char));
+	if (complete_line == NULL)
+		return (NULL);
+	char_index = 0;
+	char_index2 = 0;
+	while (previous_read[char_index] != '\0')
+		complete_line[char_index2++] = previous_read[char_index++];
+	char_index = 0;
+	while (current_read[char_index] != '\0')
+		complete_line[char_index2++] = current_read[char_index++];
+	complete_line[char_index2] = '\0';
+	free(previous_read);
+	return (complete_line);
+}
