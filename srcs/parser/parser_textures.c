@@ -66,7 +66,7 @@ bool	detect_textures(char *filename, t_textures *textures)
 			close(fd);
 			return (false);
 		}
-		process_texture_line(line, line_number, textures);
+		process_texture_line(line, line_number, textures); // does not need line number
 		// printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 		// textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);

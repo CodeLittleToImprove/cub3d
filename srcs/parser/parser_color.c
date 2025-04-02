@@ -9,7 +9,7 @@ static int	*get_color_array(t_colors *colors, char type)
 	return (NULL);
 }
 
-bool	parse_color(char *line, t_colors *colors, char type)
+bool	parse_color(char *line, t_colors *colors, char type) // rewrite to use less variables for norminette
 {
 	size_t	i;
 	size_t	j;

@@ -51,8 +51,8 @@ int	main(int argc, char *argv[])
 	// read_map_file(argv[1], &map); // reads the original file
 	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 	// print_grid(map.grid);
-	printf("player x pos = %ld\n", map.player_x);
-	printf("player y pos = %ld\n", map.player_y);
+	// printf("player x pos = %ld\n", map.player_x);
+	// printf("player y pos = %ld\n", map.player_y);
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (1);
@@ -65,4 +65,6 @@ int	main(int argc, char *argv[])
 	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
 	mlx_loop_hook(data.mlx, render, &data);
 	mlx_loop(data.mlx);
+	free_grid(map.grid);
+	free_textures(&textures);
 }

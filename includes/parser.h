@@ -111,4 +111,5 @@ void	print_textures(t_textures *textures);
 
 //parser_free_utils.c
 void	free_grid(char **grid);
+void	free_textures(t_textures *textures);
 #endif //PARSER_H

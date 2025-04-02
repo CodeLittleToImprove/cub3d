@@ -55,8 +55,19 @@ fclean: clean
 
 re: fclean all
 
+valgrind: CFLAGS += -g
 valgrind: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
+run_test: CFLAGS += -g
+run_test: $(NAME)
+	@if [ -z "$(TEST_MAP)" ]; then \
+		echo "Usage: make run_test TEST_MAP=<path_to_test_map>"; \
+		exit 1; \
+	fi;
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) $(TEST_MAP)
+
 #testcmd
+#make run_test TEST_MAP=maps/test_map.cub
+
 #./cub3D maps/test_map.cub

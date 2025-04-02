@@ -32,7 +32,7 @@ void	print_grid(char **grid)
 		printf("Grid is NULL\n");
 		return;
 	}
-
+	printf("start to print map grid\n");
 	row_count = 0;
 	while (grid[row_count] != NULL)
 	{

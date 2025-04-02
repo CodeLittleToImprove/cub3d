@@ -40,5 +40,6 @@ int	main(int argc, char *argv[])
 	// read_map_file(argv[1], &map); // reads the original file
 	read_map_file("temp_map.cub", &map); // reads the temp file for testing
 	print_grid(map.grid);
-
+	free_grid(map.grid);
+	free_textures(&textures);
 }
