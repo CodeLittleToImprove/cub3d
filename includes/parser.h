@@ -96,7 +96,7 @@ bool	is_valid_map_line(const char *line);
 void	detect_player_pos(t_map *map);
 
 //parser_read_map.c;
-void	read_map_file(char *file_name, t_map *map);
+int	read_map_file(char *file_name, t_map *map);
 
 //fd_utils.c
 int		open_input_file(const char *filename);

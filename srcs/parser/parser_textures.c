@@ -34,7 +34,7 @@ bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid
 	return (true);
 }
 
-bool	process_texture_line(char *line, size_t line_number, t_textures *textures)
+bool	process_texture_line(char *line, t_textures *textures)
 {
 	if (assign_texture_path(line, "NO", &textures->no_texture, &textures->no_set) ||
 		assign_texture_path(line, "SO", &textures->so_texture, &textures->so_set) ||
@@ -66,7 +66,7 @@ bool	detect_textures(char *filename, t_textures *textures)
 			close(fd);
 			return (false);
 		}
-		process_texture_line(line, line_number, textures); // does not need line number
+		process_texture_line(line, textures);
 		// printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 		// textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);

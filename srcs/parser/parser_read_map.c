@@ -100,20 +100,20 @@ char	**create_grid(char *file_name, t_map *map)
 	return (grid);
 }
 
-void	read_map_file(char *file_name, t_map *map)
+int	read_map_file(char *file_name, t_map *map) // need to handle failing case better
 {
 
 	if (has_valid_characters_only(file_name) == false)
 	{
-		printf("terminate program because of invalid characters \n");
-		exit (-1);
+		printf(" detected invalid characters stop the program \n");
+		return (-1);
 	}
 //	set_default_values_map(map);
 	map->grid = create_grid(file_name, map);
 	if(map->grid == NULL)
 	{
 		printf("Map is invalid after counting height \n");
-		exit (-1);
+		return (-1);
 	}
 //	printf("map maxwidth %d\n", map->max_width);
 //	printf("map maxheight %d\n", map->max_height);
@@ -125,8 +125,10 @@ void	read_map_file(char *file_name, t_map *map)
 	if (reached_boundary(map, map->player_y, map->player_x) == true)
 	{
 		printf("Map is open therefore invalid \n");
+		return (-1);
 	}
 	// printf("\nafter flood fill\n");
 	// print_grid(map->grid);
 //	print_grid_character(map->grid);
+	return (0);
 }

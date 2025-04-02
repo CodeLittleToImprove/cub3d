@@ -53,18 +53,19 @@ int	main(int argc, char *argv[])
 	// print_grid(map.grid);
 	// printf("player x pos = %ld\n", map.player_x);
 	// printf("player y pos = %ld\n", map.player_y);
-	data.mlx = mlx_init();
-	if (!data.mlx)
-		return (1);
-	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "3D GAME!");
-	img.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_length, &img.endian);
-	data_init(&data, &map, &img);
-	mlx_hook(data.win, 17, 1L << 17, close_mlx, &data);
-	mlx_hook(data.win, 2, 1L << 0, key_press, &data);
-	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
-	mlx_loop_hook(data.mlx, render, &data);
-	mlx_loop(data.mlx);
-	free_grid(map.grid);
+	// data.mlx = mlx_init();
+	// if (!data.mlx)
+	// 	return (1);
+	// data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "3D GAME!");
+	// img.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+	// img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_length, &img.endian);
+	// data_init(&data, &map, &img);
+	// mlx_hook(data.win, 17, 1L << 17, close_mlx, &data);
+	// mlx_hook(data.win, 2, 1L << 0, key_press, &data);
+	// mlx_hook(data.win, 3, 1L << 1, key_release, &data);
+	// mlx_loop_hook(data.mlx, render, &data);
+	// mlx_loop(data.mlx);
+	if (map.grid != NULL) // this could be uninitialised
+		free_grid(map.grid);
 	free_textures(&textures);
 }
