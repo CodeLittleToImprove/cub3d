@@ -1,12 +1,3 @@
-F    255, 10, 0
-
-C 225,30,0
-
-SO textures/wall_SO.xpm
-WE textures/wall_WE.xpm
-NO textures/wall_NO.xpm
-EA textures/wall_EA.xpm
-
 111111111111111
 100000000000001
 100000000000001

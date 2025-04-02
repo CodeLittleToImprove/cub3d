@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/15 16:44:26 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:04:57 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@ void	data_init(t_data *data, t_map *map, t_image *img)
 {
 	// map_init(data);
 	data->map = map->grid;
+	print_grid(data->map);
 	data->key_W = 0;
 	data->key_A = 0;
 	data->key_S = 0;
 	data->key_D = 0;
 	data->key_left = 0;
 	data->key_right = 0;
-	data->playerX = (double)map->player_x * TILE;
-	data->playerY = (double)map->player_y * TILE;
+	data->playerX = map->player_x * TILE;
+	data->playerY = map->player_y * TILE;
 	printf("player x pos = %ff\n", data->playerX);
 	printf("player y pos = %ff\n", data->playerY);
 	data->playerA = 1;

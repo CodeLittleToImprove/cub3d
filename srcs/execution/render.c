@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 20:13:51 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/15 14:30:31 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:55:53 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ void	render_square(t_image *img, int x, int y, int color)
 
 void	render_map(t_data *data)
 {
-	for (size_t i = 0; i < TILES_X; i++)
+	for (size_t y = 0; y < TILES_Y; y++)
 	{
-		for (size_t j = 0; j < TILES_Y; j++)
+		for (size_t x = 0; x < TILES_X; x++)
 		{
-			if (data->map[i][j] == '1')
-				render_square(data->image, i, j, 0xFFFFFF);
+			if (data->map[y][x] == '1')
+				render_square(data->image, x, y, 0xFFFFFF);
 			else
-				render_square(data->image, i, j, 0x000000);
+				render_square(data->image, x, y, 0x000000);
 		}
 	}
 }

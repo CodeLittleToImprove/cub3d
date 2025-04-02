@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/15 18:40:47 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:23:00 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ double	calc_dist(t_data *data, double x0, double y0, double x1, double y1)
 	return ((sqrt(delta_x * delta_x + delta_y * delta_y)) * cos(angle));
 }
 
+int	is_in_bound(t_data *data)
+{
+	if (data->mapX >= 0 && data->mapY >= 0
+		&& data->mapX < TILES_X && data->mapY < TILES_Y)
+		return (1);
+	return (0);
+}
+
 double	get_dist(t_data *data, int end, double *x, double *y)
 {
 	int	i;
@@ -33,20 +41,24 @@ double	get_dist(t_data *data, int end, double *x, double *y)
 	{
 		data->mapX = (int)data->rayX / TILE;
 		data->mapY = (int)data->rayY / TILE;
-		if (data->mapX >= 0 && data->mapY >= 0
-			&& data->mapX <= TILES_X && data->mapY <= TILES_Y
-			&& data->map[data->mapX][data->mapY] == '1')
+		if (is_in_bound(data))
 		{
-			*x = data->rayX;
-			*y = data->rayY;
-			return (calc_dist(data, data->playerX, data->playerY, *x, *y));
+			printf("MAP X: %lld\n", data->mapX);
+			printf("MAP Y: %lld\n", data->mapY);
+			if (data->map[data->mapY][data->mapX] == '1')
+			{
+				*x = data->rayX;
+				*y = data->rayY;
+				return (calc_dist(data, data->playerX, data->playerY, *x, *y));
+			}
+			else
+			{
+				data->rayX += data->offsetX;
+				data->rayY += data->offsetY;
+				i++;
+			}
 		}
-		else
-		{
-			data->rayX += data->offsetX;
-			data->rayY += data->offsetY;
-			i++;
-		}
+		i++;
 	}
 	return (1000000);
 }
