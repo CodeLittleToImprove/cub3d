@@ -112,7 +112,7 @@ int	read_map_file(char *file_name, t_map *map) // need to handle failing case be
 	map->grid = create_grid(file_name, map);
 	if(map->grid == NULL)
 	{
-		printf("Map is invalid after counting height \n");
+		printf("Map grip is NULL \n");
 		return (-1);
 	}
 //	printf("map maxwidth %d\n", map->max_width);

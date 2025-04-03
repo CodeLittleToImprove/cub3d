@@ -8,8 +8,8 @@ void	set_default_values_color(t_colors *colors)
 	colors->rgb_ceiling[0] = 0;
 	colors->rgb_ceiling[1] = 0;
 	colors->rgb_ceiling[2] = 0;
-	colors->has_floor = false; // probably not needed
-	colors->has_ceiling = false; // probably not needed
+	colors->has_floor = false;
+	colors->has_ceiling = false;
 	colors->color_start_line = 0;
 }
 

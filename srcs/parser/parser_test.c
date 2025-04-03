@@ -7,39 +7,26 @@ int	main(int argc, char *argv[])
 	t_colors	colors;
 	t_textures	textures;
 
+	map.grid = NULL;
 	if (argc != 2)
-		return (-1);
+		return (1);
 
-	if(detect_color(argv[1], &colors))
-	{
-		printf("colors extraction success\n");
-		print_colors(&colors);
-	}
-	else
-		printf("colors extraction fail \n"); // stop program
+	if (!detect_color(argv[1], &colors))
+		return handle_error("Error: Failed to extract colors.", &map, &textures, 2);
+	printf("Colors extracted successfully.\n"); //DEBUG
+	print_colors(&colors); //DEBUG
 
-//	printf("map->end_line %ld\n", map.map_end_line);
-	if (detect_textures(argv[1], &textures))
-	{
-		printf("Textures extracted successfully:\n");
-		print_textures(&textures);
-	}
-	else
-	{
-		printf("Failed to extract all textures.\n");
-	}
-	if (extract_map(argv[1], &map))
-	{
-		printf("map extraction success\n");
-	}
-	else
-	{
-		printf("map extraction fail \n");
-	}
+	if (!detect_textures(argv[1], &textures))
+		return handle_error("Error: Failed to extract textures.", &map, &textures, 3);
+	printf("Textures extracted successfully.\n"); //DEBUG
+	print_textures(&textures); //DEBUG
 
-	// read_map_file(argv[1], &map); // reads the original file
-	read_map_file("temp_map.cub", &map); // reads the temp file for testing
-	print_grid(map.grid);
-	free_grid(map.grid);
-	free_textures(&textures);
+	if (!extract_map(argv[1], &map))
+		return handle_error("Error: Failed to extract map.", &map, &textures, 4);
+	printf("Map extracted successfully.\n"); //DEBUG
+	if (!read_map_file("temp_map.cub", &map))
+		return handle_error("Error: Failed to read temp map file.", &map, &textures, 5);
+	printf("Successfully read map file.\n"); //DEBUG
+	printf("Map parsing successful.\n"); // DEBUG
+	parser_cleanup(&map, &textures);
 }
