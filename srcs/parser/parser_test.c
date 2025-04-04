@@ -27,6 +27,7 @@ int	main(int argc, char *argv[])
 	if (!read_map_file("temp_map.cub", &map))
 		return handle_error("Error: Failed to read temp map file.", &map, &textures, 5);
 	printf("Successfully read map file.\n"); //DEBUG
-	printf("Map parsing successful.\n"); // DEBUG
+//	printf("Map parsing successful.\n"); // DEBUG
+	print_grid(map.grid);
 	parser_cleanup(&map, &textures);
 }
