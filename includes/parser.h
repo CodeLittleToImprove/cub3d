@@ -88,7 +88,7 @@ void	parser_cleanup(t_map *map, t_textures *textures);
 //parser_map_validation.c
 bool	detect_map_start(char *line, t_map_state *state);
 char	**copy_grid(char **grid, size_t height);
-bool	reached_boundary(t_map *map, char **grid, size_t y, size_t x);
+bool	reached_boundary(t_map *map, char **copy_grid, size_t y, size_t x);
 bool	is_valid_map_line(const char *line);
 void	detect_player_pos(t_map *map);
 

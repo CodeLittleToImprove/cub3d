@@ -15,7 +15,7 @@ void	set_default_values_color(t_colors *colors)
 
 bool	is_valid_rgb(char *str)
 {
-	int	num;
+	int		num;
 	size_t	i;
 
 	num = 0;
@@ -62,8 +62,14 @@ char	*ft_strtok_r(char *str, char *delim, char **saveptr)
 
 size_t	skip_leading_chars(char *str, size_t i, char *skip_chars)
 {
-	while (str[i] && ft_strchr(skip_chars, str[i]))
+	char	*char_to_skip_str;
+
+	char_to_skip_str = malloc(sizeof(char) * 2);
+	char_to_skip_str[0] = skip_chars[0];
+	char_to_skip_str[1] = '\0';
+	while (str[i] && ft_strchr(char_to_skip_str, str[i]))
 		i++;
+	free(char_to_skip_str);
 	return (i);
 }
 
