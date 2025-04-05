@@ -24,6 +24,8 @@ void	free_grid(char **grid)
 
 void	free_textures(t_textures *textures)
 {
+	if (!textures)
+		return;
 	// printf("Freeing: NO=%p SO=%p WE=%p EA=%p\n",
 	// 	textures->no_texture, textures->so_texture,
 	// 	textures->we_texture, textures->ea_texture);
@@ -42,7 +44,7 @@ void	free_textures(t_textures *textures)
 	textures->ea_texture = NULL;
 }
 
-void parser_cleanup(t_map *map, t_textures *textures)
+void	parser_cleanup(t_map *map, t_textures *textures)
 {
 	if (map && map->grid)
 	{  // Ensure map->grid is valid before freeing

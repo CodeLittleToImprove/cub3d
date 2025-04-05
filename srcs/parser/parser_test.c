@@ -7,10 +7,9 @@ int	main(int argc, char *argv[])
 	t_colors	colors;
 	t_textures	textures;
 
-	map.grid = NULL;
 	if (argc != 2)
 		return (1);
-
+	set_parser_default_values(&map, &textures);
 	if (!detect_color(argv[1], &colors))
 		return handle_error("Error: Failed to extract colors.", &map, &textures, 2);
 	printf("Colors extracted successfully.\n"); //DEBUG
@@ -28,6 +27,6 @@ int	main(int argc, char *argv[])
 		return handle_error("Error: Failed to read temp map file.", &map, &textures, 5);
 	printf("Successfully read map file.\n"); //DEBUG
 //	printf("Map parsing successful.\n"); // DEBUG
-	print_grid(map.grid);
+//	print_grid(map.grid);
 	parser_cleanup(&map, &textures);
 }

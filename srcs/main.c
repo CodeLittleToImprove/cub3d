@@ -17,9 +17,9 @@ int	main(int argc, char *argv[])
 	t_data	data;
 	t_image	img;
 
-
 	if (argc != 2)
 		return (-1);
+	set_parser_default_values(&map, &textures);
 	if (!detect_color(argv[1], &colors))
 		return handle_error("Error: Failed to extract colors.", &map, &textures, 2);
 	printf("Colors extracted successfully.\n"); //DEBUG
@@ -52,7 +52,5 @@ int	main(int argc, char *argv[])
 	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
 	mlx_loop_hook(data.mlx, render, &data);
 	mlx_loop(data.mlx);
-	if (map.grid != NULL) // this could be uninitialised
-		free_grid(map.grid);
 	parser_cleanup(&map, &textures);
 }

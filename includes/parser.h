@@ -85,6 +85,9 @@ void	free_grid(char **grid);
 void	free_textures(t_textures *textures);
 void	parser_cleanup(t_map *map, t_textures *textures);
 
+//parser_init.c
+void	set_parser_default_values(t_map *map, t_textures *textures);
+
 //parser_map_validation.c
 bool	detect_map_start(char *line, t_map_state *state);
 char	**copy_grid(char **grid, size_t height);

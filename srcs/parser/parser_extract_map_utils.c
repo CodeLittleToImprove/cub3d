@@ -2,6 +2,7 @@
 
 void	set_default_values_map(t_map *map)
 {
+	map->grid = NULL;
 	map->max_height = 0;
 	map->max_width = 0;
 	map->player_x = -1;

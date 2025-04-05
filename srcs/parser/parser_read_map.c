@@ -105,10 +105,7 @@ bool	read_map_file(char *file_name, t_map *map)
 	char	**map_copy;
 
 	if (has_valid_characters_only(file_name) == false)
-	{
-		printf(" detected invalid characters stop the program \n");
-		return (false);
-	}
+		return (printf(" detected invalid characters stop the program \n"), false);
 //	set_default_values_map(map);
 	map->grid = create_grid(file_name, map);
 	if(map->grid == NULL)
@@ -131,8 +128,8 @@ bool	read_map_file(char *file_name, t_map *map)
 	}
 	if (reached_boundary(map, map_copy, map->player_y, map->player_x) == true)
 	{
-		printf("Map is open therefore invalid \n");
-		return (false);
+		free_grid(map_copy);
+		return (printf("Map is open therefore invalid \n"), false);
 	}
 	free_grid(map_copy);
 //	 printf("\nafter flood fill\n");
