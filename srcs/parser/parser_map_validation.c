@@ -36,52 +36,44 @@ bool	is_valid_map_line(const char *line)
 char	**copy_grid(char **grid, size_t height)
 {
 	char	**new_grid;
-	size_t	j;
 	size_t	i;
 
-	new_grid = malloc(sizeof(char *) * height);
+	new_grid = malloc(sizeof(char *) * (height + 1));
+	i = 0;
 	if (!new_grid)
 		return (NULL);
-
-	i = 0;
 	while (i < height)
 	{
 		new_grid[i] = ft_strdup(grid[i]);
 		if (!new_grid[i])
 		{
-			j = i;
-			while (j > 0)
-			{
-				j--;
-				free(new_grid[j]);
-			}
+			while (i > 0)
+				free(new_grid[--i]);
 			free(new_grid);
 			return (NULL);
 		}
 		i++;
 	}
+	new_grid[i] = NULL;
 	return (new_grid);
 }
 
-bool	reached_boundary(t_map *map, char **grid, size_t y, size_t x)
+bool	reached_boundary(t_map *map, char **copy_grid, size_t y, size_t x)
 {
 	if (y >= map->max_height)
 		return (true);
 	if (x >= ft_strlen(map->grid[y]))
 		return (true);
-	if (grid[y][x] == '1' || grid[y][x] == 'V')
+	if (copy_grid[y][x] == '1' || copy_grid[y][x] == 'V')
 		return (false);
-
-	grid[y][x] = 'V'; // Mark as visited
-
-	// Recursively check all directions
-	if (reached_boundary(map, grid, y + 1, x))
+	copy_grid[y][x] = 'V';
+	if (reached_boundary(map, copy_grid, y + 1, x))
 		return (true);
-	if (reached_boundary(map, grid, y - 1, x))
+	if (reached_boundary(map, copy_grid, y - 1, x))
 		return (true);
-	if (reached_boundary(map, grid, y, x + 1))
+	if (reached_boundary(map, copy_grid, y, x + 1))
 		return (true);
-	if (reached_boundary(map, grid, y, x - 1))
+	if (reached_boundary(map, copy_grid, y, x - 1))
 		return (true);
 	return (false);
 }

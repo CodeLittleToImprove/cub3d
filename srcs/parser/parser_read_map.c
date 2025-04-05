@@ -134,6 +134,7 @@ bool	read_map_file(char *file_name, t_map *map)
 		printf("Map is open therefore invalid \n");
 		return (false);
 	}
+	free_grid(map_copy);
 //	 printf("\nafter flood fill\n");
 	// print_grid(map->grid);
 //	print_grid_character(map->grid);
