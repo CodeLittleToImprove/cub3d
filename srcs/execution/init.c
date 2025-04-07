@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/03 23:23:46 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:03:50 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	check_spawn_angle(t_data *data)
 		x = 0;
 		while(x < TILES_X)
 		{
-			if (data->map[y][x] == 'N')
+			if (data->map[y][x] == 'S')
 				data->playerA = PI / 2;
-			else if (data->map[y][x] == 'S')
+			else if (data->map[y][x] == 'N')
 				data->playerA = 3 * PI / 2;
 			else if (data->map[y][x] == 'W')
 				data->playerA = PI;

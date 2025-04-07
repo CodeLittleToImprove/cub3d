@@ -3,9 +3,10 @@
 
 int	close_mlx(t_data *data)
 {
+	// mlx_destroy_image(data->mlx, data->image);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
-	exit(0);
+	free(data->mlx);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/07 16:57:39 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:12:54 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # define TILE 64
-# define TILES_X 15
+# define TILES_X 16
 # define TILES_Y 15
 # define WIDTH TILE * TILES_X * 2
 # define HEIGHT TILE * TILES_Y
