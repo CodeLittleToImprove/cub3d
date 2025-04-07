@@ -49,6 +49,7 @@ add_executable(cub3d_own_tests
         srcs/parser/parser_textures_utils.c
         srcs/parser/print_utils.c
         srcs/parser/parser_init.c
+        srcs/parser/parser_map_validation_utils.c
 )
 
 # Ensure the executable depends on both libft and MiniLibX
@@ -88,7 +89,8 @@ add_executable(parser_test
         srcs/parser/parser_textures.c
         srcs/parser/parser_textures_utils.c
         srcs/parser/print_utils.c
-        srcs/parser/parser_init.c)
+        srcs/parser/parser_init.c
+        srcs/parser/parser_map_validation_utils.c)
 
 # Ensure libft_only_test depends only on libft
 add_dependencies(parser_test build_libft)

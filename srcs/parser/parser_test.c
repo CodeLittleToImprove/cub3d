@@ -1,6 +1,7 @@
 #include "../../includes/parser.h"
 #include "../../includes/cub3d.h"
 
+// write a check if something is between color and textures to cancel operations
 int	main(int argc, char *argv[])
 {
 	t_map		map;

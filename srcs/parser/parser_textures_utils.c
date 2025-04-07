@@ -49,16 +49,3 @@ char	*extract_texture_path(char *line, char *key)
 	free(raw_path);
 	return (trimmed_path);
 }
-
-void	set_default_values_textures(t_textures *textures)
-{
-	textures->no_texture = NULL;
-	textures->so_texture = NULL;
-	textures->we_texture = NULL;
-	textures->ea_texture = NULL;
-	textures->no_set = false;
-	textures->so_set = false;
-	textures->we_set = false;
-	textures->ea_set = false;
-	textures->last_texture_line = 0;
-}

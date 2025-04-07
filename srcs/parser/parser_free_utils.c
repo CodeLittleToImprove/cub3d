@@ -1,6 +1,7 @@
 #include "../../includes/parser.h"
 
-int	handle_error(const char *message, t_map *map, t_textures *textures, int code)
+int	handle_error(const char *message, t_map *map,
+	t_textures *textures, int code)
 {
 	perror(message);
 	parser_cleanup(map, textures);
@@ -9,11 +10,11 @@ int	handle_error(const char *message, t_map *map, t_textures *textures, int code
 
 void	free_grid(char **grid)
 {
-	size_t	row = 0;
+	size_t	row;
 
 	row = 0;
 	if (!grid)
-		return;
+		return ;
 	while (grid[row])
 	{
 		free(grid[row]);
@@ -25,7 +26,7 @@ void	free_grid(char **grid)
 void	free_textures(t_textures *textures)
 {
 	if (!textures)
-		return;
+		return ;
 	// printf("Freeing: NO=%p SO=%p WE=%p EA=%p\n",
 	// 	textures->no_texture, textures->so_texture,
 	// 	textures->we_texture, textures->ea_texture);
@@ -37,7 +38,6 @@ void	free_textures(t_textures *textures)
 		free(textures->we_texture);
 	if (textures->ea_texture)
 		free(textures->ea_texture);
-
 	textures->no_texture = NULL;
 	textures->so_texture = NULL;
 	textures->we_texture = NULL;
@@ -46,10 +46,11 @@ void	free_textures(t_textures *textures)
 
 void	parser_cleanup(t_map *map, t_textures *textures)
 {
+	// Ensure map->grid is valid before freeing
 	if (map && map->grid)
-	{  // Ensure map->grid is valid before freeing
+	{
 		free_grid(map->grid);
-		map->grid = NULL;  // Prevent future invalid access
+		map->grid = NULL; // Prevent future invalid access
 	}
 	free_textures(textures);
 }
