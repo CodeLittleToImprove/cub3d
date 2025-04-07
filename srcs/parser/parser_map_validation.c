@@ -18,56 +18,63 @@ bool	is_valid_map_line(const char *line)
 	return (true);
 }
 
-void	validate_last_line(const char *last_map_line)
-{
-	int	fd;
+//void	validate_last_line(const char *last_map_line)
+//{
+//	int	fd;
+//
+//	if (!is_valid_map_line(last_map_line))
+//	{
+//		write(STDERR_FILENO, "Error: Last map line is not enclosed by walls!\n", 47);
+//		// "Delete" the file by truncating it
+//		fd = open("temp_map.cub", O_WRONLY | O_TRUNC);
+//		if (fd >= 0)
+//			close(fd);
+//		exit(EXIT_FAILURE);
+//	}
+//}
 
-	if (!is_valid_map_line(last_map_line))
+char	**copy_grid(char **grid, size_t height)
+{
+	char	**new_grid;
+	size_t	i;
+
+	new_grid = malloc(sizeof(char *) * (height + 1));
+	i = 0;
+	if (!new_grid)
+		return (NULL);
+	while (i < height)
 	{
-		write(STDERR_FILENO, "Error: Last map line is not enclosed by walls!\n", 47);
-		// "Delete" the file by truncating it
-		fd = open("temp_map.cub", O_WRONLY | O_TRUNC);
-		if (fd >= 0)
-			close(fd);
-		exit(EXIT_FAILURE);
+		new_grid[i] = ft_strdup(grid[i]);
+		if (!new_grid[i])
+		{
+			while (i > 0)
+				free(new_grid[--i]);
+			free(new_grid);
+			return (NULL);
+		}
+		i++;
 	}
+	new_grid[i] = NULL;
+	return (new_grid);
 }
 
-bool	reached_boundary(t_map *map, size_t y, size_t x)
+bool	reached_boundary(t_map *map, char **copy_grid, size_t y, size_t x)
 {
 	if (y >= map->max_height)
 		return (true);
 	if (x >= ft_strlen(map->grid[y]))
 		return (true);
-	if (map->grid[y][x] == '1' || map->grid[y][x] == 'V')
-	{
-		// if (map->grid[y][x] == '1' )
-		// 	printf("Encountered a wall at (y = %ld, x = %ld)\n", y, x);
-		// if (map->grid[y][x] == 'V' )
-		// 	printf("Already visited (y = %ld, x = %ld)\n", y, x);
+	if (copy_grid[y][x] == '1' || copy_grid[y][x] == 'V')
 		return (false);
-	}
-	map->grid[y][x] = 'V';
-	if (reached_boundary(map, y + 1, x)) // Down
-	{
-		printf("flood_filled moved down \n");
+	copy_grid[y][x] = 'V';
+	if (reached_boundary(map, copy_grid, y + 1, x))
 		return (true);
-	}
-	if (reached_boundary(map, y - 1, x)) // Up
-	{
-		printf("flood_filled moved up \n");
+	if (reached_boundary(map, copy_grid, y - 1, x))
 		return (true);
-	}
-	if (reached_boundary(map, y, x + 1)) // Right
-	{
-		printf("flood_filled moved right \n");
+	if (reached_boundary(map, copy_grid, y, x + 1))
 		return (true);
-	}
-	if (reached_boundary(map, y, x - 1))
-	{
-		printf("flood_filled moved left \n");
+	if (reached_boundary(map, copy_grid, y, x - 1))
 		return (true);
-	}
 	return (false);
 }
 

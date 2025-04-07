@@ -100,20 +100,18 @@ char	**create_grid(char *file_name, t_map *map)
 	return (grid);
 }
 
-int	read_map_file(char *file_name, t_map *map) // need to handle failing case better
+bool	read_map_file(char *file_name, t_map *map)
 {
+	char	**map_copy;
 
 	if (has_valid_characters_only(file_name) == false)
-	{
-		printf(" detected invalid characters stop the program \n");
-		return (-1);
-	}
+		return (printf(" detected invalid characters stop the program \n"), false);
 //	set_default_values_map(map);
 	map->grid = create_grid(file_name, map);
 	if(map->grid == NULL)
 	{
-		printf("Map is invalid after counting height \n");
-		return (-1);
+		printf("Map grip is NULL \n");
+		return (false);
 	}
 //	printf("map maxwidth %d\n", map->max_width);
 //	printf("map maxheight %d\n", map->max_height);
@@ -122,13 +120,20 @@ int	read_map_file(char *file_name, t_map *map) // need to handle failing case be
 	// printf("array value at player value %c \n", map->grid[map->player_y][map->player_x]);
 	// printf("player pos value y:%ld x:%ld\n", map->player_y, map->player_x );
 	// print_grid(map->grid);
-	if (reached_boundary(map, map->player_y, map->player_x) == true)
+	map_copy = copy_grid(map->grid, map->max_height);
+	if (!map_copy)
 	{
-		printf("Map is open therefore invalid \n");
-		return (-1);
+		printf("Failed to allocate memory for map copy\n");
+		return (false);
 	}
-	// printf("\nafter flood fill\n");
+	if (reached_boundary(map, map_copy, map->player_y, map->player_x) == true)
+	{
+		free_grid(map_copy);
+		return (printf("Map is open therefore invalid \n"), false);
+	}
+	free_grid(map_copy);
+//	 printf("\nafter flood fill\n");
 	// print_grid(map->grid);
 //	print_grid_character(map->grid);
-	return (0);
+	return (true);
 }

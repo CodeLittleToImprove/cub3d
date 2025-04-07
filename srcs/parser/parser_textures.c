@@ -53,7 +53,7 @@ bool	detect_textures(char *filename, t_textures *textures)
 	char	*line;
 	size_t	line_number;
 	fd = open_input_file(filename);
-	set_default_values_textures(textures);
+//	set_default_values_textures(textures);
 	line = get_next_line(fd);
 	line_number = 0;
 	while (line != NULL)

@@ -36,8 +36,8 @@ typedef struct s_colors
 	int		rgb_floor[3];
 	int		rgb_ceiling[3];
 	size_t	color_start_line;
-	bool	has_floor; // not properly used right now
-	bool	has_ceiling; // not properly used right now
+	bool	has_floor;
+	bool	has_ceiling;
 } t_colors;
 
 typedef struct s_textures
@@ -53,6 +53,16 @@ typedef struct s_textures
 	size_t	last_texture_line;
 } t_textures;
 
+//fd_utils.c
+int		open_input_file(const char *filename);
+int		open_output_file(const char *outputfilename);
+bool	handle_invalid_color_line(char *line, size_t line_number, int fd, bool first_color_found);
+
+//parser_color.c
+bool	detect_color(const char *filename, t_colors *colors);
+bool	parse_color(char *line, t_colors *colors, char type);
+bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_flag);
+
 //parser_color_utils;
 void	set_default_values_color(t_colors *colors);
 bool	is_valid_rgb(char *str);
@@ -60,19 +70,8 @@ char	*ft_strtok_r(char *str, char *delim, char **saveptr);
 size_t	skip_leading_chars(char *str, size_t i, char *skip_chars);
 bool	is_invalid_color_line(char *line);
 
-//parser_color.c
-bool	detect_color(const char *filename, t_colors *colors);
-bool	parse_color(char *line, t_colors *colors, char type);
-bool	check_and_parse_color(char *line, t_colors *colors, char type, bool *found_flag);
-
-//parser_textures_utils.c
-void	set_default_values_textures(t_textures *textures);
-char	*extract_texture_path(char *line, char *key);
-bool	is_valid_texture_path(char *path);
-bool	is_invalid_texture_line(char *line);
-
-//parser_textures.c
-bool	detect_textures(char *filename, t_textures *textures);
+//parser_extract_map.c
+bool	extract_map(const char *filename, t_map *map);
 
 //parser_extract_map_utils.c
 void	set_default_values_map(t_map *map);
@@ -80,8 +79,33 @@ bool	write_and_track_last_line(int fd_out, const char *line, char **last_map_lin
 bool	is_valid_start_or_end_line(const char *line);
 bool	has_valid_characters_only(char *file_name);
 
-//parser_map_extract.c
-bool	extract_map(const char *filename, t_map *map);
+//parser_free_utils.c
+int		handle_error(const char *message, t_map *map, t_textures *textures, int code);
+void	free_grid(char **grid);
+void	free_textures(t_textures *textures);
+void	parser_cleanup(t_map *map, t_textures *textures);
+
+//parser_init.c
+void	set_parser_default_values(t_map *map, t_textures *textures);
+
+//parser_map_validation.c
+bool	detect_map_start(char *line, t_map_state *state);
+char	**copy_grid(char **grid, size_t height);
+bool	reached_boundary(t_map *map, char **copy_grid, size_t y, size_t x);
+bool	is_valid_map_line(const char *line);
+void	detect_player_pos(t_map *map);
+
+//parser_read_map.c;
+bool	read_map_file(char *file_name, t_map *map);
+
+//parser_textures.c
+bool	detect_textures(char *filename, t_textures *textures);
+
+//parser_textures_utils.c
+void	set_default_values_textures(t_textures *textures);
+char	*extract_texture_path(char *line, char *key);
+bool	is_valid_texture_path(char *path);
+bool	is_invalid_texture_line(char *line);
 
 //parser_utils.c
 bool	is_empty_line(char *line);
@@ -89,27 +113,10 @@ size_t	count_leading_white_space(char *line);
 char	*skip_empty_lines(int fd, size_t *empty_lines);
 char	*trim_space_and_copy(char *line, size_t width);
 
-//parser_map_validation.c
-bool	detect_map_start(char *line, t_map_state *state);
-bool	reached_boundary(t_map *map, size_t y, size_t x);
-bool	is_valid_map_line(const char *line);
-void	detect_player_pos(t_map *map);
-
-//parser_read_map.c;
-int	read_map_file(char *file_name, t_map *map);
-
-//fd_utils.c
-int		open_input_file(const char *filename);
-int		open_output_file(const char *outputfilename);
-bool	handle_invalid_color_line(char *line, size_t line_number, int fd, bool first_color_found);
-
 //print_utils.c
 void	print_colors(const t_colors *colors);
 void	print_grid(char **grid);
 void	print_grid_character(char **grid);
 void	print_textures(t_textures *textures);
 
-//parser_free_utils.c
-void	free_grid(char **grid);
-void	free_textures(t_textures *textures);
 #endif //PARSER_H
