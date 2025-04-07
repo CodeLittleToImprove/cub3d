@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:22:19 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/05 18:12:42 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:36:40 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,17 @@
 double	get_angle(double angle)
 {
 	if (angle < 0)
-		angle += 2*PI;
-	if (angle > 2 * PI)
+		angle += 2 * PI;
+	if (angle >= 2 * PI)
+		angle -= 2 * PI;
+	return (angle);
+}
+
+double	get_angle2(double angle)
+{
+	if (angle < -PI)
+		angle += 2 * PI;
+	if (angle > PI)
 		angle -= 2 * PI;
 	return (angle);
 }

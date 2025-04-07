@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/02 20:04:42 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:57:39 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 # define HEIGHT TILE * TILES_Y
 # define SPEED 4
 # define CAM_SPEED 0.05
-# define DEGREE 0.0174533
+# define DEGREE 0.002181663
 # define PI 3.14159265359
-# define FOV 60
+# define FOV 480
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -96,6 +96,7 @@ void	draw_rays(t_data *data);
 void	render_line(t_data *data, int x0, int y0, int x1, int y1, int color);
 int		render(t_data *data);
 double	get_angle(double angle);
+double	get_angle2(double angle);
 void	px_put(t_image *img, int x, int y, int color);
 void	init_textures(t_data *data);
 

@@ -38,7 +38,7 @@ void	print_grid(char **grid)
 	{
 		row_count++;
 	}
-
+	
 	while (row < row_count)
 	{
 		printf("%s\n", grid[row]);

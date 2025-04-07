@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/02 20:04:57 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:23:46 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,31 @@ void	map_init(t_data *data)
 	}
 }
 
+void	check_spawn_angle(t_data *data)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < TILES_Y)
+	{
+		x = 0;
+		while(x < TILES_X)
+		{
+			if (data->map[y][x] == 'N')
+				data->playerA = PI / 2;
+			else if (data->map[y][x] == 'S')
+				data->playerA = 3 * PI / 2;
+			else if (data->map[y][x] == 'W')
+				data->playerA = PI;
+			else if (data->map[y][x] == 'E')
+				data->map[y][x] = 2 * PI;
+			x++;
+		}
+		y++;
+	}
+}
+
 void	data_init(t_data *data, t_map *map, t_image *img)
 {
 	// map_init(data);
@@ -60,7 +85,8 @@ void	data_init(t_data *data, t_map *map, t_image *img)
 	data->playerY = map->player_y * TILE;
 	printf("player x pos = %ff\n", data->playerX);
 	printf("player y pos = %ff\n", data->playerY);
-	data->playerA = 1;
+	data->playerA = 0;
+	check_spawn_angle(data);
 	data->playerDX = 0;
 	data->playerDY = 0;
 	data->rayX = 0;

@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/02 20:23:00 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:43:54 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ double	calc_dist(t_data *data, double x0, double y0, double x1, double y1)
 	delta_x = x1 - x0;
 	delta_y = y1 - y0;
 	angle = atan2(delta_y, delta_x) - data->playerA;
+	angle = get_angle2(angle);
 	return ((sqrt(delta_x * delta_x + delta_y * delta_y)) * cos(angle));
 }
 
@@ -41,24 +42,18 @@ double	get_dist(t_data *data, int end, double *x, double *y)
 	{
 		data->mapX = (int)data->rayX / TILE;
 		data->mapY = (int)data->rayY / TILE;
-		if (is_in_bound(data))
+		if (is_in_bound(data) && data->map[data->mapY][data->mapX] == '1')
 		{
-			printf("MAP X: %lld\n", data->mapX);
-			printf("MAP Y: %lld\n", data->mapY);
-			if (data->map[data->mapY][data->mapX] == '1')
-			{
-				*x = data->rayX;
-				*y = data->rayY;
-				return (calc_dist(data, data->playerX, data->playerY, *x, *y));
-			}
-			else
-			{
-				data->rayX += data->offsetX;
-				data->rayY += data->offsetY;
-				i++;
-			}
+			*x = data->rayX;
+			*y = data->rayY;
+			return (calc_dist(data, data->playerX, data->playerY, *x, *y));
 		}
-		i++;
+		else
+		{
+			data->rayX += data->offsetX;
+			data->rayY += data->offsetY;
+			i++;
+		}
 	}
 	return (1000000);
 }
@@ -107,7 +102,7 @@ int	set_vertical(t_data *data, double tan)
 	return (0);
 }
 
-int	draw_3d(t_data *data, int x, double dis)
+int	draw_3d(t_data *data, int x, double dis, int is_horizontal)
 {
 	double	tex_x;
 	double	tex_y;
@@ -115,25 +110,32 @@ int	draw_3d(t_data *data, int x, double dis)
 	double	wall_height;
 	double	offset;
 	int		y;
-	int		i;
+	int		tex_type;
 
-	if (data->rayA > (PI / 4) && data->rayA < ((3 * PI) / 4))
-		i = 1;
-	else if (data->rayA > ((3 * PI) / 4) && data->rayA < ((5 * PI) / 4))
-		i = 3;
-	else if (data->rayA > ((5 * PI) / 4) && data->rayA < ((7 * PI) / 4))
-		i = 2;
-	else
-		i = 0;
 	wall_height = (TILE * HEIGHT) / dis;
 	offset = (HEIGHT / 2) - (wall_height / 2);
 	tex_y_step = TILE / wall_height;
 	y = 0;
+	if (is_horizontal)
+	{
+		if (data->rayA > 0 && data->rayA < PI)
+			tex_type = 2;
+		else
+			tex_type = 1;
+		tex_x = (int)data->rayX % 64;
+	}
+	else
+	{
+		if (data->rayA > (PI / 2) && data->rayA < ((3 * PI) / 2))
+			tex_type = 3;
+		else
+			tex_type = 0;
+		tex_x = (int)data->rayY % 64;
+	}
 	tex_y = 0;
-	tex_x = (int)(data->rayX) % TILE;
 	while (y < wall_height)
 	{
-		px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[i][(int)tex_y * TILE + (int)tex_x]);
+		px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
 		y++;
 		tex_y += tex_y_step;
 	}
@@ -144,7 +146,7 @@ int	draw_3d(t_data *data, int x, double dis)
 		tex_y = 0;
 		while (y < wall_height)
 		{
-			px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[i][(int)tex_y * TILE + (int)tex_x]);
+			px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
 			y++;
 			tex_y += tex_y_step;
 		}
@@ -158,6 +160,7 @@ void	draw_rays(t_data *data)
 	int		x;
 	int		i;
 	int 	color;
+	int		is_horizontal;
 	double	dis_h;
 	double	dis_v;
 	double	dis;
@@ -180,6 +183,7 @@ void	draw_rays(t_data *data)
 			data->rayX = data->verticalX;
 			data->rayY = data->verticalY;
 			dis = dis_v;
+			is_horizontal = 0;
 			color = 0x73504A;
 		}
 		else if (dis_h < dis_v)
@@ -187,12 +191,14 @@ void	draw_rays(t_data *data)
 			data->rayX = data->horizontalX;
 			data->rayY = data->horizontalY;
 			dis = dis_h;
+			is_horizontal = 1;
 			color = 0x44393C;
 		}
 		render_line(data, (int)data->playerX, (int)data->playerY,
 			(int)data->rayX, (int)data->rayY, color);
-		x = draw_3d(data, x, dis);
-		data->rayA = get_angle(data->rayA + DEGREE);
+		x = draw_3d(data, x, dis, is_horizontal);
+		data->rayA = data->rayA + DEGREE;
+		data->rayA = get_angle(data->rayA);
 		i++;
 	}
 }
