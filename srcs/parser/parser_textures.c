@@ -1,6 +1,7 @@
 #include "../../includes/parser.h"
 
-bool	assign_texture_path(char *line, char *key, char **texture_path, bool *valid_texture)
+bool	assign_texture_path(char *line, char *key,
+							char **texture_path, bool *valid_texture)
 {
 	if (*valid_texture)
 	{
@@ -51,7 +52,8 @@ bool	process_texture_line(char *line, t_textures *textures)
 	return (false);
 }
 
-static bool	handle_invalid_texture_line(char *line, t_textures *textures, size_t line_number)
+static bool	handle_invalid_texture_line(char *line,
+			t_textures *textures, size_t line_number)
 {
 	if (is_invalid_texture_line(line)
 		&& (textures->no_set || textures->so_set
@@ -91,5 +93,6 @@ bool	detect_textures(char *filename, t_textures *textures)
 	}
 	// printf("FINAL DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 	// 	textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
-	return (close(fd), textures->no_set && textures->so_set && textures->we_set && textures->ea_set);
+	return (close(fd), textures->no_set && textures->so_set
+		&& textures->we_set && textures->ea_set);
 }

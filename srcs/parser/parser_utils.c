@@ -55,5 +55,3 @@ char	*trim_space_and_copy(char *line, size_t width)
 	ft_strlcpy(trimmed_line, line + leading_spaces, width + 1);
 	return (trimmed_line);
 }
-
-

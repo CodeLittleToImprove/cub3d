@@ -112,6 +112,10 @@ bool	has_valid_characters_only(char *file_name);
 //parser_read_map.c;
 bool	read_map_file(char *file_name, t_map *map);
 
+//parser_read_map_utils.c;
+size_t	count_width(char *file_name, size_t row, t_map *map);
+size_t	count_height_and_free(char *file_name);
+bool	init_map_height(char *file_name, t_map *map);
 //parser_textures.c
 bool	detect_textures(char *filename, t_textures *textures);
 

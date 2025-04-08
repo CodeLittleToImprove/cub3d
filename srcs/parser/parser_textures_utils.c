@@ -4,8 +4,8 @@ bool	is_invalid_texture_line(char *line)
 {
 	if (is_empty_line(line))
 		return (false);
-	if (!(ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 ||
-		ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0))
+	if (!(ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0
+			||ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0))
 		return (true);
 	return (false);
 }
