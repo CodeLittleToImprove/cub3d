@@ -18,7 +18,7 @@ bool	is_valid_texture_path(char *path)
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error opening texture file\n");
+		printf("Error: opening texture file\n");
 		return (false);
 	}
 	close(fd);

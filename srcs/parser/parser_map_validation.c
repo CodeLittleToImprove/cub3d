@@ -11,7 +11,9 @@ bool	is_valid_map_line(const char *line)
 		return (false);
 	while (line[i] != '\0' && line[i] != '\n')
 	{
-		if (line[i] != '1' && line[i] != '0' && line[i] != ' ')
+		if (line[i] != '1' && line[i] != '0' && line[i] != ' '
+			&& line[i] != 'N' && line[i] != 'S'
+			&& line[i] != 'W' && line[i] != 'E')
 			return (false);
 		i++;
 	}

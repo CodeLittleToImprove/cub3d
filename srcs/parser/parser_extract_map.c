@@ -24,9 +24,10 @@ bool	process_line(char *line, t_map_state *state, int fd_out)
 {
 	if (!detect_map_start(line, state))
 		return (false);
-	if (state->has_map_started && state->is_valid_start)
+	if (state->has_map_started && state->is_valid_start
+		&&is_valid_map_line(line))
 	{
-		if (!write_and_track_last_line(fd_out, line, &state->last_map_line))
+		if (!write_and_track_last_line(fd_out, line, state))
 			return (false);
 	}
 	return (true);
@@ -54,9 +55,10 @@ int	process_map(int fd_in, int fd_out, t_map *map)
 	{
 		if (!process_line(line, &state, fd_out))
 			return (free(line), -1);
+		if (is_valid_map_line(line))
+			map->map_end_line++;
 		free(line);
 		line = get_next_line(fd_in);
-		map->map_end_line++;
 	}
 	if (state.last_map_line && is_valid_start_or_end_line(state.last_map_line))
 		state.is_valid_end = true;

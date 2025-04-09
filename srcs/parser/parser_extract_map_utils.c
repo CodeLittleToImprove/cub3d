@@ -1,17 +1,17 @@
 #include "../../includes/parser.h"
 
-bool	write_and_track_last_line(int fd_out, const char *line,
-			char **last_map_line)
+bool	write_and_track_last_line(int fd_out, char *line,
+			t_map_state *state)
 {
 	write(fd_out, line, ft_strlen(line));
 	// If the line doesn't end with a newline, it's the last map line
 	if (line[ft_strlen(line) - 1] != '\n')
 	{
-		*last_map_line = malloc(ft_strlen(line) + 1);
-		if (!*last_map_line)
+		state->last_map_line = malloc(ft_strlen(line) + 1);
+		if (!state->last_map_line)
 			return (false);
-		ft_strlcpy(*last_map_line, line, ft_strlen(line) + 1);
-		printf("DEBUG: This should be the last line: %s\n", *last_map_line);
+		ft_strlcpy(state->last_map_line, line, ft_strlen(line) + 1);
+		printf("\nDEBUG: This should be the last line: %s\n", state->last_map_line);
 	}
 	return (true);
 }

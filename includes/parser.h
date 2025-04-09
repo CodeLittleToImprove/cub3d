@@ -83,8 +83,8 @@ bool	is_invalid_color_line(char *line);
 bool	extract_map(const char *filename, t_map *map);
 
 //parser_extract_map_utils.c
-bool	write_and_track_last_line(int fd_out, const char *line,
-			char **last_map_line);
+bool	write_and_track_last_line(int fd_out, char *line,
+			t_map_state *state);
 bool	is_valid_start_or_end_line(const char *line);
 
 //parser_free_utils.c
