@@ -3,11 +3,20 @@
 
 int	close_mlx(t_data *data)
 {
-	// mlx_destroy_image(data->mlx, data->image);
+	int i;
+
+	mlx_destroy_image(data->mlx, data->image->img);
 	mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	return (0);
+	i = 0;
+	while (i < 4)
+	{
+		free(data->textures[i]);
+		i++;
+	}
+	free(data->textures);
+	exit (0);
 }
 
 int	main(int argc, char *argv[])

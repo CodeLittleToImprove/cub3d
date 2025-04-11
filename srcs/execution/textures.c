@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:07:26 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/03/15 17:59:14 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:57:11 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_texture(t_data *data, int i, int width, int height)
 		}
 		y++;
 	}
+	free(img.img);
 }
 
 void	init_textures(t_data *data)

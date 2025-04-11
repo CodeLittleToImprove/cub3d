@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/07 17:03:50 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:51:33 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	data_init(t_data *data, t_map *map, t_image *img)
 {
 	// map_init(data);
 	data->map = map->grid;
-	print_grid(data->map);
+	// print_grid(data->map);
 	data->key_W = 0;
 	data->key_A = 0;
 	data->key_S = 0;
