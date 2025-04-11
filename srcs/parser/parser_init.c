@@ -5,9 +5,11 @@ void	set_default_values_color(t_colors *colors)
 	colors->rgb_floor[0] = 0;
 	colors->rgb_floor[1] = 0;
 	colors->rgb_floor[2] = 0;
+	colors->rgb_hex_floor = 0x000000;
 	colors->rgb_ceiling[0] = 0;
 	colors->rgb_ceiling[1] = 0;
 	colors->rgb_ceiling[2] = 0;
+	colors->rgb_hex_ceiling = 0x000000;
 	colors->color_start_line = 0;
 	colors->has_floor = false;
 	colors->has_ceiling = false;

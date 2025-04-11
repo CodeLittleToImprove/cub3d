@@ -69,7 +69,6 @@ static void	mark_first_color_line(t_colors *colors,
 	if (!(colors->first_color_found))
 	{
 		colors->color_start_line = line_number;
-		printf("color_start_line is %ld\n", colors->color_start_line);
 		colors->first_color_found = true;
 	}
 	// if (!colors->has_floor || !colors->has_ceiling)
@@ -103,6 +102,6 @@ bool	detect_color(const char *filename, t_colors *colors)
 		line = get_next_line(fd);
 		line_number++;
 	}
-	close(fd);
-	return (colors->has_floor && colors->has_ceiling);
+	set_rgb_hex_in_colors(colors);
+	return (close(fd), colors->has_floor && colors->has_ceiling);
 }

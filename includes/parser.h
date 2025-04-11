@@ -42,6 +42,8 @@ typedef struct s_colors
 {
 	int		rgb_floor[3];
 	int		rgb_ceiling[3];
+	int		rgb_hex_floor;
+	int		rgb_hex_ceiling;
 	size_t	color_start_line;
 	bool	has_floor;
 	bool	has_ceiling;
@@ -65,6 +67,8 @@ typedef struct s_textures
 //fd_utils.c
 int		open_input_file(const char *filename);
 int		open_output_file(const char *outputfilename);
+int		rgb_to_hex(int rgb[3]);
+void	set_rgb_hex_in_colors(t_colors *colors);
 
 //parser_color.c
 bool	detect_color(const char *filename, t_colors *colors);
