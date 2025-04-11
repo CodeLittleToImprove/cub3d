@@ -45,6 +45,8 @@ typedef struct s_colors
 	size_t	color_start_line;
 	bool	has_floor;
 	bool	has_ceiling;
+	bool	first_color_found;
+	bool	found_both_colors;
 }	t_colors;
 
 typedef struct s_textures
@@ -63,8 +65,6 @@ typedef struct s_textures
 //fd_utils.c
 int		open_input_file(const char *filename);
 int		open_output_file(const char *outputfilename);
-bool	validate_color_line(char *line, size_t line_number,
-			int fd, bool first_color_found);
 
 //parser_color.c
 bool	detect_color(const char *filename, t_colors *colors);
@@ -73,11 +73,12 @@ bool	check_and_parse_color(char *line, t_colors *colors,
 			char type, bool *found_flag);
 
 //parser_color_utils;
-void	set_default_values_color(t_colors *colors);
 bool	is_valid_rgb(char *str);
 char	*ft_strtok_r(char *str, char *delim, char **saveptr);
 size_t	skip_leading_chars(char *str, size_t i, char *skip_chars);
 bool	is_invalid_color_line(char *line);
+bool	validate_color_line(char *line, size_t line_number,
+			int fd, t_colors *colors);
 
 //parser_extract_map.c
 bool	extract_map(const char *filename, t_map *map);
@@ -95,6 +96,7 @@ void	free_textures(t_textures *textures);
 void	parser_cleanup(t_map *map, t_textures *textures);
 
 //parser_init.c
+void	set_default_values_color(t_colors *colors);
 void	set_default_values_map(t_map *map);
 void	set_default_values_textures(t_textures *textures);
 void	set_parser_default_values(t_map *map, t_textures *textures);

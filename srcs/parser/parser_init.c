@@ -1,5 +1,20 @@
 #include "../../includes/parser.h"
 
+void	set_default_values_color(t_colors *colors)
+{
+	colors->rgb_floor[0] = 0;
+	colors->rgb_floor[1] = 0;
+	colors->rgb_floor[2] = 0;
+	colors->rgb_ceiling[0] = 0;
+	colors->rgb_ceiling[1] = 0;
+	colors->rgb_ceiling[2] = 0;
+	colors->color_start_line = 0;
+	colors->has_floor = false;
+	colors->has_ceiling = false;
+	colors->first_color_found = false;
+	colors->found_both_colors = false;
+}
+
 void	set_default_values_map(t_map *map)
 {
 	map->grid = NULL;

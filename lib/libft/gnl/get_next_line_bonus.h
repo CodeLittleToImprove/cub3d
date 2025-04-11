@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: tbui-quo <tbui-quo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 16:50:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/07/13 15:39:18 by mamesser         ###   ########.fr       */
+/*   Created: 2023/02/01 13:17:39 by tbui-quo          #+#    #+#             */
+/*   Updated: 2023/02/23 18:31:32 by tbui-quo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,21 @@
 #  define BUFFER_SIZE 1
 # endif
 
-# include <stdlib.h>
+# include "../libft.h"
 # include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <string.h>
 
-size_t	ft_strlen2(const char *s);
-char	*ft_strjoin_mod(char *s1, char *s2);
-char	*ft_strchr_mod(const char *s, int c, size_t *line_len);
 char	*get_next_line(int fd);
-char	*ft_free(char *collector, char *buf, int flag_both);
 
+void	*ft_calloc_complete(size_t count, size_t size);
+//char	*ft_strchr(const char *s, int c);
+char	*initialize_line_read_if_null(char *line_read);
+//size_t	ft_strlen(const char *s);
+void	*free_and_return_null(void *ptr);
+size_t	find_newline_pos(const char *str);
+char	*ft_strjoin_and_free(char *previous_read, char *current_read);
 #endif
