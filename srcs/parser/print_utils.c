@@ -4,16 +4,14 @@ void	print_colors(const t_colors *colors)
 {
 	printf("Floor RGB: [%d, %d, %d]\n",
 		colors->rgb_floor[0], colors->rgb_floor[1], colors->rgb_floor[2]);
-	// Print Hex value for floor
-	printf("Floor Hex: 0x%X\n", colors->rgb_hex_floor);
+	printf("Floor Hex: [0x%X]\n", colors->rgb_hex_floor);
 	if (colors->has_floor)
 		printf("Has Floor: true\n");
 	else
 		printf("Has Floor: false\n");
 	printf("Ceiling RGB: [%d, %d, %d]\n",
 		colors->rgb_ceiling[0], colors->rgb_ceiling[1], colors->rgb_ceiling[2]);
-	// Print Hex value for ceiling
-	printf("Ceiling Hex: 0x%X\n", colors->rgb_hex_ceiling);
+	printf("Ceiling Hex: [0x%X]\n", colors->rgb_hex_ceiling);
 	if (colors->has_ceiling)
 		printf("Has Ceiling: true\n");
 	else
