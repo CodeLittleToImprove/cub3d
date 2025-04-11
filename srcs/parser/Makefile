@@ -44,6 +44,9 @@ re: fclean all
 valgrind: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
+run: $(NAME)
+	./$(NAME) test_maps/test_map.cub
+
 # New rule: Compile and run parser_test with valgrind
 run_test: $(NAME)
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./$(NAME) test_maps/test_map.cub

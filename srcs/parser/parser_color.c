@@ -87,7 +87,7 @@ bool	detect_color(const char *filename, t_colors *colors)
 	set_default_values_color(colors);
 	while (line != NULL)
 	{
-		if (!handle_invalid_color_line(line, line_number, fd, first_color_found))
+		if (!validate_color_line(line, line_number, fd, first_color_found))
 			return (false);
 		if (check_and_parse_color(line, colors, 'F', &colors->has_floor)
 			|| check_and_parse_color(line, colors, 'C', &colors->has_ceiling))

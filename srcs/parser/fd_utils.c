@@ -8,7 +8,7 @@ int	open_input_file(const char *filename)
 	if (fd < 0)
 	{
 		perror("Error opening input file");
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
 	return (fd);
 }
@@ -21,12 +21,12 @@ int	open_output_file(const char *outputfilename)
 	if (fd < 0)
 	{
 		perror("Error creating output file");
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
 	return (fd);
 }
 
-bool	handle_invalid_color_line(char *line, size_t line_number, int fd, bool first_color_found)
+bool	validate_color_line(char *line, size_t line_number, int fd, bool first_color_found)
 {
 	if (first_color_found && is_invalid_color_line(line))
 	{
