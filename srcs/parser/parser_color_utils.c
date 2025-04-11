@@ -1,18 +1,5 @@
 #include "../../includes/parser.h"
 
-void	set_default_values_color(t_colors *colors)
-{
-	colors->rgb_floor[0] = 0;
-	colors->rgb_floor[1] = 0;
-	colors->rgb_floor[2] = 0;
-	colors->rgb_ceiling[0] = 0;
-	colors->rgb_ceiling[1] = 0;
-	colors->rgb_ceiling[2] = 0;
-	colors->has_floor = false;
-	colors->has_ceiling = false;
-	colors->color_start_line = 0;
-}
-
 bool	is_valid_rgb(char *str)
 {
 	int		num;
@@ -80,4 +67,34 @@ bool	is_invalid_color_line(char *line)
 	if (!(ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0))
 		return (true);
 	return (false);
+}
+
+bool	validate_color_line(char *line, size_t line_number,
+	int fd, t_colors *colors)
+{
+	if ((ft_strncmp(line, "F", 1) == 0 && colors->has_floor)
+		|| (ft_strncmp(line, "C", 1) == 0 && colors->has_ceiling))
+	{
+		printf("Error: Duplicate color declaration at line %ld: %s\n",
+			line_number, line);
+		close(fd);
+		return (false);
+	}
+	if ((ft_strncmp(line, "F", 1) == 0
+			|| ft_strncmp(line, "C", 1) == 0) && colors->found_both_colors)
+	{
+		printf("Error: Already found both colors, duplicate at line %ld: %s\n",
+			line_number, line);
+		close(fd);
+		return (false);
+	}
+	if (colors->first_color_found && is_invalid_color_line(line)
+		&& !colors->found_both_colors)
+	{
+		printf("Error: Found non-color line within "
+			"color definitions at line %ld: %s\n", line_number, line);
+		close(fd);
+		return (false);
+	}
+	return (true);
 }

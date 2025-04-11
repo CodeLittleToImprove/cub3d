@@ -64,40 +64,44 @@ bool	check_and_parse_color(char *line, t_colors *colors,
 }
 
 static void	mark_first_color_line(t_colors *colors,
-		bool *first_color_found, size_t line_number)
+		size_t line_number)
 {
-	if (!(*first_color_found))
+	if (!(colors->first_color_found))
 	{
 		colors->color_start_line = line_number;
-		*first_color_found = true;
+		colors->first_color_found = true;
 	}
+	// if (!colors->has_floor || !colors->has_ceiling)
+	// {
+	// 	colors->color_end_line = line_number;
+	// 	printf("color_end_line is %ld\n", colors->color_end_line);
+	// }
 }
 
 bool	detect_color(const char *filename, t_colors *colors)
 {
 	int		fd;
 	char	*line;
-	bool	first_color_found;
 	size_t	line_number;
 
 	fd = open_input_file(filename);
 	line = get_next_line(fd);
-	first_color_found = false;
 	line_number = 0;
 	set_default_values_color(colors);
 	while (line != NULL)
 	{
-		if (!validate_color_line(line, line_number, fd, first_color_found))
-			return (false);
+		if (!validate_color_line(line, line_number, fd, colors))
+			return (free(line), false);
 		if (check_and_parse_color(line, colors, 'F', &colors->has_floor)
 			|| check_and_parse_color(line, colors, 'C', &colors->has_ceiling))
-			mark_first_color_line(colors, &first_color_found, line_number);
+			mark_first_color_line(colors, line_number);
+		if (colors->has_floor && colors->has_ceiling
+			&& colors->found_both_colors == false)
+			colors->found_both_colors = true;
 		free(line);
-		if (colors->has_floor && colors->has_ceiling)
-			return (close(fd), true);
 		line = get_next_line(fd);
 		line_number++;
 	}
-	close(fd);
-	return (false);
+	set_rgb_hex_in_colors(colors);
+	return (close(fd), colors->has_floor && colors->has_ceiling);
 }
