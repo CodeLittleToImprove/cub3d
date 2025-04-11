@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/07 16:43:54 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:51:08 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,18 +135,18 @@ int	draw_3d(t_data *data, int x, double dis, int is_horizontal)
 	tex_y = 0;
 	while (y < wall_height)
 	{
-		px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
+		px_put(data->image, x, offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
 		y++;
 		tex_y += tex_y_step;
 	}
 	x++;
-	while (x % ((WIDTH / 2) / FOV) != 0)
+	while (x % (WIDTH / FOV) != 0)
 	{
 		y = 0;
 		tex_y = 0;
 		while (y < wall_height)
 		{
-			px_put(data->image, x + (WIDTH / 2), offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
+			px_put(data->image, x, offset + y, data->textures[tex_type][(int)tex_y * TILE + (int)tex_x]);
 			y++;
 			tex_y += tex_y_step;
 		}
@@ -194,8 +194,8 @@ void	draw_rays(t_data *data)
 			is_horizontal = 1;
 			color = 0x44393C;
 		}
-		render_line(data, (int)data->playerX, (int)data->playerY,
-			(int)data->rayX, (int)data->rayY, color);
+		// render_line(data, (int)data->playerX, (int)data->playerY,
+		// 	(int)data->rayX, (int)data->rayY, color);
 		x = draw_3d(data, x, dis, is_horizontal);
 		data->rayA = data->rayA + DEGREE;
 		data->rayA = get_angle(data->rayA);

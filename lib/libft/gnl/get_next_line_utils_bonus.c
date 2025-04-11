@@ -3,62 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 16:51:36 by mamesser          #+#    #+#             */
-/*   Updated: 2023/07/12 13:01:25 by mamesser         ###   ########.fr       */
+/*   Created: 2023/09/07 18:22:58 by pschmunk          #+#    #+#             */
+/*   Updated: 2025/04/11 15:35:43 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen2(const char *s)
+size_t	cstm_strlen(const char *str)
 {
 	size_t	len;
 
 	len = 0;
-	while (s[len])
+	while (str[len])
 		len++;
 	return (len);
 }
 
-char	*ft_strchr_mod(const char *s, int c, size_t *line_len)
+char	*cstm_strchr(const char *str, int c)
 {
-	while (s[*line_len])
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		if (s[*line_len] == (char)c)
-		{
-			(*line_len)++;
-			return ((char *)s);
-		}
-		(*line_len)++;
+		if (str[i] == (char)c)
+			return ((char *)(str + i));
+		i++;
 	}
-	if (s[*line_len] == (char)c)
-		return ((char *)s);
+	if ((char)c == '\0')
+		return ((char *)(str + i));
 	return (NULL);
 }
 
-char	*ft_strjoin_mod(char *s1, char *s2)
+char	*cstm_strjoin(char *s1, char *s2)
 {
-	char	*ret;
-	size_t	i;
-	size_t	j;
-	size_t	len;
+	unsigned int	count_1;
+	unsigned int	count_2;
+	char			*ptr;
 
-	i = 0;
-	j = 0;
-	len = ft_strlen2(s1) + ft_strlen2(s2);
-	ret = malloc((len + 1) * sizeof(*ret));
-	if (!ret)
-		return (ft_free(s1, s2, 1));
-	while (s1[i])
+	count_1 = 0;
+	count_2 = 0;
+	ptr = (char *)malloc((cstm_strlen(s1) + cstm_strlen(s2) + 1) * sizeof (char));
+	if (!ptr)
+		return (NULL);
+	while (s1[count_1])
 	{
-		ret[i] = s1[i];
-		i++;
+		ptr[count_1] = s1[count_1];
+		count_1++;
 	}
-	while (s2[j])
-		ret[i++] = s2[j++];
-	ret[i] = '\0';
-	free(s1);
-	return (ret);
+	while (s2[count_2])
+		ptr[count_1++] = s2[count_2++];
+	ptr[count_1] = '\0';
+	free (s1);
+	return (ptr);
 }

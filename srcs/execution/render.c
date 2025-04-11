@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 20:13:51 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/11 15:06:53 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:00:40 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	render_small_square(t_image *img, int x, int y, int color)
 	for (size_t i = x; i < i_end; i++)
 	{
 		for (size_t j = y; j < j_end; j++)
+		{
 			px_put(img, i, j, color);
+		}
 	}
 }
 
@@ -128,10 +130,10 @@ void	clear_image(t_data *data)
 int	render(t_data *data)
 {
 	clear_image(data);
-	render_map(data);
 	move_player(data);
 	draw_rays(data);
-	render_player(data);
+	// render_map(data);
+	// render_player(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->image->img, 0, 0);
 	return (0);
 }

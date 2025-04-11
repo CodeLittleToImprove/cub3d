@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/07 17:40:42 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:03:18 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 # define TILE 64
 # define TILES_X 15
 # define TILES_Y 15
-# define WIDTH TILE * TILES_X * 2
-# define HEIGHT TILE * TILES_Y
+# define RES 7
+# define FOV (73 * RES)
+# define WIDTH FOV * 3
+# define HEIGHT (WIDTH * 3) / 4
 # define SPEED 4
 # define CAM_SPEED 0.05
-# define DEGREE 0.002181663
+# define DEGREE (0.0174533 / RES)
 # define PI 3.14159265359
-# define FOV 480
 
 # include <unistd.h>
 # include <stdlib.h>
