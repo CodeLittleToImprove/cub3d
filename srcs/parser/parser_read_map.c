@@ -1,5 +1,12 @@
 #include "../../includes/parser.h"
 
+void	init_grid_state(t_grid_state	*state)
+{
+	state->width = 0;
+	state->row = 0;
+	state->empty_lines = 0;
+}
+
 char	**create_grid(char *file, t_map *map)
 {
 	char			**grid;
@@ -14,8 +21,7 @@ char	**create_grid(char *file, t_map *map)
 	if (!grid)
 		return (perror("Memory allocation failed"), NULL);
 	fd = open_input_file(file);
-	state.row = 0;
-	state.empty_lines = 0;
+	init_grid_state(&state);
 	while (state.row < map->max_height)
 	{
 		line = skip_empty_lines(fd, &state.empty_lines);
