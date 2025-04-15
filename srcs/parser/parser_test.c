@@ -30,6 +30,6 @@ int	main(int argc, char *argv[])
 		return (handle_error("Error: Failed to read temp map file.", &map, &textures, 5));
 	printf("Successfully read map file.\n"); //DEBUG
 //	printf("Map parsing successful.\n"); // DEBUG
-//	print_grid(map.grid);
+	// print_grid(map.grid);
 	parser_cleanup(&map, &textures);
 }

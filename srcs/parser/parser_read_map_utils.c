@@ -17,7 +17,7 @@ static size_t	handle_error_and_clean_size(char *line, int fd)
 	return (0);
 }
 
-size_t	count_width(char *file_name, size_t row, t_map *map)
+size_t	count_width(char *file_name, size_t row)
 {
 	int		fd;
 	size_t	current_line;
@@ -38,13 +38,11 @@ size_t	count_width(char *file_name, size_t row, t_map *map)
 			if (!found_first_char && ft_isspace(c))
 				continue ;
 			found_first_char = true;
-			if (width == SIZE_MAX)
+			if (width == MAX_MAP_WIDTH)
 				return (close(fd), 0);
 			width++;
 		}
 	}
-	if (width > map->max_width)
-		map->max_width = width;
 	return (close(fd), width);
 }
 
@@ -63,7 +61,7 @@ size_t	count_height_and_free(char *file_name)
 		return (0);
 	while (line != NULL)
 	{
-		if (is_empty_line(line) || height == SIZE_MAX)
+		if (is_empty_line(line) || height == MAX_MAP_HEIGHT)
 			return (handle_error_and_clean_size(line, fd));
 		height++;
 		free(line);

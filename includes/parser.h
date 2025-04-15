@@ -2,6 +2,9 @@
 #ifndef PARSER_H
 # define PARSER_H
 
+# define MAX_MAP_HEIGHT 10000
+# define MAX_MAP_WIDTH 10000
+
 # include "../lib/libft/libft.h"
 # include "../lib/libft/gnl/get_next_line_bonus.h"
 # include <stdio.h>
@@ -122,7 +125,7 @@ bool	has_valid_characters_only(char *file_name);
 bool	read_map_file(char *file_name, t_map *map);
 
 //parser_read_map_utils.c;
-size_t	count_width(char *file_name, size_t row, t_map *map);
+size_t	count_width(char *file_name, size_t row);
 size_t	count_height_and_free(char *file_name);
 bool	init_map_height(char *file_name, t_map *map);
 //parser_textures.c

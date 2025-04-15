@@ -94,7 +94,8 @@ bool	detect_textures(char *filename, t_textures *textures)
 		// printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 		// textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);
-		if (textures->no_set && textures->so_set && textures->we_set && textures->ea_set)
+		if (textures->no_set && textures->so_set
+			&&textures->we_set && textures->ea_set && !textures->all_set)
 			mark_all_textures_set(textures, line_number);
 		line = get_next_line(fd);
 		line_number++;
