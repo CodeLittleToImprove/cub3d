@@ -37,33 +37,43 @@ bool	assign_texture_path(char *line, char *key,
 
 bool	process_texture_line(char *line, t_textures *textures)
 {
-	if (assign_texture_path(line, "NO",
-			&textures->no_texture, &textures->no_set)
-		|| assign_texture_path(line, "SO",
-			&textures->so_texture, &textures->so_set)
-		|| assign_texture_path(line, "WE",
-			&textures->we_texture, &textures->we_set)
-		|| assign_texture_path(line, "EA",
-			&textures->ea_texture, &textures->ea_set))
-	{
-		// printf("DEBUG texture detected on line %ld: %s\n", line_number, line);
-		return (true);
-	}
-	return (false);
+	bool	success_assign;
+
+	success_assign = true;
+	if (ft_strncmp(line, "NO", 2) == 0)
+		success_assign = assign_texture_path(line, "NO",
+				&textures->no_texture, &textures->no_set);
+	else if (ft_strncmp(line, "SO", 2) == 0)
+		success_assign = assign_texture_path(line, "SO",
+				&textures->so_texture, &textures->so_set);
+	else if (ft_strncmp(line, "WE", 2) == 0)
+		success_assign = assign_texture_path(line, "WE",
+				&textures->we_texture, &textures->we_set);
+	else if (ft_strncmp(line, "EA", 2) == 0)
+		success_assign = assign_texture_path(line, "EA",
+				&textures->ea_texture, &textures->ea_set);
+	return (success_assign);
 }
 
 static bool	handle_invalid_texture_line(char *line,
 			t_textures *textures, size_t line_number)
 {
-	if (is_invalid_texture_line(line)
+	if (!textures->all_set && is_invalid_texture_line(line)
 		&& (textures->no_set || textures->so_set
 			|| textures->we_set || textures->ea_set))
 	{
-		printf("Error: Found non-texture line within texture definitions at line %ld: %s\n", line_number, line);
-		free(line);
+		printf("Error: Found non-texture line within texture"
+			" definitions at line %ld: %s\n", line_number, line);
 		return (false);
 	}
 	return (true);
+}
+
+static void	mark_all_textures_set(t_textures *textures,
+			size_t line_number)
+{
+	textures->last_texture_line = line_number;
+	textures->all_set = true;
 }
 
 bool	detect_textures(char *filename, t_textures *textures)
@@ -78,18 +88,18 @@ bool	detect_textures(char *filename, t_textures *textures)
 	while (line != NULL)
 	{
 		if (!handle_invalid_texture_line(line, textures, line_number))
-			return (close(fd), false);
-		process_texture_line(line, textures);
+			return (handle_texture_error_and_clean(line, fd));
+		if (!process_texture_line(line, textures))
+			return (handle_texture_error_and_clean(line, fd));
 		// printf("DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 		// textures->no_set, textures->so_set, textures->we_set, textures->ea_set);
 		free(line);
 		if (textures->no_set && textures->so_set && textures->we_set && textures->ea_set)
-		{
-			textures->last_texture_line = line_number;
-			break ;
-		}
+			mark_all_textures_set(textures, line_number);
 		line = get_next_line(fd);
 		line_number++;
+		if (!is_duplicate_texture_line(line, line_number, textures, fd))
+			return (false);
 	}
 	// printf("FINAL DEBUG: no_set=%d, so_set=%d, we_set=%d, ea_set=%d\n",
 	// 	textures->no_set, textures->so_set, textures->we_set, textures->ea_set);

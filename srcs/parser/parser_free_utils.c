@@ -23,6 +23,15 @@ void	free_grid(char **grid)
 	free(grid);
 }
 
+bool	handle_texture_error_and_clean(char *line, int fd)
+{
+	if (line)
+		free(line);
+	if (fd >= 0)
+		close(fd);
+	return (false);
+}
+
 void	free_textures(t_textures *textures)
 {
 	if (!textures)
