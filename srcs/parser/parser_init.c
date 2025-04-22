@@ -38,6 +38,7 @@ void	set_default_values_textures(t_textures *textures)
 	textures->so_set = false;
 	textures->we_set = false;
 	textures->ea_set = false;
+	textures->all_set = false;
 	textures->last_texture_line = 0;
 }
 

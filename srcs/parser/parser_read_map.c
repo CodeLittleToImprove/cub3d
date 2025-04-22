@@ -1,5 +1,25 @@
 #include "../../includes/parser.h"
 
+void	init_grid_state(t_grid_state	*state)
+{
+	state->width = 0;
+	state->row = 0;
+	state->empty_lines = 0;
+}
+
+bool	update_width_or_cleanup(char *file, t_grid_state *state, t_map *map, char *line)
+{
+	state->width = count_width(file, state->row + state->empty_lines);
+	if (state->width == 0)
+	{
+		free(line);
+		return (false);
+	}
+	if (state->width > map->max_width)
+		map->max_width = state->width;
+	return (true);
+}
+
 char	**create_grid(char *file, t_map *map)
 {
 	char			**grid;
@@ -14,16 +34,16 @@ char	**create_grid(char *file, t_map *map)
 	if (!grid)
 		return (perror("Memory allocation failed"), NULL);
 	fd = open_input_file(file);
-	state.row = 0;
-	state.empty_lines = 0;
+	init_grid_state(&state);
 	while (state.row < map->max_height)
 	{
 		line = skip_empty_lines(fd, &state.empty_lines);
 		if (!line)
-			break ;
+			return (free(grid), NULL);
 		// printf("row[%ld] current processed line: %s\n", row, line);
-		state.width = count_width(file, state.row + state.empty_lines, map);
-		// printf("width : %ld\n\n", width);
+		if (!update_width_or_cleanup(file, &state, map, line))
+			return (NULL);
+		// printf("width : %ld\n\n", state.width);
 		grid[state.row] = trim_space_and_copy(line, state.width);
 		free(line);
 		state.row++;

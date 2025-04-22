@@ -8,7 +8,16 @@ static void	init_width_vars(size_t *current_line, size_t *width,
 	*found_first_char = false;
 }
 
-size_t	count_width(char *file_name, size_t row, t_map *map)
+static size_t	handle_error_and_clean_size(char *line, int fd)
+{
+	if (line)
+		free(line);
+	if (fd >= 0)
+		close(fd);
+	return (0);
+}
+
+size_t	count_width(char *file_name, size_t row)
 {
 	int		fd;
 	size_t	current_line;
@@ -29,11 +38,11 @@ size_t	count_width(char *file_name, size_t row, t_map *map)
 			if (!found_first_char && ft_isspace(c))
 				continue ;
 			found_first_char = true;
+			if (width == MAX_MAP_WIDTH)
+				return (close(fd), 0);
 			width++;
 		}
 	}
-	if (width > map->max_width)
-		map->max_width = width;
 	return (close(fd), width);
 }
 
@@ -43,31 +52,34 @@ size_t	count_height_and_free(char *file_name)
 	char		*line;
 	size_t		height;
 
-	fd = open(file_name, O_RDONLY, 0);
-	//	if (fd <= 0)
-	//	//		ft_error_and_exit("file does not exist or no permission");
+	fd = open_input_file(file_name);
+	if (fd <= 0)
+		return (0);
 	line = get_next_line(fd);
 	height = 0;
 	if (line == NULL)
 		return (0);
 	while (line != NULL)
 	{
-		if (is_empty_line(line))
-		{
-			free(line);
-			close(fd);
-			return (0);
-		}
+		if (is_empty_line(line) || height == MAX_MAP_HEIGHT)
+			return (handle_error_and_clean_size(line, fd));
 		height++;
 		free(line);
 		line = get_next_line(fd);
 	}
-	close(fd);
-	return (height);
+	return (close(fd), height);
 }
 
 bool	init_map_height(char *file_name, t_map *map)
 {
-	map->max_height = count_height_and_free(file_name);
-	return (map->max_height > 0);
+	size_t	height;
+
+	height = count_height_and_free(file_name);
+	if (height == 0)
+	{
+		map->max_height = 0;
+		return (false);
+	}
+	map->max_height = height;
+	return (true);
 }

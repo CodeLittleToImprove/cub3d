@@ -25,6 +25,36 @@ bool	is_valid_texture_path(char *path)
 	return (true);
 }
 
+bool	is_texture_identifier(char *line)
+{
+	if (!line)
+		return (false);
+	if (ft_strncmp(line, "NO", 2) == 0)
+		return (true);
+	if (ft_strncmp(line, "SO", 2) == 0)
+		return (true);
+	if (ft_strncmp(line, "WE", 2) == 0)
+		return (true);
+	if (ft_strncmp(line, "EA", 2) == 0)
+		return (true);
+	return (false);
+}
+
+bool	is_duplicate_texture_line(char *line, size_t line_number,
+			t_textures *textures, int fd)
+{
+	if (line_number > textures->last_texture_line && textures->all_set)
+	{
+		if (is_texture_identifier(line))
+		{
+			printf("DEBUG: Detected duplicate texture"
+				"assignment at line %s\n", line);
+			return (handle_texture_error_and_clean(line, fd));
+		}
+	}
+	return (true);
+}
+
 char	*extract_texture_path(char *line, char *key)
 {
 	char	*raw_path;

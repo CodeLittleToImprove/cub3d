@@ -2,6 +2,9 @@
 #ifndef PARSER_H
 # define PARSER_H
 
+# define MAX_MAP_HEIGHT 10000
+# define MAX_MAP_WIDTH 10000
+
 # include "../lib/libft/libft.h"
 # include "../lib/libft/gnl/get_next_line_bonus.h"
 # include <stdio.h>
@@ -11,6 +14,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <stdint.h>
 
 typedef struct s_map
 {
@@ -61,6 +65,7 @@ typedef struct s_textures
 	bool	so_set;
 	bool	we_set;
 	bool	ea_set;
+	bool	all_set;
 	size_t	last_texture_line;
 }	t_textures;
 
@@ -96,6 +101,7 @@ bool	is_valid_start_or_end_line(const char *line);
 int		handle_error(const char *message, t_map *map,
 			t_textures *textures, int code);
 void	free_grid(char **grid);
+bool	handle_texture_error_and_clean(char *line, int fd);
 void	free_textures(t_textures *textures);
 void	parser_cleanup(t_map *map, t_textures *textures);
 
@@ -119,7 +125,7 @@ bool	has_valid_characters_only(char *file_name);
 bool	read_map_file(char *file_name, t_map *map);
 
 //parser_read_map_utils.c;
-size_t	count_width(char *file_name, size_t row, t_map *map);
+size_t	count_width(char *file_name, size_t row);
 size_t	count_height_and_free(char *file_name);
 bool	init_map_height(char *file_name, t_map *map);
 //parser_textures.c
@@ -128,6 +134,9 @@ bool	detect_textures(char *filename, t_textures *textures);
 //parser_textures_utils.c
 char	*extract_texture_path(char *line, char *key);
 bool	is_valid_texture_path(char *path);
+bool	is_texture_identifier(char *line);
+bool	is_duplicate_texture_line(char *line, size_t line_number,
+			t_textures *textures, int fd);
 bool	is_invalid_texture_line(char *line);
 
 //parser_utils.c
