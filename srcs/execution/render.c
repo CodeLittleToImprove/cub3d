@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 20:13:51 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/16 23:53:25 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:50:07 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	clear_image(t_data *data)
 		while (y < data->height)
 		{
 			if (y < data->height / 2)
-				px_put(data, x, y, 0x366FDF);
+				px_put(data, x, y, data->ceiling);
 			else
-				px_put(data, x, y, 0x6F921C);
+				px_put(data, x, y, data->floor);
 			y++;
 		}
 		x++;

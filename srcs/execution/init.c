@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:39 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:49:07 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_ray	init_ray(t_data *data)
 	return (ray);
 }
 
-void	init_data(t_data *data, t_map *map)
+void	init_data(t_data *data, t_map *map, t_colors *colors)
 {
 	data->map = map->grid;
 	data->degree = DEGREE / (WIN_SCALE * RES_SCALE);
@@ -74,6 +74,8 @@ void	init_data(t_data *data, t_map *map)
 	data->height = (data->width * ASPECT_Y) / ASPECT_X;
 	data->tiles_x = map->max_width;
 	data->tiles_y = map->max_height;
+	data->floor = colors->rgb_hex_floor;
+	data->ceiling = colors->rgb_hex_ceiling;
 	data->win = mlx_new_window(data->mlx, data->width, data->height,
 			"3D GAME!");
 	data->image = init_image(data);

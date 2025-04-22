@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 19:47:45 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:47:57 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ typedef	struct s_data
 	int			height;
 	int			tiles_x;
 	int			tiles_y;
+	int			floor;
+	int			ceiling;
 	int			fov;
 	double		degree;
 	t_image		image;
@@ -108,7 +110,7 @@ typedef	struct s_data
 	t_ray		ray;
 }	t_data;
 
-void	init_data(t_data *data, t_map *map);
+void	init_data(t_data *data, t_map *map, t_colors *colors);
 void	init_textures(t_data *data);
 int		close_mlx(t_data *data);
 int		key_press(int keycode, t_data *data);
