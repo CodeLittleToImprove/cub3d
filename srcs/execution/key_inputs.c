@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:10:55 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/11 21:02:34 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:40:44 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,79 +17,64 @@ int	key_press(int keycode, t_data *data)
 	if (keycode == 65307)
 		close_mlx(data);
 	if (keycode == 115)
-		data->key_S = 1;
+		data->key.s = 1;
 	if (keycode == 97)
-		data->key_A = 1;
+		data->key.a = 1;
 	if (keycode == 119)
-		data->key_W = 1;
+		data->key.w = 1;
 	if (keycode == 100)
-		data->key_D = 1;
+		data->key.d = 1;
 	if (keycode == 65361)
-		data->key_left = 1;
+		data->key.left = 1;
 	if (keycode == 65363)
-		data->key_right = 1;
+		data->key.right = 1;
 	return (0);
 }
 
 int	key_release(int keycode, t_data *data)
 {
 	if (keycode == 115)
-		data->key_S = 0;
+		data->key.s = 0;
 	if (keycode == 97)
-		data->key_A = 0;
+		data->key.a = 0;
 	if (keycode == 119)
-		data->key_W = 0;
+		data->key.w = 0;
 	if (keycode == 100)
-		data->key_D = 0;
+		data->key.d = 0;
 	if (keycode == 65361)
-		data->key_left = 0;
+		data->key.left = 0;
 	if (keycode == 65363)
-		data->key_right = 0;
+		data->key.right = 0;
 	return (0);
 }
 
-int	to_grid_size(int num)
+void	move(t_dir *dir, t_data *data, double player_d1, double player_d2)
 {
-	if (num <= TILE)
-		return (0);
-	return (num / TILE);
+	if (dir == SOUTH || dir == EAST)
+		player_d1 = (-1 * player_d1);
+	if (dir == SOUTH || dir == WEST)
+		player_d2 = (-1 * player_d2);
+	if (!has_collision(data, dir, player_d1, 1))
+		data->player.x += player_d1;
+	if (!has_collision(data, dir, player_d2, 0))
+		data->player.y += player_d2;
 }
 
 void	move_player(t_data *data)
 {
-	data->playerDX = cos(data->playerA) * SPEED;
-	data->playerDY = sin(data->playerA) * SPEED;
-	if (data->key_left)
-		data->playerA -= CAM_SPEED;
-	if (data->key_right)
-		data->playerA += CAM_SPEED;
-	data->playerA = get_angle(data->playerA);
-	if (data->key_S)
-	{
-		if (data->map[to_grid_size((int)data->playerY)][to_grid_size((int)(data->playerX - (data->playerDX * 8)))] != '1')
-			data->playerX -= data->playerDX;
-		if (data->map[to_grid_size((int)(data->playerY - (data->playerDY * 8)))][to_grid_size((int)data->playerX)] != '1')
-			data->playerY -= data->playerDY;
-	}
-	if (data->key_A)
-	{
-		if (data->map[to_grid_size((int)data->playerY)][to_grid_size((int)(data->playerX + (data->playerDY * 8)))] != '1')
-			data->playerX += data->playerDY;
-		if (data->map[to_grid_size((int)(data->playerY - (data->playerDX * 8)))][to_grid_size((int)data->playerX)] != '1')
-			data->playerY -= data->playerDX;
-	}
-	if (data->key_W)
-	{
-		if (data->map[to_grid_size((int)data->playerY)][to_grid_size((int)(data->playerX + (data->playerDX * 8)))] != '1')
-			data->playerX += data->playerDX;
-		if (data->map[to_grid_size((int)(data->playerY + (data->playerDY * 8)))][to_grid_size((int)data->playerX)] != '1')
-			data->playerY += data->playerDY;
-	}
-	if (data->key_D)
-	{
-		if (data->map[to_grid_size((int)data->playerY)][to_grid_size((int)(data->playerX - (data->playerDY * 8)))] != '1')
-			data->playerX -= data->playerDY;
-		if (data->map[to_grid_size((int)(data->playerY + (data->playerDX * 8)))][to_grid_size((int)data->playerX)] != '1')
-			data->playerY += data->playerDX;
-	}
+	data->player.dx = cos(data->player.a) * SPEED;
+	data->player.dy = sin(data->player.a) * SPEED;
+	if (data->key.left)
+		data->player.a -= CAM_SPEED;
+	if (data->key.right)
+		data->player.a += CAM_SPEED;
+	data->player.a = get_angle(data->player.a);
+	if (data->key.s)
+		move(SOUTH, data, data->player.dx, data->player.dy);
+	if (data->key.a)
+		move(WEST, data, data->player.dy, data->player.dx);
+	if (data->key.w)
+		move(NORTH, data, data->player.dx, data->player.dy);
+	if (data->key.d)
+		move(EAST, data, data->player.dy, data->player.dx);
 }

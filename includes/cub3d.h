@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/11 21:03:18 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:47:45 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 # define CUB3D_H
 
 # define TILE 64
-# define TILES_X 15
-# define TILES_Y 15
-# define RES 7
-# define FOV (73 * RES)
-# define WIDTH FOV * 3
-# define HEIGHT (WIDTH * 3) / 4
+# define WIN_SCALE 7
+# define RES_SCALE 1
+# define ASPECT_X 4
+# define ASPECT_Y 3
+# define FOV 73
+# define DEGREE 0.0174533
+# define PI 3.14159265359
 # define SPEED 4
 # define CAM_SPEED 0.05
-# define DEGREE (0.0174533 / RES)
-# define PI 3.14159265359
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -44,6 +43,12 @@ typedef enum e_dir
 	WEST
 }	t_dir;
 
+typedef enum e_align
+{
+	HORIZONTAL,
+	VERTICAL
+}	t_align;
+
 typedef struct s_image
 {
 	void	*img;
@@ -53,52 +58,70 @@ typedef struct s_image
 	int		endian;
 }	t_image;
 
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	double	a;
+	double	dx;
+	double	dy;
+}	t_player;
+
+typedef struct s_keyinput
+{
+	int	w;
+	int	a;
+	int	s;
+	int	d;
+	int	left;
+	int	right;
+}	t_keyinput;
+
+typedef struct s_ray
+{
+	double	x;
+	double	y;
+	double	a;
+	double	hor_x;
+	double	hor_y;
+	double	ver_x;
+	double	ver_y;
+	double	off_x;
+	double	off_y;
+}	t_ray;
+
 typedef	struct s_data
 {
 	void		*mlx;
 	void		*win;
 	char		**map;
-	double		playerX;
-	double		playerY;
-	double		playerA;
-	double		playerDX;
-	double		playerDY;
-	double		rayA;
-	double		rayX;
-	double		rayY;
-	double		horizontalX;
-	double		horizontalY;
-	double		verticalX;
-	double		verticalY;
-	double		offsetX;
-	double		offsetY;
-	long long	mapX;
-	long long	mapY;
-	int			key_W;
-	int			key_A;
-	int			key_S;
-	int			key_D;
-	int			key_left;
-	int			key_right;
-	double		dirX;
-	double		dirY;
-	double		camX;
-	double		camY;
 	int			**textures;
-	t_image	*image;
+	int			width;
+	int			height;
+	int			tiles_x;
+	int			tiles_y;
+	int			fov;
+	double		degree;
+	t_image		image;
+	t_player	player;
+	t_keyinput	key;
+	t_ray		ray;
 }	t_data;
 
-void	data_init(t_data *data, t_map *map, t_image *img);
+void	init_data(t_data *data, t_map *map);
+void	init_textures(t_data *data);
 int		close_mlx(t_data *data);
 int		key_press(int keycode, t_data *data);
 int		key_release(int keycode, t_data *data);
 void	move_player(t_data *data);
 void	draw_rays(t_data *data);
-void	render_line(t_data *data, int x0, int y0, int x1, int y1, int color);
 int		render(t_data *data);
 double	get_angle(double angle);
-double	get_angle2(double angle);
-void	px_put(t_image *img, int x, int y, int color);
-void	init_textures(t_data *data);
+void	get_spawn_angle(t_data *data, t_player *player);
+int		to_grid_size(int num);
+int		has_collision(t_data *data, t_dir *dir, double player_d, int is_x);
+void	px_put(t_data *data, int x, int y, int color);
+double	get_horizontal(t_data *data, double tan);
+double	get_vertical(t_data *data, double tan);
 
 #endif
