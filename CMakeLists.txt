@@ -32,6 +32,7 @@ add_executable(cub3d_own_tests
         srcs/main.c
         srcs/execution/init.c
         srcs/execution/key_inputs.c
+        srcs/execution/norminette_suggs.c
         srcs/execution/raycasting.c
         srcs/execution/render.c
         srcs/execution/textures.c

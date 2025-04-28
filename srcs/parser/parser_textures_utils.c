@@ -76,10 +76,7 @@ char	*extract_texture_path(char *line, char *key)
 	// printf("raw_path %s\n", raw_path);
 	trimmed_path = ft_strtrim(raw_path, " \n");
 	if (!trimmed_path)
-	{
-		free(trimmed_path);
-		return (NULL);
-	}
+		return (free(trimmed_path), NULL);
 	// printf("trimmed_path %s\n", trimmed_path);
 	free(raw_path);
 	return (trimmed_path);
