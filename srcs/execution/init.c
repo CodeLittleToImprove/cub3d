@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/28 17:34:48 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:58:46 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_player	init_player(t_data *data, t_map *map)
 	return (player);
 }
 
-t_keyinput	init_keyinputs()
+t_keyinput	init_keyinputs(void)
 {
 	t_keyinput	key;
 
@@ -49,7 +49,7 @@ t_keyinput	init_keyinputs()
 	return (key);
 }
 
-t_ray	init_ray()
+t_ray	init_ray(void)
 {
 	t_ray	ray;
 
@@ -65,7 +65,8 @@ t_ray	init_ray()
 	return (ray);
 }
 
-void	init_data(t_data *data, t_map *map, t_colors *colors)
+void	init_data(t_data *data, t_map *map,
+	t_colors *colors, t_textures *textures)
 {
 	data->map = map->grid;
 	data->degree = DEGREE / (WIN_SCALE * RES_SCALE);
@@ -82,5 +83,5 @@ void	init_data(t_data *data, t_map *map, t_colors *colors)
 	data->player = init_player(data, map);
 	data->key = init_keyinputs();
 	data->ray = init_ray();
-	init_textures(data);
+	init_textures(data, textures);
 }

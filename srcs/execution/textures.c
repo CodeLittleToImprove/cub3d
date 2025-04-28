@@ -6,13 +6,13 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:07:26 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/16 23:47:10 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:56:26 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	select_texture(t_data *data, t_image *img, int i)
+void	select_texture(t_data *data, t_image *img, int i, t_textures *textures)
 {
 	int	width;
 	int	height;
@@ -21,28 +21,28 @@ void	select_texture(t_data *data, t_image *img, int i)
 	height = TILE;
 	if (i == 0)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				"./textures/wall_EA.xpm", &width, &height);
+				textures->ea_texture, &width, &height);
 	else if (i == 1)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				"./textures/wall_NO.xpm", &width, &height);
+				textures->no_texture, &width, &height);
 	else if (i == 2)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				"./textures/wall_SO.xpm", &width, &height);
+				textures->so_texture, &width, &height);
 	else
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				"./textures/wall_WE.xpm", &width, &height);
+				textures->we_texture, &width, &height);
 	if (!img->img)
 		exit(1);
 }
 
-void	init_texture(t_data *data, int i)
+void	init_texture(t_data *data, int i, t_textures *textures)
 {
 	t_image	img;
 	char	*px_data;
 	int		x;
 	int		y;
 
-	select_texture(data, &img, i);
+	select_texture(data, &img, i, textures);
 	px_data = mlx_get_data_addr(img.img, &img.bpp,
 			&img.line_length, &img.endian);
 	data->textures[i] = (int *)malloc(TILE * TILE * sizeof(int));
@@ -63,7 +63,7 @@ void	init_texture(t_data *data, int i)
 	mlx_destroy_image(data->mlx, img.img);
 }
 
-void	init_textures(t_data *data)
+void	init_textures(t_data *data, t_textures *textures)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ void	init_textures(t_data *data)
 		exit(1);
 	while (i < 4)
 	{
-		init_texture(data, i);
+		init_texture(data, i, textures);
 		i++;
 	}
 }
