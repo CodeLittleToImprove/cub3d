@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 22:49:07 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:34:48 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_player	init_player(t_data *data, t_map *map)
 	return (player);
 }
 
-t_keyinput	init_keyinputs(t_data *data)
+t_keyinput	init_keyinputs()
 {
 	t_keyinput	key;
 
@@ -49,7 +49,7 @@ t_keyinput	init_keyinputs(t_data *data)
 	return (key);
 }
 
-t_ray	init_ray(t_data *data)
+t_ray	init_ray()
 {
 	t_ray	ray;
 
@@ -80,7 +80,7 @@ void	init_data(t_data *data, t_map *map, t_colors *colors)
 			"3D GAME!");
 	data->image = init_image(data);
 	data->player = init_player(data, map);
-	data->key = init_keyinputs(data);
-	data->ray = init_ray(data);
+	data->key = init_keyinputs();
+	data->ray = init_ray();
 	init_textures(data);
 }

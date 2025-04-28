@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:10:55 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/15 21:40:44 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:36:19 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ int	key_release(int keycode, t_data *data)
 	return (0);
 }
 
-void	move(t_dir *dir, t_data *data, double player_d1, double player_d2)
+void	move(t_dir dir, t_data *data, double player_d1, double player_d2)
 {
 	if (dir == SOUTH || dir == EAST)
 		player_d1 = (-1 * player_d1);
 	if (dir == SOUTH || dir == WEST)
 		player_d2 = (-1 * player_d2);
-	if (!has_collision(data, dir, player_d1, 1))
+	if (!has_collision(data, player_d1, 1))
 		data->player.x += player_d1;
-	if (!has_collision(data, dir, player_d2, 0))
+	if (!has_collision(data, player_d2, 0))
 		data->player.y += player_d2;
 }
 

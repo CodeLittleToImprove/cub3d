@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:22:19 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 19:50:29 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:36:01 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	to_grid_size(int num)
 	return (num / TILE);
 }
 
-int	has_collision(t_data *data, t_dir *dir, double player_d, int is_x)
+int	has_collision(t_data *data, double player_d, int is_x)
 {
 	int	y;
 	int	x;

@@ -25,7 +25,6 @@ int	main(int argc, char *argv[])
 	t_colors	colors;
 	t_textures	textures;
 	t_data	data;
-	t_image	img;
 
 	if (argc != 2)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 22:47:57 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:36:39 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		render(t_data *data);
 double	get_angle(double angle);
 void	get_spawn_angle(t_data *data, t_player *player);
 int		to_grid_size(int num);
-int		has_collision(t_data *data, t_dir *dir, double player_d, int is_x);
+int		has_collision(t_data *data, double player_d, int is_x);
 void	px_put(t_data *data, int x, int y, int color);
 double	get_horizontal(t_data *data, double tan);
 double	get_vertical(t_data *data, double tan);

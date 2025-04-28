@@ -1,6 +1,6 @@
 NAME = cub3D
 
-#CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 MLXFLAGS = -L/usr/X11/lib -lX11 -lXext -lm #-O3
 

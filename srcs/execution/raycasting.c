@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 22:41:33 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:37:08 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ double	dist(t_data *data, double delta_x, double delta_y)
 int	is_in_bound(t_data *data, int x, int y)
 {
 	if (x >= 0 && y >= 0
-		&& x < ft_strlen(data->map[(int)data->player.y / TILE])
+		&& x < data->tiles_x
+		&& y < data->tiles_y)
+		return (1);
+	else if (x >= 0 && y >= 0
+		&& x < (int)ft_strlen(data->map[(int)data->player.y / TILE])
 		&& y < data->tiles_y)
 		return (1);
 	return (0);
