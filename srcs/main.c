@@ -15,6 +15,11 @@ int	close_mlx(t_data *data)
 		free(data->textures[i]);
 		i++;
 	}
+	if (data->map)
+	{
+		free_grid(data->map);
+		data->map = NULL; // Prevent future invalid access
+	}
 	free(data->textures);
 	exit (0);
 }
@@ -52,7 +57,7 @@ int	main(int argc, char *argv[])
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (1);
-	init_data(&data, &map, &colors);
+	init_data(&data, &map, &colors, &textures);
 	mlx_hook(data.win, 17, 1L << 17, close_mlx, &data);
 	mlx_hook(data.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win, 3, 1L << 1, key_release, &data);

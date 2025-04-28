@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 16:04:25 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/28 17:36:39 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:57:15 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ typedef	struct s_data
 	t_ray		ray;
 }	t_data;
 
-void	init_data(t_data *data, t_map *map, t_colors *colors);
-void	init_textures(t_data *data);
+void	init_data(t_data *data, t_map *map, t_colors *colors, t_textures *textures);
+void	init_textures(t_data *data, t_textures *textures);
 int		close_mlx(t_data *data);
 int		key_press(int keycode, t_data *data);
 int		key_release(int keycode, t_data *data);
