@@ -33,6 +33,8 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 		return (-1);
+	if (!is_cub_file(argv[1]))
+		return (-2);
 	set_parser_default_values(&map, &textures);
 	if (!detect_color(argv[1], &colors))
 		return handle_error("Error: Failed to extract colors.", &map, &textures, 2);

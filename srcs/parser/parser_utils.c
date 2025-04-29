@@ -55,3 +55,13 @@ char	*trim_space_and_copy(char *line, size_t width)
 	ft_strlcpy(trimmed_line, line + leading_spaces, width + 1);
 	return (trimmed_line);
 }
+
+bool	is_cub_file(const char *filename)
+{
+	size_t	len;
+
+	len = ft_strlen(filename);
+	if (len < 4 || ft_strncmp(filename + len - 4, ".cub", 4) != 0)
+		return (false);
+	return (true);
+}

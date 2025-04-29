@@ -144,6 +144,7 @@ bool	is_empty_line(char *line);
 size_t	count_leading_white_space(char *line);
 char	*skip_empty_lines(int fd, size_t *empty_lines);
 char	*trim_space_and_copy(char *line, size_t width);
+bool	is_cub_file(const char *filename);
 
 //print_utils.c
 void	print_colors(const t_colors *colors);
