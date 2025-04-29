@@ -62,6 +62,9 @@ bool	is_cub_file(const char *filename)
 
 	len = ft_strlen(filename);
 	if (len < 4 || ft_strncmp(filename + len - 4, ".cub", 4) != 0)
+	{
+		printf("Error wrong file Extension, use .cub");
 		return (false);
+	}
 	return (true);
 }
