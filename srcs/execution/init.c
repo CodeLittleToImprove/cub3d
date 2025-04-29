@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/28 17:58:46 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:13:14 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ t_player	init_player(t_data *data, t_map *map)
 {
 	t_player	player;
 
-	player.x = map->player_x * TILE;
-	player.y = map->player_y * TILE;
+	player.x = map->player_x * TILE + (TILE / 2);
+	player.y = map->player_y * TILE + (TILE / 2);
 	player.dx = 0;
 	player.dy = 0;
 	get_spawn_angle(data, &player);

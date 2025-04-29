@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:22:19 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/28 17:36:01 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:14:25 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ int	has_collision(t_data *data, double player_d, int is_x)
 	if (is_x)
 	{
 		y = to_grid_size((int)data->player.y);
-		x = to_grid_size((int)(data->player.x + (player_d * 8)));
+		x = to_grid_size((int)(data->player.x + (player_d * 2)));
 	}
 	else
 	{
 		x = to_grid_size((int)data->player.x);
-		y = to_grid_size((int)(data->player.y + (player_d * 8)));
+		y = to_grid_size((int)(data->player.y + (player_d * 2)));
 	}
 	if (data->map[y][x] == '1')
 		return (1);
