@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 02:48:41 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 17:12:50 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:19:41 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 int	get_color(t_data *data, double tex_y, int is_horizontal)
 {

@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:17:01 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 18:13:14 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:19:27 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 t_image	init_image(t_data *data)
 {

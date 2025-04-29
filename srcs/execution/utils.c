@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:22:19 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 18:14:25 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:20:00 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 double	get_angle(double angle)
 {

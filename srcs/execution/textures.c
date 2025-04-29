@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:07:26 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 16:53:15 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:19:55 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 void	select_texture(t_data *data, t_image *img, int i, t_textures *textures)
 {

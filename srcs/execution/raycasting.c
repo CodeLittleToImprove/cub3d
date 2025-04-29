@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:01 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:19:46 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 double	dist(t_data *data, double delta_x, double delta_y)
 {

@@ -6,11 +6,11 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 20:13:51 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/22 22:50:07 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:19:50 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../../includes/execution.h"
 
 void	clear_image(t_data *data)
 {
