@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 18:37:42 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 18:19:46 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:48:00 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,8 @@ double	dist(t_data *data, double delta_x, double delta_y)
 int	is_in_bound(t_data *data, int x, int y)
 {
 	if (x >= 0 && y >= 0
-		&& x < data->tiles_x
-		&& y < data->tiles_y)
-		return (1);
-	else if (x >= 0 && y >= 0
-		&& x < (int)ft_strlen(data->map[(int)data->player.y / TILE])
-		&& y < data->tiles_y)
+		&& y < data->tiles_y
+		&& x < (int)ft_strlen(data->map[y]))
 		return (1);
 	return (0);
 }
@@ -65,7 +61,7 @@ double	get_horizontal(t_data *data, double tan)
 {
 	data->ray.hor_x = data->player.x;
 	data->ray.hor_y = data->player.y;
-	if (data->ray.a > PI)
+	if (data->ray.a > PI && data->ray.a < 2 * PI)
 	{
 		data->ray.y = ((int)data->player.y / TILE) * TILE - 0.0001;
 		data->ray.x = ((int)data->player.y - data->ray.y)
@@ -73,13 +69,18 @@ double	get_horizontal(t_data *data, double tan)
 		data->ray.off_y = -TILE;
 		data->ray.off_x = TILE * tan;
 	}
-	else
+	else if (data->ray.a > 0 && data->ray.a < PI)
 	{
 		data->ray.y = ((int)data->player.y / TILE) * TILE + TILE;
 		data->ray.x = ((int)data->player.y - data->ray.y)
 			* tan + (int)data->player.x;
 		data->ray.off_y = TILE;
 		data->ray.off_x = -TILE * tan;
+	}
+	else
+	{
+		data->ray.x = 0;
+		data->ray.y = 0;
 	}
 	return (get_dist(data, data->tiles_y, &data->ray.hor_x, &data->ray.hor_y));
 }

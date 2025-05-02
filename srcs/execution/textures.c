@@ -6,7 +6,7 @@
 /*   By: pschmunk <pschmunk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:07:26 by pschmunk          #+#    #+#             */
-/*   Updated: 2025/04/29 18:19:55 by pschmunk         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:33:31 by pschmunk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void	select_texture(t_data *data, t_image *img, int i, t_textures *textures)
 	height = TILE;
 	if (i == 0)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				textures->ea_texture, &width, &height);
+				textures->no_texture, &width, &height);
 	else if (i == 1)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				textures->no_texture, &width, &height);
+				textures->we_texture, &width, &height);
 	else if (i == 2)
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				textures->so_texture, &width, &height);
+				textures->ea_texture, &width, &height);
 	else
 		img->img = mlx_xpm_file_to_image(data->mlx,
-				textures->we_texture, &width, &height);
+				textures->so_texture, &width, &height);
 	if (!img->img)
 		exit(1);
 }
